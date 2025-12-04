@@ -1,0 +1,68 @@
+export default function MarketsScrolling() {
+  const marketsRow1 = [
+    "NT paslaugos",
+    "Odontologija",
+    "Saulės elektrinės",
+    "ŠVOK",
+    "Draudimas",
+    "Estetinė medicina"
+  ];
+
+  const marketsRow2 = [
+    "Grožio klinikos",
+    "Finansai",
+    "Veterinarija",
+    "Agentūros",
+    "Mašinų lizingas",
+    "Psichikos klinikos"
+  ];
+
+  return (
+    <section className="py-16 overflow-hidden">
+      <div className="max-w-5xl mx-auto mb-8 px-6 lg:px-12">
+        {/* Mobile version */}
+        <h2 className="block md:hidden text-[24px] font-bold text-center tracking-tight" data-testid="text-markets-scrolling-title">
+          Pritaikoma įvairiose rinkose
+        </h2>
+        {/* Desktop version */}
+        <h2 className="hidden md:block text-3xl lg:text-4xl font-bold text-center tracking-tight whitespace-nowrap" data-testid="text-markets-scrolling-title-desktop">
+          Pritaikoma įvairiose B2C rinkose
+        </h2>
+      </div>
+      <div className="relative w-full max-w-5xl mx-auto">
+        {/* Gradient overlays for smooth edges */}
+        <div className="absolute inset-y-0 left-0 w-32 md:w-48 lg:w-64 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-32 md:w-48 lg:w-64 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+        
+        <div className="space-y-4 w-full">
+          {/* First row - scrolling left */}
+          <div className="relative w-full overflow-hidden">
+            <div className="flex gap-4 animate-scroll-left w-max">
+              {[...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1].map((industry, index) => (
+                <div
+                  key={`row1-${index}`}
+                  className="px-6 py-3 text-sm font-medium border-2 border-border whitespace-nowrap flex-shrink-0 bg-[#1d8263]/10 rounded-md"
+                >
+                  {industry}
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* Second row - scrolling right */}
+          <div className="relative w-full overflow-hidden">
+            <div className="flex gap-4 animate-scroll-right w-max">
+              {[...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2].map((industry, index) => (
+                <div
+                  key={`row2-${index}`}
+                  className="px-6 py-3 text-sm font-medium border-2 border-border whitespace-nowrap flex-shrink-0 bg-[#1d8263]/10 rounded-md"
+                >
+                  {industry}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
