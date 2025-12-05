@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Badge } from "@/components/ui/badge";
 import veeslaLogo from "@assets/2_1763670424934.png";
-import energija24Logo from "@assets/1_1763670424934.png";
+import energija24Logo from "@assets/energija transparent.png";
 import specdarbaiLogo from "@assets/3_1763670424934.png";
 
 export default function ResultsSection() {

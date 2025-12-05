@@ -11,7 +11,7 @@ import {
   Percent, Euro, Users2, Clock
 } from "lucide-react";
 import { trackPageView, trackButtonClick, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
-import energijaLogo from "@assets/logo_1762722223056.png";
+import energijaLogo from "@assets/energija transparent.png";
 import veeslaLogo from "@assets/2_1762722139439.png";
 import specdarbaiLogo from "@assets/3_1762722139439.png";
 import akselerLogo from "@assets/akseler black_1762708092193.png";

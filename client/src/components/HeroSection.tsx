@@ -4,7 +4,7 @@ import { Link } from "wouter";
 import { useState, useEffect, useRef, useCallback } from "react";
 import veeslaLogo from "@assets/3_1761686356688.png";
 import specdarbaiLogo from "@assets/2_1761686356688.png";
-import energija24Logo from "@assets/energija_1761686356688.png";
+import energija24Logo from "@assets/energija transparent.png";
 import videoThumbnail from "@assets/thumb_1764295191794.webp";
 
 export default function HeroSection() {

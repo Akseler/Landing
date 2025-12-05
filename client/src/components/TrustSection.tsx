@@ -1,6 +1,6 @@
 import veeslaLogo from "@assets/3_1761686356688.png";
 import specdarbaiLogo from "@assets/2_1761686356688.png";
-import energija24Logo from "@assets/energija_1761686356688.png";
+import energija24Logo from "@assets/energija transparent.png";
 
 export default function TrustSection() {
   return (
