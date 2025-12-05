@@ -2,6 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { ClipboardList, ArrowRight } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 import { Mail, MessageSquare, Calendar, CheckCircle, Clock } from "lucide-react";
@@ -38,7 +39,7 @@ function Step02Visual() {
     : [messages[currentIndex - 1], messages[currentIndex]];
 
   return (
-    <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-full flex items-center justify-center min-h-[300px]">
+    <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-[300px] flex items-center justify-center overflow-hidden">
       <div className="w-full max-w-md">
         <div className="space-y-3 md:space-y-4 relative">
           <AnimatePresence initial={false}>
@@ -114,7 +115,7 @@ function Step03Visual() {
   ];
 
   return (
-    <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-full flex items-center justify-center min-h-[300px]">
+    <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-[300px] flex items-center justify-center overflow-hidden">
       <div className="w-full max-w-sm">
         <AnimatePresence mode="wait">
           <motion.div
@@ -160,7 +161,7 @@ function Step04Visual() {
   ];
 
   return (
-    <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-full flex items-center justify-center min-h-[300px]">
+    <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-[300px] flex items-center justify-center overflow-hidden">
       <div className="w-full max-w-sm space-y-3">
         {steps.map((step, index) => {
           const IconComponent = step.icon;
@@ -195,7 +196,7 @@ export default function SolutionSection() {
       title: "Susisiekia žaibišku greičiu",
       description: "AI darbuotojai realiu laiku gauna užklausas iš visų reklamos kanalų ir minutės bėgyje susisiekia personalizuota žinute.",
       visual: (
-        <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-full flex items-center justify-center min-h-[300px]">
+        <div className="relative bg-white dark:bg-card rounded-2xl border border-border p-6 md:p-8 h-[300px] flex items-center justify-center overflow-hidden">
           <div className="relative w-full max-w-[240px] aspect-square">
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br from-gray-600 to-gray-800 border-4 border-gray-500 flex items-center justify-center shadow-lg">
@@ -299,10 +300,10 @@ export default function SolutionSection() {
   ];
 
   return (
-    <section ref={ref} className="py-20 md:py-24 px-6 lg:px-12">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12">
-          <div className="inline-block mb-6">
+    <section ref={ref} className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12 md:mb-16">
+          <div className="inline-block mb-4 md:mb-5">
             <Badge 
               variant="outline" 
               className="px-6 py-2 text-sm font-semibold border-2 border-[#1d8263]/30 bg-[#1d8263]/5 text-[#1d8263]"
@@ -312,7 +313,7 @@ export default function SolutionSection() {
             </Badge>
           </div>
           
-          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-8 leading-tight" data-testid="text-solution-title">
+          <h2 className="text-2xl sm:text-3xl md:text-[32px] lg:text-[36px] font-bold mb-0 leading-tight" data-testid="text-solution-title">
             Jūsų pardavimų pastiprinimas{" "}
             <span className="inline-block relative">
               <span className="relative z-10 text-foreground px-4 py-1">su Dirbtiniu Intelektu</span>
@@ -321,7 +322,7 @@ export default function SolutionSection() {
           </h2>
         </div>
 
-        <div className="relative space-y-12 md:space-y-16 mt-8">
+        <div className="relative space-y-12 md:space-y-14 mt-8 md:mt-12">
           <div className="hidden md:block absolute left-[2.5rem] lg:left-[3rem] top-12 bottom-12 w-[2px] bg-gradient-to-b from-[#1d8263]/20 via-[#1d8263]/40 to-[#1d8263]/20" />
 
           {steps.map((step, index) => (
@@ -339,8 +340,8 @@ export default function SolutionSection() {
                     <div className="text-5xl md:text-6xl lg:text-7xl font-light text-[#1d8263] flex-shrink-0 bg-background">{step.number}</div>
                   </div>
                   <div className="space-y-2 md:space-y-3 pt-2">
-                    <h3 className="text-xl md:text-2xl font-bold leading-tight">{step.title}</h3>
-                    <p className="text-sm md:text-base text-foreground/70 leading-relaxed">{step.description}</p>
+                    <h3 className="text-xl md:text-[22px] font-bold leading-tight">{step.title}</h3>
+                    <p className="text-sm md:text-[16px] text-foreground/70 leading-relaxed">{step.description}</p>
                   </div>
                 </div>
 
@@ -359,6 +360,7 @@ export default function SolutionSection() {
               variant="default"
               className="px-12 py-3 h-auto btn-gradient hover:opacity-95 border-0 min-w-[320px] md:min-w-[400px]"
               data-testid="button-survey-solution"
+              onClick={() => trackEvent('button_click', window.location.pathname, 'button-survey-solution')}
             >
               <div className="flex flex-col items-center gap-1">
                 <span className="text-lg md:text-xl font-semibold">Kokių rezultatų galiu tikėtis?</span>

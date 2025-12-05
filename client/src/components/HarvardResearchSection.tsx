@@ -17,21 +17,23 @@ export default function HarvardResearchSection() {
   const maxPercentage = 100;
 
   return (
-    <section className="py-16 md:py-20 px-6 lg:px-12" data-testid="section-harvard-research">
-      <div className="max-w-6xl mx-auto">
+    <section className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12" data-testid="section-harvard-research">
+      <div className="max-w-4xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           <div className="text-center lg:text-left">
-            <div className="mb-8 flex justify-center lg:justify-start">
+            <div className="mb-4 md:mb-5 flex justify-center lg:justify-start">
               <Badge 
                 variant="outline" 
-                className="text-[#1d8263] border-[#1d8263]/30 bg-[#1d8263]/5 text-sm font-medium px-4 py-1.5 uppercase tracking-wide"
+                className="text-[#1d8263] border-[#1d8263]/30 bg-[#1d8263]/5 text-sm font-semibold px-6 py-2 uppercase tracking-wide border-2"
                 data-testid="badge-harvard"
               >
                 "Harvard Business" mokslinis tyrimas
               </Badge>
             </div>
 
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 leading-tight" data-testid="text-harvard-title">Dėja, bet laikas nėra Jūsų pusėje...</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-[32px] lg:text-[36px] font-bold mb-6 md:mb-8 leading-tight" data-testid="text-harvard-title">
+              Dėja, bet laikas nėra<br className="md:hidden" /> Jūsų pusėje...
+            </h2>
 
             <div className="space-y-6 text-base md:text-lg text-foreground/80">
               <p data-testid="text-harvard-stat" className="text-[19px]">

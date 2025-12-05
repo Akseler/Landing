@@ -122,3 +122,73 @@ export async function linkRegistrationToSession(registrationId: string): Promise
     console.error('Link registration error:', error);
   }
 }
+
+// Track scroll depth
+let maxScrollDepth = 0;
+let scrollDepthTracked = false;
+
+export function initScrollTracking(): void {
+  if (typeof window === 'undefined') return;
+  
+  const trackScrollDepth = () => {
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollPercent = Math.round((scrollTop / (documentHeight - windowHeight)) * 100);
+    
+    if (scrollPercent > maxScrollDepth) {
+      maxScrollDepth = scrollPercent;
+    }
+  };
+
+  // Track scroll depth on scroll
+  window.addEventListener('scroll', trackScrollDepth, { passive: true });
+  
+  // Track final scroll depth on page unload
+  window.addEventListener('beforeunload', () => {
+    if (maxScrollDepth > 0 && !scrollDepthTracked) {
+      const page = window.location.pathname;
+      trackEvent('scroll_depth', page, undefined, { depth: maxScrollDepth });
+      scrollDepthTracked = true;
+    }
+  });
+  
+  // Track scroll depth when navigating away
+  window.addEventListener('pagehide', () => {
+    if (maxScrollDepth > 0 && !scrollDepthTracked) {
+      const page = window.location.pathname;
+      trackEvent('scroll_depth', page, undefined, { depth: maxScrollDepth });
+      scrollDepthTracked = true;
+    }
+  });
+}
+
+// Track session duration
+let sessionStartTime = Date.now();
+let sessionDurationTracked = false;
+
+export function initSessionDurationTracking(): void {
+  if (typeof window === 'undefined') return;
+  
+  sessionStartTime = Date.now();
+  
+  // Track session duration on page unload
+  window.addEventListener('beforeunload', () => {
+    if (!sessionDurationTracked) {
+      const duration = Math.round((Date.now() - sessionStartTime) / 1000); // in seconds
+      const page = window.location.pathname;
+      trackEvent('session_duration', page, undefined, { duration });
+      sessionDurationTracked = true;
+    }
+  });
+  
+  // Track session duration when navigating away
+  window.addEventListener('pagehide', () => {
+    if (!sessionDurationTracked) {
+      const duration = Math.round((Date.now() - sessionStartTime) / 1000); // in seconds
+      const page = window.location.pathname;
+      trackEvent('session_duration', page, undefined, { duration });
+      sessionDurationTracked = true;
+    }
+  });
+}

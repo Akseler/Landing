@@ -18,14 +18,14 @@ export default function MarketsScrolling() {
   ];
 
   return (
-    <section className="py-16 overflow-hidden">
-      <div className="max-w-5xl mx-auto mb-8 px-6 lg:px-12">
+    <section className="pt-16 md:pt-20 pb-20 md:pb-24 overflow-hidden">
+      <div className="max-w-4xl mx-auto mb-8 md:mb-12 px-6 lg:px-12">
         {/* Mobile version */}
         <h2 className="block md:hidden text-[24px] font-bold text-center tracking-tight" data-testid="text-markets-scrolling-title">
           Pritaikoma įvairiose rinkose
         </h2>
         {/* Desktop version */}
-        <h2 className="hidden md:block text-3xl lg:text-4xl font-bold text-center tracking-tight whitespace-nowrap" data-testid="text-markets-scrolling-title-desktop">
+        <h2 className="hidden md:block text-[32px] lg:text-[36px] font-bold text-center tracking-tight whitespace-nowrap leading-tight" data-testid="text-markets-scrolling-title-desktop">
           Pritaikoma įvairiose B2C rinkose
         </h2>
       </div>

@@ -10,7 +10,7 @@ import {
   Globe, Search, Users, Mail as MailIcon, Facebook, Phone, Instagram, Database,
   Percent, Euro, Users2, Clock
 } from "lucide-react";
-import { trackPageView, trackButtonClick } from "@/lib/analytics";
+import { trackPageView, trackButtonClick, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 import energijaLogo from "@assets/logo_1762722223056.png";
 import veeslaLogo from "@assets/2_1762722139439.png";
 import specdarbaiLogo from "@assets/3_1762722139439.png";
@@ -20,6 +20,8 @@ export default function WebinarPage() {
   useEffect(() => {
     document.title = "Registracija";
     trackPageView('/webinar');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
   const industriesRow1 = [
     "NT paslaugos",

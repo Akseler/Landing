@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { CheckCircle } from "lucide-react";
 import { Link } from "wouter";
 import WebinarStickyHeader from "@/components/webinar/WebinarStickyHeader";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 export default function SuccessPage() {
   useEffect(() => {
     trackPageView('/success');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   return (

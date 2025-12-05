@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import { CheckCircle2 } from "lucide-react";
 import WebinarStickyHeader from "@/components/webinar/WebinarStickyHeader";
 import Footer from "@/components/Footer";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 export default function DonePage() {
   useEffect(() => {
     document.title = "Akseler";
     trackPageView('/done');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   return (

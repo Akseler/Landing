@@ -203,6 +203,8 @@ export class DatabaseStorage implements IStorage {
     registrations: number;
     registrationRate: number;
     registrationFromCompletions: number;
+    averageSessionDuration: number;
+    averageScrollDepth: number;
   }> {
     const database = getDb();
     
@@ -274,6 +276,42 @@ export class DatabaseStorage implements IStorage {
     const registrationRate = uniqueVisitors > 0 ? (registrationCountValue / uniqueVisitors) * 100 : 0;
     const registrationFromCompletions = quizCompleteCount > 0 ? (registrationCountValue / quizCompleteCount) * 100 : 0;
 
+    // Calculate average session duration
+    const sessionDurationCondition = startDate && endDate
+      ? drizzleSql`${analyticsEvents.eventType} = 'session_duration' AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
+      : eq(analyticsEvents.eventType, 'session_duration');
+    
+    const sessionDurationEvents = await database
+      .select({ metadata: analyticsEvents.metadata })
+      .from(analyticsEvents)
+      .where(sessionDurationCondition);
+    
+    const durations = sessionDurationEvents
+      .map(e => e.metadata && typeof e.metadata === 'object' && 'duration' in e.metadata ? Number(e.metadata.duration) : null)
+      .filter((d): d is number => d !== null && !isNaN(d));
+    
+    const averageSessionDuration = durations.length > 0 
+      ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length)
+      : 0;
+
+    // Calculate average scroll depth
+    const scrollDepthCondition = startDate && endDate
+      ? drizzleSql`${analyticsEvents.eventType} = 'scroll_depth' AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
+      : eq(analyticsEvents.eventType, 'scroll_depth');
+    
+    const scrollDepthEvents = await database
+      .select({ metadata: analyticsEvents.metadata })
+      .from(analyticsEvents)
+      .where(scrollDepthCondition);
+    
+    const scrollDepths = scrollDepthEvents
+      .map(e => e.metadata && typeof e.metadata === 'object' && 'depth' in e.metadata ? Number(e.metadata.depth) : null)
+      .filter((d): d is number => d !== null && !isNaN(d));
+    
+    const averageScrollDepth = scrollDepths.length > 0 
+      ? Math.round(scrollDepths.reduce((a, b) => a + b, 0) / scrollDepths.length)
+      : 0;
+
     return {
       totalVisits: uniqueVisitors,
       uniqueVisitors,
@@ -288,6 +326,8 @@ export class DatabaseStorage implements IStorage {
       registrations: registrationCountValue,
       registrationRate: Math.round(registrationRate * 10) / 10,
       registrationFromCompletions: Math.round(registrationFromCompletions * 10) / 10,
+      averageSessionDuration,
+      averageScrollDepth,
     };
   }
 
@@ -326,11 +366,11 @@ export class DatabaseStorage implements IStorage {
       .from(analyticsEvents)
       .where(drizzleSql`${analyticsEvents.page} = '/survey' ${dateCondition}`);
 
-    // Count unique sessions that visited /calldone page (submitted email - last step)
+    // Count unique sessions that submitted email (survey_email_submitted event or call_funnel_submissions)
     const [emailSubmissions] = await database
       .select({ count: drizzleSql<number>`COUNT(DISTINCT ${analyticsEvents.sessionId})` })
       .from(analyticsEvents)
-      .where(drizzleSql`${analyticsEvents.page} = '/calldone' ${dateCondition}`);
+      .where(drizzleSql`${analyticsEvents.eventType} = 'survey_email_submitted' ${dateCondition}`);
 
     const callCount = callPageVisitors?.count || 0;
     const videoCount = videoViews?.count || 0;

@@ -3,11 +3,13 @@ import { Button } from "@/components/ui/button";
 import { Info } from "lucide-react";
 import { Link } from "wouter";
 import WebinarStickyHeader from "@/components/webinar/WebinarStickyHeader";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 export default function ThankYouPage() {
   useEffect(() => {
     trackPageView('/thankyou');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   return (

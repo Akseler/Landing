@@ -1,7 +1,19 @@
+import 'dotenv/config';
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { testDatabaseConnection } from "./db";
+
+// Handle uncaught exceptions and unhandled rejections
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught Exception:', error);
+  // Don't exit - log and continue
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Don't exit - log and continue
+});
 
 const app = express();
 
@@ -50,7 +62,11 @@ app.use((req, res, next) => {
 (async () => {
   try {
     // Test database connection on startup
-    await testDatabaseConnection();
+    const dbConnected = await testDatabaseConnection();
+    if (!dbConnected) {
+      console.error("Database connection failed on startup. Server will continue but API calls may fail.");
+      // Don't exit - allow server to start even if DB is down
+    }
     
     const server = await registerRoutes(app);
 
@@ -75,13 +91,9 @@ app.use((req, res, next) => {
     // Other ports are firewalled. Default to 5000 if not specified.
     // this serves both the API and the client.
     // It is the only port that is not firewalled.
-    const port = parseInt(process.env.PORT || '5000', 10);
+    const port = parseInt(process.env.PORT || '3000', 10);
     
-    server.listen({
-      port,
-      host: "0.0.0.0",
-      reusePort: true,
-    }, () => {
+    server.listen(port, "0.0.0.0", () => {
       log(`Server started successfully on port ${port}`);
     });
 
@@ -89,8 +101,19 @@ app.use((req, res, next) => {
       console.error("Server error:", error);
       if (error.code === 'EADDRINUSE') {
         console.error(`Port ${port} is already in use`);
+        console.error(`Please stop the process using port ${port} or change the PORT environment variable`);
+      } else if (error.code === 'ENOTSUP') {
+        console.error(`Port ${port} operation not supported. Trying alternative method...`);
+        // Try listening without host binding
+        server.listen(port, () => {
+          log(`Server started successfully on port ${port}`);
+        });
+        return; // Don't exit
       }
-      process.exit(1);
+      // Only exit on critical errors
+      if (error.code !== 'ENOTSUP') {
+        process.exit(1);
+      }
     });
 
   } catch (error) {

@@ -9,12 +9,14 @@ import MarketsScrolling from "@/components/MarketsScrolling";
 import ResultsSection from "@/components/ResultsSection";
 import CallFinalCTASection from "@/components/CallFinalCTASection";
 import Footer from "@/components/Footer";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 export default function Home() {
   useEffect(() => {
     document.title = "Akseler — AI darbuotojai";
     trackPageView('/');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   return (

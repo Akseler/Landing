@@ -16,14 +16,6 @@ export default function ResultsSection() {
 
   const results = [
     {
-      company: "Veesla",
-      revenue: "22M. apyvartos 2024m.",
-      stat: "2x",
-      description: "daugiau apdorojamų užklausų",
-      subdescription: "be papildomų darbuotojų samdymo",
-      logo: veeslaLogo
-    },
-    {
       company: "Energija24",
       revenue: "1,1M. apyvartos 2024m.",
       stat: "140%",
@@ -32,11 +24,19 @@ export default function ResultsSection() {
       logo: energija24Logo
     },
     {
-      company: "Specdarbai",
-      revenue: "1,2M. apyvartos 2024m.",
-      stat: "180+ val.",
+      company: "Veesla",
+      revenue: "22M. apyvartos 2024m.",
+      stat: "360+ val.",
       description: "sutaupyta kiekvieną mėnesį",
       subdescription: "automatizavus rankinius procesus",
+      logo: veeslaLogo
+    },
+    {
+      company: "Specdarbai",
+      revenue: "1,2M. apyvartos 2024m.",
+      stat: "2x",
+      description: "daugiau apdorojamų užklausų",
+      subdescription: "be papildomų darbuotojų samdymo",
       logo: specdarbaiLogo
     }
   ];
@@ -61,14 +61,14 @@ export default function ResultsSection() {
   );
 
   return (
-    <section className="pt-6 pb-24 md:py-16 px-6 lg:px-12">
-      <div className="max-w-6xl mx-auto">
+    <section className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12">
+      <div className="max-w-4xl mx-auto">
         {/* Section Title */}
-        <div className="text-center mb-12">
-          <div className="mb-6 flex justify-center">
+        <div className="text-center mb-12 md:mb-16">
+          <div className="mb-4 md:mb-5 flex justify-center">
             <Badge 
               variant="outline" 
-              className="text-[#1d8263] border-[#1d8263]/30 bg-[#1d8263]/5 text-sm font-medium px-4 py-1.5 uppercase tracking-wide"
+              className="text-[#1d8263] border-[#1d8263]/30 bg-[#1d8263]/5 text-sm font-semibold px-6 py-2 uppercase tracking-wide border-2"
             >
               Rezultatai
             </Badge>
@@ -78,7 +78,7 @@ export default function ResultsSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-2xl md:text-3xl lg:text-4xl font-bold"
+            className="text-2xl md:text-[32px] lg:text-[36px] font-bold leading-tight"
           >Skaičiai kalba patys už save</motion.h2>
         </div>
 
@@ -90,36 +90,36 @@ export default function ResultsSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="border border-border rounded-2xl p-8 bg-white dark:bg-card h-full"
+              className="border border-border rounded-2xl p-6 bg-white dark:bg-card h-full"
               data-testid={`result-card-${index + 1}`}
             >
               <div className="flex flex-col h-full">
                 {/* Header - Company Logo and Revenue */}
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col items-center gap-2 mb-6 text-center">
                   <img 
                     src={result.logo} 
                     alt={result.company}
                     className="h-8 object-contain"
                   />
-                  <div className="text-sm text-muted-foreground">
+                  <div className="text-xs text-muted-foreground">
                     {result.revenue}
                   </div>
                 </div>
 
                 {/* Divider */}
-                <div className="mb-8">
+                <div className="mb-6 -mx-2">
                   <div className="h-px bg-border"></div>
                 </div>
 
                 {/* Stat */}
-                <div className="flex-1 flex flex-col justify-center text-center mb-6">
-                  <div className="text-6xl font-bold text-[#1d8263] mb-4">
+                <div className="flex-1 flex flex-col justify-center text-center">
+                  <div className="text-5xl font-bold text-[#1d8263] mb-4">
                     {result.stat}
                   </div>
-                  <div className="text-xl font-semibold text-foreground mb-2">
+                  <div className="text-lg font-semibold text-foreground mb-2 leading-tight">
                     {result.description}
                   </div>
-                  <div className="text-base text-muted-foreground">
+                  <div className="text-sm text-muted-foreground leading-snug">
                     {result.subdescription}
                   </div>
                 </div>

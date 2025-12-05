@@ -1,10 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { ClipboardList } from "lucide-react";
 import { Link } from "wouter";
+import { trackEvent } from "@/lib/analytics";
 
 export default function CallFinalCTASection() {
   return (
-    <section className="pt-16 md:pt-20 pb-32 px-6 lg:px-12">
+    <section className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="block md:hidden text-[24px] font-bold mb-6 leading-relaxed" data-testid="text-final-cta-title">
           Kiekviena diena su pasenusia sistema tai{" "}
@@ -14,7 +15,7 @@ export default function CallFinalCTASection() {
           </span>
         </h2>
 
-        <h2 className="hidden md:block text-[36px] font-bold mb-12 leading-tight" data-testid="text-final-cta-title-desktop">
+        <h2 className="hidden md:block text-[32px] lg:text-[36px] font-bold mb-10 md:mb-12 leading-tight" data-testid="text-final-cta-title-desktop">
           Kiekviena diena su pasenusia sistema
           <br />
           tai{" "}
@@ -31,6 +32,7 @@ export default function CallFinalCTASection() {
               variant="default"
               className="px-12 py-3 h-auto btn-gradient hover:opacity-95 border-0 min-w-[320px] md:min-w-[400px]"
               data-testid="button-survey-final"
+              onClick={() => trackEvent('button_click', window.location.pathname, 'button-survey-final')}
             >
               <div className="flex flex-col items-center gap-1">
                 <span className="text-lg md:text-xl font-semibold">Kokių rezultatų galiu tikėtis?</span>

@@ -7,7 +7,7 @@ import { useLocation } from "wouter";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
-import { trackPageView, trackQuizResponse, trackEvent } from "@/lib/analytics";
+import { trackPageView, trackQuizResponse, trackEvent, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 type SurveyData = {
   leads: number;
@@ -39,6 +39,8 @@ export default function SurveyPage() {
   useEffect(() => {
     document.title = "Kvalifikacija";
     trackPageView('/survey');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   useEffect(() => {

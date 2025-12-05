@@ -10,7 +10,7 @@ import WebinarStickyHeader from "@/components/webinar/WebinarStickyHeader";
 import { useToast } from "@/hooks/use-toast";
 import Footer from "@/components/Footer";
 import { CheckCircle2 } from "lucide-react";
-import { trackPageView, trackQuizResponse, trackEvent, linkRegistrationToSession } from "@/lib/analytics";
+import { trackPageView, trackQuizResponse, trackEvent, linkRegistrationToSession, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 type QuizData = {
   servicesOver1000: boolean | null;
@@ -48,6 +48,8 @@ export default function QuizPage() {
   useEffect(() => {
     document.title = "Kvalifikacija";
     trackPageView('/quiz');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   // Track step changes

@@ -3,7 +3,7 @@ import { useLocation } from "wouter";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { TrendingUp, Clock, Zap, RefreshCcw, Trophy, HelpCircle, Filter } from "lucide-react";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 type SurveyResults = {
   leads: number;
@@ -91,6 +91,8 @@ export default function CallDonePage() {
   useEffect(() => {
     document.title = "Akseler";
     trackPageView('/calldone');
+    initScrollTracking();
+    initSessionDurationTracking();
     
     const stored = sessionStorage.getItem('surveyResults');
     if (stored) {
@@ -135,14 +137,14 @@ export default function CallDonePage() {
 
           <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-16 md:mb-20">
             
-            <div className="bg-white dark:bg-card border border-border rounded-2xl p-6 md:p-8">
+            <div className="bg-muted/30 dark:bg-muted/20 border border-border rounded-2xl p-6 md:p-8">
               <div className="flex items-center gap-2 mb-6">
                 <TrendingUp className="w-5 h-5 text-foreground/60" />
                 <h3 className="font-semibold text-lg">Pardavimų augimas</h3>
               </div>
 
               <div className="space-y-4">
-                <div className="border border-border rounded-xl p-4">
+                <div className="bg-background dark:bg-card border border-border rounded-xl p-4">
                   <div className="flex justify-between items-start mb-2">
                     <span className="text-foreground/70">Dabartinė situacija</span>
                     <span className="font-semibold">{surveyData.closeRate}% Konversija</span>
@@ -228,14 +230,14 @@ export default function CallDonePage() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-card border border-border rounded-2xl p-6 md:p-8">
+            <div className="bg-muted/30 dark:bg-muted/20 border border-border rounded-2xl p-6 md:p-8">
               <div className="flex items-center gap-2 mb-6">
                 <Clock className="w-5 h-5 text-foreground/60" />
                 <h3 className="font-semibold text-lg">Sutaupytas laikas</h3>
               </div>
 
               <div className="space-y-6">
-                <div className="border border-border rounded-xl p-4">
+                <div className="bg-background dark:bg-card border border-border rounded-xl p-4">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-9 h-9 bg-muted rounded-lg flex items-center justify-center shrink-0">
                       <Filter className="w-4 h-4" />
@@ -257,7 +259,7 @@ export default function CallDonePage() {
                   </div>
                 </div>
 
-                <div className="border border-border rounded-xl p-4">
+                <div className="bg-background dark:bg-card border border-border rounded-xl p-4">
                   <div className="flex items-center gap-3 mb-4">
                     <div className="w-9 h-9 bg-muted rounded-lg flex items-center justify-center shrink-0">
                       <RefreshCcw className="w-4 h-4" />
@@ -288,7 +290,7 @@ export default function CallDonePage() {
                     {results.totalTime} val. <span className="text-lg font-normal text-foreground/60">/ mėn.</span>
                   </div>
                   <p className="text-sm text-foreground/70">
-                    Kurią jūsų pardavėjai galėtų skirti deryboms ir pardavimams.
+                    Kurias jūsų pardavėjai galėtų skirti deryboms ir pardavimams.
                   </p>
                 </div>
               </div>

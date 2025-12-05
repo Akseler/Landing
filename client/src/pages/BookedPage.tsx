@@ -2,12 +2,14 @@ import { useEffect } from "react";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { CheckCircle2, Bot } from "lucide-react";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 export default function BookedPage() {
   useEffect(() => {
     document.title = "Konsultacija suplanuota - AKSELER";
     trackPageView('/booked');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   return (
@@ -16,7 +18,7 @@ export default function BookedPage() {
       
       <main className="pt-12 md:pt-24 pb-12 md:pb-24 px-6 lg:px-12 flex-1 flex items-center justify-center">
         <div className="max-w-xl mx-auto w-full">
-          <div className="bg-white dark:bg-card border border-border rounded-2xl p-8 md:p-12 text-center">
+          <div className="bg-muted/30 dark:bg-card border border-border rounded-2xl p-8 md:p-12 text-center">
             <div className="flex justify-center mb-6">
               <div className="w-16 h-16 rounded-full bg-[#1d8263]/10 flex items-center justify-center">
                 <CheckCircle2 className="w-8 h-8 text-[#1d8263]" />

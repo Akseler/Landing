@@ -4,6 +4,7 @@ import { Mail, MessageSquare, Calendar, CheckCircle, Clock, ClipboardList } from
 import { SiMessenger, SiInstagram } from "react-icons/si";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
+import { trackEvent } from "@/lib/analytics";
 
 function Step02Visual() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -337,6 +338,7 @@ export default function CallHowItWorksApple() {
               variant="default"
               className="px-12 py-3 h-auto btn-gradient hover:opacity-95 border-0 min-w-[320px] md:min-w-[400px]"
               data-testid="button-survey-how-it-works"
+              onClick={() => trackEvent('button_click', window.location.pathname, 'button-survey-how-it-works')}
             >
               <div className="flex flex-col items-center gap-1">
                 <span className="text-lg md:text-xl font-semibold">Kokių rezultatų galiu tikėtis?</span>

@@ -62,10 +62,10 @@ export default function ProblemsSection() {
   ];
 
   return (
-    <section className="pt-12 md:pt-12 pb-20 px-6 lg:px-12">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-16">
-          <div className="inline-block mb-6">
+    <section className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12 md:mb-16">
+          <div className="inline-block mb-4 md:mb-5">
             <Badge 
               variant="outline" 
               className="px-6 py-2 text-sm font-semibold border-2 border-[#1d8263]/30 bg-[#1d8263]/5 text-[#1d8263]"
@@ -75,7 +75,7 @@ export default function ProblemsSection() {
             </Badge>
           </div>
           
-          <h2 className="text-[24px] sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-6" data-testid="text-problems-title">
+          <h2 className="text-[24px] sm:text-3xl md:text-[32px] lg:text-[36px] font-bold mb-0 leading-tight" data-testid="text-problems-title">
             Išspausime maksimalią grąžą<br className="hidden md:block" />
             <span className="inline-block relative">
               <span className="relative z-10 text-foreground px-4 py-1">iš kiekvieno kontakto.</span>

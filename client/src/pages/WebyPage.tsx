@@ -9,12 +9,14 @@ import MarketsScrolling from "@/components/MarketsScrolling";
 import ResultsSection from "@/components/ResultsSection";
 import FinalCTASection from "@/components/FinalCTASection";
 import Footer from "@/components/Footer";
-import { trackPageView } from "@/lib/analytics";
+import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
 export default function WebyPage() {
   useEffect(() => {
     document.title = "Akseler — AI darbuotojai";
     trackPageView('/weby');
+    initScrollTracking();
+    initSessionDurationTracking();
   }, []);
 
   return (
