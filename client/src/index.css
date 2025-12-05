@@ -32,7 +32,82 @@
 }
 
 .animate-spin-slow {
-  animation: spin 60s linear infinite;
+  animation: spin 8s linear infinite;
+}
+
+.animate-bounce-slow {
+  animation: bounce-slow 2s ease-in-out infinite;
+}
+
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+/* Zap icon - lightning strike effect */
+.animate-zap {
+  animation: zap-strike 2s ease-in-out infinite;
+}
+
+@keyframes zap-strike {
+  0%, 90%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 0 transparent);
+    transform: scale(1);
+  }
+  92% {
+    opacity: 0.3;
+    transform: scale(0.9);
+  }
+  95% {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
+    transform: scale(1.15);
+  }
+  97% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+}
+
+/* Clock icon - ticking effect */
+.animate-clock {
+  animation: clock-tick-tock 1s infinite;
+}
+
+@keyframes clock-tick-tock {
+  0%, 90% {
+    transform: rotate(0deg) scale(1);
+  }
+  95% {
+    transform: rotate(5deg) scale(1.05);
+  }
+  100% {
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* Growth icon - reveal from left to right */
+.animate-growth {
+  animation: growth-reveal 2.5s ease-out infinite;
+}
+
+@keyframes growth-reveal {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  60%, 100% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
 }
 
 .animate-counter-spin {

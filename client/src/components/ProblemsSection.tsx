@@ -36,28 +36,22 @@ export default function ProblemsSection() {
       id: 1,
       icon: Zap,
       title: "Greita komunikacija",
-      description: [
-        "Nauji kontaktai gauna momentinį dėmesį – kiekviena užklausa apdorojama per 1 minutę, 24/7.",
-        "Seni kontaktai neprarandami. Sistema palaiko ryšį iki pardavimo, net jei klientas nenusipirko iš karto."
-      ]
+      iconAnimation: "animate-zap",
+      description: "Aukštesnė konversija ir daugiau pardavimų dėl nuoseklaus ir ilgalaikio ryšio su kiekvienu kontaktu, o ne pamiršti ir atvėsę klientai."
     },
     {
       id: 2,
       icon: Clock,
       title: "Laiko taupymas",
-      description: [
-        "Jūsų vadybininkai daugiau nešvaisto valandų kalbėdami su šaltais ir nepasiruošusiais klientais.",
-        "Sistema automatiškai administruoja, kvalifikuoja ir filtruoja jūsų kontaktus."
-      ]
+      iconAnimation: "animate-clock",
+      description: "Šimtai sutaupytų valandų kiekvieną mėnesį ir daugiau laiko tikram pardavimui, o ne rankiniams procesams ir administravimui."
     },
     {
       id: 3,
       icon: TrendingUp,
       title: "Augimo kontrolė",
-      description: [
-        "Dabar galite drąsiai didinti reklamos biudžetą ir užklausų srautą.",
-        "Jums nebūtina samdyti daugiau vadybininkų – sistema automatiškai apdoroja bet kokį užklausų kiekį."
-      ]
+      iconAnimation: "animate-growth",
+      description: "Didesnės užklausų apimtys be brangaus reklamos biudžeto deginimo ir papildomų etatų samdymo, apmokymo bei priežiūros."
     }
   ];
 
@@ -76,7 +70,7 @@ export default function ProblemsSection() {
           </div>
           
           <h2 className="text-[24px] sm:text-3xl md:text-[32px] lg:text-[36px] font-bold mb-0 leading-tight" data-testid="text-problems-title">
-            Išspausime maksimalią grąžą<br className="hidden md:block" />
+            Išgauname maksimalią grąžą<br className="hidden md:block" />
             <span className="inline-block relative">
               <span className="relative z-10 text-foreground px-4 py-1">iš kiekvieno kontakto.</span>
               <span className="absolute inset-0 bg-[#1d8263]/20 -skew-x-6 rounded-lg transform translate-y-1 -mx-2"></span>
@@ -97,21 +91,19 @@ export default function ProblemsSection() {
                     data-testid={`benefit-card-mobile-${index + 1}`}
                   >
                     <Card className="border-2 border-[#1d8263]/20 bg-gradient-to-br from-[#1d8263]/5 to-transparent h-full">
-                      <CardContent className="p-8">
-                        <div className="flex gap-4 items-center mb-6">
-                          <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-[#1d8263] flex items-center justify-center">
-                            <IconComponent className="w-7 h-7 text-white" />
+                      <CardContent className="p-6">
+                        <div className="flex items-center gap-4 mb-5">
+                          <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#1d8263] flex items-center justify-center">
+                            <IconComponent className={`w-6 h-6 text-white ${benefit.iconAnimation}`} />
                           </div>
-                          <h3 className="text-xl font-bold" data-testid={`text-problem-${index + 1}-title`}>
+                          <h3 className="text-lg font-bold" data-testid={`text-problem-${index + 1}-title`}>
                             {benefit.title}
                           </h3>
                         </div>
                         
-                        <div className="space-y-4 text-[17px] text-foreground/80 leading-relaxed" data-testid={`text-problem-${index + 1}-description`}>
-                          {benefit.description.map((text, i) => (
-                            <p key={i}>{text}</p>
-                          ))}
-                        </div>
+                        <p className="text-[15px] text-foreground/80 leading-relaxed" data-testid={`text-problem-${index + 1}-description`}>
+                          {benefit.description}
+                        </p>
                       </CardContent>
                     </Card>
                   </div>
@@ -138,26 +130,24 @@ export default function ProblemsSection() {
         </div>
 
         {/* Desktop Grid */}
-        <div className="hidden md:grid gap-6 md:grid-cols-1 lg:grid-cols-1 max-w-3xl mx-auto">
+        <div className="hidden md:grid gap-6 md:grid-cols-3 max-w-4xl mx-auto">
           {benefits.map((benefit, index) => {
             const IconComponent = benefit.icon;
             return (
-              <Card key={benefit.id} className="border-2 border-[#1d8263]/20 bg-gradient-to-br from-[#1d8263]/5 to-transparent" data-testid={`problem-card-${index + 1}`}>
-                <CardContent className="p-8">
-                  <div className="flex gap-4 items-center mb-6">
-                    <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-[#1d8263] flex items-center justify-center">
-                      <IconComponent className="w-7 h-7 text-white" />
+              <Card key={benefit.id} className="border-2 border-[#1d8263]/20 bg-gradient-to-br from-[#1d8263]/5 to-transparent h-full" data-testid={`problem-card-${index + 1}`}>
+                <CardContent className="p-6 md:p-7">
+                  <div className="flex items-center gap-4 mb-5">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-[#1d8263] flex items-center justify-center">
+                      <IconComponent className={`w-6 h-6 text-white ${benefit.iconAnimation}`} />
                     </div>
-                    <h3 className="text-xl md:text-2xl font-bold" data-testid={`text-problem-${index + 1}-title`}>
+                    <h3 className="text-lg md:text-xl font-bold" data-testid={`text-problem-${index + 1}-title`}>
                       {benefit.title}
                     </h3>
                   </div>
                   
-                  <div className="space-y-4 text-[17px] md:text-lg text-foreground/80 leading-relaxed" data-testid={`text-problem-${index + 1}-description`}>
-                    {benefit.description.map((text, i) => (
-                      <p key={i}>{text}</p>
-                    ))}
-                  </div>
+                  <p className="text-[15px] md:text-[16px] text-foreground/80 leading-relaxed" data-testid={`text-problem-${index + 1}-description`}>
+                    {benefit.description}
+                  </p>
                 </CardContent>
               </Card>
             );

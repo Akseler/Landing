@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { ClipboardList } from "lucide-react";
 import { Link } from "wouter";
 import { trackEvent } from "@/lib/analytics";
 
@@ -30,17 +29,11 @@ export default function CallFinalCTASection() {
             <Button 
               size="lg" 
               variant="default"
-              className="px-12 py-3 h-auto btn-gradient hover:opacity-95 border-0 min-w-[320px] md:min-w-[400px]"
+              className="px-12 py-4 h-auto btn-gradient hover:opacity-95 border-0 min-w-[320px] md:min-w-[400px]"
               data-testid="button-survey-final"
               onClick={() => trackEvent('button_click', window.location.pathname, 'button-survey-final')}
             >
-              <div className="flex flex-col items-center gap-1">
-                <span className="text-lg md:text-xl font-semibold">Kokių rezultatų galiu tikėtis?</span>
-                <span className="text-xs opacity-80 flex items-center gap-1.5">
-                  <ClipboardList className="w-3 h-3" />
-                  Atsakykite į 4 klausimus ir sužinokite
-                </span>
-              </div>
+              <span className="text-lg md:text-xl font-semibold">Laikas tai pakeisti</span>
             </Button>
           </Link>
         </div>
