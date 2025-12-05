@@ -33,7 +33,7 @@ export default function CallFinalCTASection() {
               data-testid="button-survey-final"
               onClick={() => trackEvent('button_click', window.location.pathname, 'button-survey-final')}
             >
-              <span className="text-lg md:text-xl font-semibold">Laikas tai pakeisti</span>
+              <span className="text-lg md:text-xl font-semibold">Metas tai pakeisti</span>
             </Button>
           </Link>
         </div>

@@ -4,118 +4,125 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { motion, useInView } from "framer-motion";
 
-// 1. Conversion Chart - Clean & Aligned
+// 1. Conversion Chart
 function ConversionChart() {
   return (
-    <div className="h-48 flex flex-col justify-end items-center w-full px-4 pb-2">
-      <div className="flex items-end justify-center gap-16 w-full relative h-32 border-b border-foreground/10">
+    <div className="h-44 flex flex-col justify-end items-center w-full px-2 pb-2">
+      <div className="flex items-end justify-center gap-12 w-full relative h-32 border-b border-foreground/10">
         {/* Human Bar */}
-        <div className="flex flex-col items-center w-16 relative z-10">
+        <div className="flex flex-col items-center w-12 relative z-10">
           <div className="relative w-full flex items-end justify-center h-32 group">
-            <div className="absolute -top-6 text-[10px] text-foreground/40 font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300">~15%</div>
-            <div className="w-full bg-gradient-to-t from-foreground/10 to-foreground/5 rounded-t-sm animate-[grow-bar_1.5s_cubic-bezier(0.4,0,0.2,1)_forwards] origin-bottom backdrop-blur-sm border border-foreground/5" style={{ height: '30%' }}></div>
+            <div className="absolute -top-5 text-[9px] text-foreground/40 font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300">~15%</div>
+            <div className="w-full bg-gradient-to-t from-foreground/10 to-foreground/5 rounded-t-[2px] animate-[grow-bar_1.5s_cubic-bezier(0.4,0,0.2,1)_forwards] origin-bottom backdrop-blur-sm border border-foreground/5" style={{ height: '30%' }}></div>
           </div>
         </div>
         
         {/* AI Bar */}
-        <div className="flex flex-col items-center w-16 relative z-10">
+        <div className="flex flex-col items-center w-12 relative z-10">
           <div className="relative w-full flex items-end justify-center h-32 group">
-             <div className="absolute -top-6 text-[10px] text-[#1d8263] font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300">~40%</div>
-            <div className="w-full bg-gradient-to-t from-[#1d8263] to-[#2dd4a0] rounded-t-sm animate-[grow-bar_1.5s_cubic-bezier(0.4,0,0.2,1)_0.3s_forwards] origin-bottom shadow-[0_0_20px_rgba(29,130,99,0.2)]" style={{ height: '85%' }}></div>
+             <div className="absolute -top-5 text-[9px] text-[#1d8263] font-bold font-mono opacity-0 group-hover:opacity-100 transition-opacity duration-300">~40%</div>
+            <div className="w-full bg-gradient-to-t from-[#1d8263] to-[#2dd4a0] rounded-t-[2px] animate-[grow-bar_1.5s_cubic-bezier(0.4,0,0.2,1)_0.3s_forwards] origin-bottom shadow-[0_0_15px_rgba(29,130,99,0.2)]" style={{ height: '85%' }}></div>
           </div>
         </div>
       </div>
       
       {/* Labels below line */}
-      <div className="flex justify-center gap-16 w-full mt-2">
-        <span className="text-[11px] text-foreground/50 font-medium uppercase tracking-wider w-16 text-center">Žmogus</span>
-        <span className="text-[11px] text-[#1d8263] font-bold uppercase tracking-wider w-16 text-center">AI</span>
+      <div className="flex justify-center gap-12 w-full mt-1.5">
+        <span className="text-[10px] text-foreground/50 font-medium uppercase tracking-wider w-12 text-center">Žmogus</span>
+        <span className="text-[10px] text-[#1d8263] font-bold uppercase tracking-wider w-12 text-center">AI</span>
       </div>
     </div>
   );
 }
 
-// 2. Costs Chart - Clean contrast
+// 2. Costs Chart - Labels below, Title above
 function CostsChart() {
   return (
-    <div className="h-48 flex items-center justify-center w-full relative overflow-hidden">
-      <svg className="w-full h-32" viewBox="0 0 200 100" preserveAspectRatio="none">
-        {/* Grid lines */}
-        <line x1="0" y1="20" x2="200" y2="20" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="4 4" />
-        <line x1="0" y1="50" x2="200" y2="50" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="4 4" />
-        <line x1="0" y1="80" x2="200" y2="80" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="4 4" />
+    <div className="h-44 flex flex-col items-center justify-center w-full relative">
+       {/* Title indicating what this chart shows */}
+       <div className="absolute top-0 left-0 w-full text-center">
+          <span className="text-[9px] text-foreground/30 font-bold uppercase tracking-widest">Išlaidos</span>
+       </div>
 
-        {/* Human Line - Volatile & High */}
-        <path
-          d="M0,30 C30,15 60,45 90,25 S150,40 200,20"
-          fill="none"
-          stroke="currentColor"
-          strokeOpacity="0.3"
-          strokeWidth="2"
-          className="animate-[draw-line_2s_ease-out_forwards]"
-          strokeDasharray="300"
-          strokeDashoffset="300"
-        />
-        
-        {/* AI Line - Stable & Low - Thicker and Glowing */}
-        <path
-          d="M0,80 C50,80 100,80 200,80"
-          fill="none"
-          stroke="#1d8263"
-          strokeWidth="3"
-          className="animate-[draw-line_2s_ease-out_0.5s_forwards] drop-shadow-[0_0_8px_rgba(29,130,99,0.4)]"
-          strokeDasharray="300"
-          strokeDashoffset="300"
-        />
-        
-        {/* Animated Dots at the end */}
-        <circle cx="200" cy="20" r="3" className="fill-foreground/30 animate-[fade-in_0.5s_ease-out_2s_forwards] opacity-0" />
-        <circle cx="200" cy="80" r="4" className="fill-[#1d8263] animate-[fade-in_0.5s_ease-out_2.5s_forwards] opacity-0 shadow-lg" />
-      </svg>
+      <div className="h-24 w-full relative flex items-center justify-center mt-4 border-b border-foreground/10">
+        <svg className="w-full h-full" viewBox="0 0 200 100" preserveAspectRatio="none">
+            {/* Grid lines */}
+            <line x1="0" y1="20" x2="200" y2="20" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="4 4" />
+            <line x1="0" y1="50" x2="200" y2="50" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="4 4" />
+            <line x1="0" y1="80" x2="200" y2="80" stroke="currentColor" strokeOpacity="0.05" strokeDasharray="4 4" />
+
+            {/* Human Line */}
+            <path
+            d="M0,30 C30,15 60,45 90,25 S150,40 200,20"
+            fill="none"
+            stroke="currentColor"
+            strokeOpacity="0.3"
+            strokeWidth="1.5"
+            className="animate-[draw-line_2s_ease-out_forwards]"
+            strokeDasharray="300"
+            strokeDashoffset="300"
+            />
+            
+            {/* AI Line */}
+            <path
+            d="M0,80 C50,80 100,80 200,80"
+            fill="none"
+            stroke="#1d8263"
+            strokeWidth="2.5"
+            className="animate-[draw-line_2s_ease-out_0.5s_forwards] drop-shadow-[0_0_6px_rgba(29,130,99,0.3)]"
+            strokeDasharray="300"
+            strokeDashoffset="300"
+            />
+            
+            {/* Animated Dots */}
+            <circle cx="200" cy="20" r="2.5" className="fill-foreground/30 animate-[fade-in_0.5s_ease-out_2s_forwards] opacity-0" />
+            <circle cx="200" cy="80" r="3.5" className="fill-[#1d8263] animate-[fade-in_0.5s_ease-out_2.5s_forwards] opacity-0 shadow-lg" />
+        </svg>
+      </div>
       
-      {/* Legend */}
-      <div className="absolute top-2 right-2 flex flex-col gap-1 bg-background/50 backdrop-blur-[2px] p-2 rounded-md border border-foreground/5">
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] text-foreground/40 uppercase">Žmogus</span>
+      {/* Legend BELOW the line */}
+      <div className="flex items-center justify-center gap-8 w-full mt-2">
+        <div className="flex items-center gap-1.5">
           <div className="w-2 h-0.5 bg-foreground/30"></div>
+          <span className="text-[9px] text-foreground/40 uppercase font-medium">Žmogus</span>
         </div>
-        <div className="flex items-center gap-2">
-          <span className="text-[9px] text-[#1d8263] uppercase font-bold">AI</span>
+        <div className="flex items-center gap-1.5">
           <div className="w-2 h-0.5 bg-[#1d8263]"></div>
+          <span className="text-[9px] text-[#1d8263] uppercase font-bold">AI</span>
         </div>
       </div>
     </div>
   );
 }
 
-// 3. Growth Control - Updated text & number
+// 3. Growth Control Network
 function GrowthControlNetwork() {
   return (
-    <div className="h-48 flex items-center justify-center w-full relative overflow-hidden">
+    <div className="h-44 flex items-center justify-center w-full relative overflow-hidden">
       <div className="relative w-full h-full flex items-center justify-center">
         {/* Central AI Hub */}
         <div className="relative z-10">
-          <div className="w-6 h-6 bg-[#1d8263] rounded-full shadow-[0_0_25px_#1d8263] animate-[pulse-scale_3s_ease-in-out_infinite] flex items-center justify-center">
-             <div className="w-2 h-2 bg-white/80 rounded-full"></div>
+          <div className="w-5 h-5 bg-[#1d8263] rounded-full shadow-[0_0_20px_#1d8263] animate-[pulse-scale_3s_ease-in-out_infinite] flex items-center justify-center">
+             <div className="w-1.5 h-1.5 bg-white/80 rounded-full"></div>
           </div>
-          <div className="absolute -inset-6 border border-[#1d8263]/20 rounded-full animate-[spin_15s_linear_infinite]"></div>
-          <div className="absolute -inset-12 border border-[#1d8263]/10 rounded-full animate-[spin_25s_linear_infinite_reverse]"></div>
+          <div className="absolute -inset-5 border border-[#1d8263]/20 rounded-full animate-[spin_15s_linear_infinite]"></div>
+          <div className="absolute -inset-10 border border-[#1d8263]/10 rounded-full animate-[spin_25s_linear_infinite_reverse]"></div>
         </div>
 
         {/* Orbiting Particles */}
-        <div className="absolute w-40 h-40 animate-[spin_30s_linear_infinite]">
-           <div className="absolute top-0 left-1/2 w-1.5 h-1.5 bg-[#1d8263] rounded-full -translate-x-1/2 shadow-[0_0_10px_#1d8263]"></div>
-           <div className="absolute bottom-0 left-1/2 w-1.5 h-1.5 bg-[#1d8263] rounded-full -translate-x-1/2"></div>
+        <div className="absolute w-32 h-32 animate-[spin_30s_linear_infinite]">
+           <div className="absolute top-0 left-1/2 w-1 h-1 bg-[#1d8263] rounded-full -translate-x-1/2 shadow-[0_0_8px_#1d8263]"></div>
+           <div className="absolute bottom-0 left-1/2 w-1 h-1 bg-[#1d8263] rounded-full -translate-x-1/2"></div>
         </div>
         
-        <div className="absolute w-28 h-28 animate-[spin_20s_linear_infinite_reverse] opacity-60">
-           <div className="absolute left-0 top-1/2 w-1.5 h-1.5 bg-[#2dd4a0] rounded-full -translate-y-1/2"></div>
-           <div className="absolute right-0 top-1/2 w-1.5 h-1.5 bg-[#2dd4a0] rounded-full -translate-y-1/2"></div>
+        <div className="absolute w-24 h-24 animate-[spin_20s_linear_infinite_reverse] opacity-60">
+           <div className="absolute left-0 top-1/2 w-1 h-1 bg-[#2dd4a0] rounded-full -translate-y-1/2"></div>
+           <div className="absolute right-0 top-1/2 w-1 h-1 bg-[#2dd4a0] rounded-full -translate-y-1/2"></div>
         </div>
         
          {/* Label */}
-         <div className="absolute bottom-4 flex flex-col items-center bg-background/80 backdrop-blur-sm px-3 py-1 rounded-full border border-[#1d8263]/20">
-            <span className="text-[10px] text-[#1d8263] font-bold uppercase tracking-wider">1000+ / dieną</span>
+         <div className="absolute bottom-2 flex flex-col items-center bg-background/80 backdrop-blur-sm px-2.5 py-0.5 rounded-full border border-[#1d8263]/20">
+            <span className="text-[9px] text-[#1d8263] font-bold uppercase tracking-wider">1000+ / dieną</span>
          </div>
       </div>
     </div>
@@ -163,13 +170,13 @@ export default function ProblemsSection() {
       id: 2,
       title: "Mažesnės išlaidos",
       visual: <CostsChart />,
-      description: "Šimtai sutaupytų valandų kiekvieną mėnesį ir daugiau laiko tikram pardavimui, o ne rankiniams procesams ir administravimui."
+      description: "Šimtai sutaupytų valandų kiekvieną mėnesį ir daugiau laiko tikram pardavimui, o ne administravimui."
     },
     {
       id: 3,
       title: "Augimo kontrolė",
       visual: <GrowthControlNetwork />,
-      description: "Didesnės užklausų apimtys be reklamos biudžeto deginimo ir papildomų etatų samdymo, apmokymo bei priežiūros."
+      description: "Didesnės užklausų apimtys be reklamos biudžeto deginimo ir papildomų etatų samdymo ir vadybos."
     }
   ];
 
@@ -217,11 +224,11 @@ export default function ProblemsSection() {
                         {benefit.title}
                       </h3>
                       
-                      <div className="flex-grow flex items-center justify-center py-2 min-h-[200px]">
+                      <div className="flex items-center justify-center h-44 w-full mb-2">
                         {benefit.visual}
                       </div>
                       
-                      <p className="text-[14px] text-foreground/70 leading-relaxed mt-auto pt-2" data-testid={`text-problem-${index + 1}-description`}>
+                      <p className="text-[14px] text-foreground/70 leading-relaxed mt-auto" data-testid={`text-problem-${index + 1}-description`}>
                         {benefit.description}
                       </p>
                     </CardContent>
@@ -257,11 +264,11 @@ export default function ProblemsSection() {
                   {benefit.title}
                 </h3>
                 
-                <div className="flex-grow flex items-center justify-center py-4 min-h-[200px]">
+                <div className="flex items-center justify-center h-44 w-full mb-4">
                   {benefit.visual}
                 </div>
                 
-                <p className="text-[14px] md:text-[15px] text-foreground/70 leading-relaxed mt-auto pt-4" data-testid={`text-problem-${index + 1}-description`}>
+                <p className="text-[14px] md:text-[15px] text-foreground/70 leading-relaxed mt-auto" data-testid={`text-problem-${index + 1}-description`}>
                   {benefit.description}
                 </p>
               </CardContent>
