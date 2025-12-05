@@ -65,7 +65,7 @@ export default function CallHeroSection() {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY || window.pageYOffset;
-      if (scrollY > 100) { // Show after scrolling 100px
+      if (scrollY > 30) { // Show after scrolling 30px (faster on mobile)
         setHasScrolled(true);
       } else {
         setHasScrolled(false);
@@ -122,7 +122,7 @@ export default function CallHeroSection() {
 
   return (
     <>
-    <section className="min-h-screen flex items-start md:items-center justify-center px-3 md:px-6 lg:px-12 pt-[108px] pb-6 md:pt-[95px] md:pb-12">
+    <section className="min-h-screen flex items-start md:items-center justify-center px-3 md:px-6 lg:px-12 pt-[120px] pb-6 md:pt-[95px] md:pb-12">
       <div className="max-w-4xl mx-auto text-center">
         <div className="max-w-2xl mx-auto mb-4 md:mb-5">
           <div className="inline-block mb-6 md:mb-5">
@@ -143,7 +143,7 @@ export default function CallHeroSection() {
           </h1>
         </div>
 
-        <div className="relative max-w-2xl lg:max-w-xl mx-auto mb-4 md:mb-5 px-2 md:px-0">
+        <div className="relative max-w-2xl lg:max-w-xl mx-auto mb-6 md:mb-5 px-2 md:px-0">
           <div 
             className="relative rounded-2xl overflow-hidden shadow-2xl cursor-pointer group"
             onClick={handlePlayClick}

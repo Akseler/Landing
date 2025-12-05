@@ -48,65 +48,19 @@
   }
 }
 
-/* Zap icon - lightning strike effect */
-.animate-zap {
-  animation: zap-strike 2s ease-in-out infinite;
+/* Unified icon pulse animation - minimalist */
+.animate-icon-pulse {
+  animation: icon-pulse 2.5s ease-in-out infinite;
 }
 
-@keyframes zap-strike {
-  0%, 90%, 100% {
+@keyframes icon-pulse {
+  0%, 100% {
     opacity: 1;
-    filter: drop-shadow(0 0 0 transparent);
     transform: scale(1);
   }
-  92% {
-    opacity: 0.3;
-    transform: scale(0.9);
-  }
-  95% {
-    opacity: 1;
-    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.9));
-    transform: scale(1.15);
-  }
-  97% {
-    opacity: 0.5;
-    transform: scale(1);
-  }
-}
-
-/* Clock icon - ticking effect */
-.animate-clock {
-  animation: clock-tick-tock 1s infinite;
-}
-
-@keyframes clock-tick-tock {
-  0%, 90% {
-    transform: rotate(0deg) scale(1);
-  }
-  95% {
-    transform: rotate(5deg) scale(1.05);
-  }
-  100% {
-    transform: rotate(0deg) scale(1);
-  }
-}
-
-/* Growth icon - reveal from left to right */
-.animate-growth {
-  animation: growth-reveal 2.5s ease-out infinite;
-}
-
-@keyframes growth-reveal {
-  0% {
-    clip-path: inset(0 100% 0 0);
-    opacity: 0;
-  }
-  20% {
-    opacity: 1;
-  }
-  60%, 100% {
-    clip-path: inset(0 0 0 0);
-    opacity: 1;
+  50% {
+    opacity: 0.7;
+    transform: scale(1.08);
   }
 }
 

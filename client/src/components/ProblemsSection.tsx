@@ -1,10 +1,14 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Zap, Clock, TrendingUp } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import { motion, useInView } from "framer-motion";
 
 export default function ProblemsSection() {
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, margin: "-100px" });
+  
   const [emblaRef, emblaApi] = useEmblaCarousel({ 
     loop: false,
     align: "start",
@@ -36,29 +40,34 @@ export default function ProblemsSection() {
       id: 1,
       icon: Zap,
       title: "Greita komunikacija",
-      iconAnimation: "animate-zap",
-      description: "Aukštesnė konversija ir daugiau pardavimų dėl nuoseklaus ir ilgalaikio ryšio su kiekvienu kontaktu, o ne pamiršti ir atvėsę klientai."
+      iconAnimation: "animate-icon-pulse",
+      description: "Aukštesnė konversija ir daugiau pardavimų dėl nuoseklaus, žmogiško ir ilgalaikio ryšio su kiekvienu kontaktu."
     },
     {
       id: 2,
       icon: Clock,
       title: "Laiko taupymas",
-      iconAnimation: "animate-clock",
+      iconAnimation: "animate-icon-pulse",
       description: "Šimtai sutaupytų valandų kiekvieną mėnesį ir daugiau laiko tikram pardavimui, o ne rankiniams procesams ir administravimui."
     },
     {
       id: 3,
       icon: TrendingUp,
       title: "Augimo kontrolė",
-      iconAnimation: "animate-growth",
-      description: "Didesnės užklausų apimtys be brangaus reklamos biudžeto deginimo ir papildomų etatų samdymo, apmokymo bei priežiūros."
+      iconAnimation: "animate-icon-pulse",
+      description: "Didesnės užklausų apimtys be reklamos biudžeto deginimo ir papildomų etatų samdymo, apmokymo bei priežiūros."
     }
   ];
 
   return (
-    <section className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12">
+    <section ref={sectionRef} className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12 md:mb-16">
+        <motion.div 
+          className="text-center mb-12 md:mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <div className="inline-block mb-4 md:mb-5">
             <Badge 
               variant="outline" 
@@ -76,7 +85,7 @@ export default function ProblemsSection() {
               <span className="absolute inset-0 bg-[#1d8263]/20 -skew-x-6 rounded-lg transform translate-y-1 -mx-2"></span>
             </span>
           </h2>
-        </div>
+        </motion.div>
 
         {/* Mobile Carousel */}
         <div className="md:hidden">
@@ -118,10 +127,10 @@ export default function ProblemsSection() {
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`w-2 h-2 rounded-full transition-all ${
+                className={`h-2 rounded-full transition-all ${
                   index === selectedIndex
-                    ? "bg-[#1d8263] w-6"
-                    : "bg-[#1d8263]/30"
+                    ? "w-8 bg-[#1d8263]"
+                    : "w-2 bg-[#1d8263]/30"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

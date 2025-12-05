@@ -302,7 +302,12 @@ export default function SolutionSection() {
   return (
     <section ref={ref} className="pt-16 md:pt-20 pb-20 md:pb-24 px-6 lg:px-12">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12 md:mb-16">
+        <motion.div 
+          className="text-center mb-12 md:mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
           <div className="inline-block mb-4 md:mb-5">
             <Badge 
               variant="outline" 
@@ -320,7 +325,7 @@ export default function SolutionSection() {
               <span className="absolute inset-0 bg-[#1d8263]/20 -skew-x-6 rounded-lg transform translate-y-1 -mx-2"></span>
             </span>
           </h2>
-        </div>
+        </motion.div>
 
         <div className="relative space-y-12 md:space-y-14 mt-8 md:mt-12">
           <div className="hidden md:block absolute left-[2.5rem] lg:left-[3rem] top-12 bottom-12 w-[2px] bg-gradient-to-b from-[#1d8263]/20 via-[#1d8263]/40 to-[#1d8263]/20" />

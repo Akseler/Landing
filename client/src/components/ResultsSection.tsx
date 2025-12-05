@@ -90,7 +90,7 @@ export default function ResultsSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="border border-border rounded-2xl p-6 bg-white dark:bg-card h-full"
+              className="border-2 border-[#1d8263]/20 rounded-2xl p-6 bg-gradient-to-br from-[#1d8263]/5 to-transparent h-full"
               data-testid={`result-card-${index + 1}`}
             >
               <div className="flex flex-col h-full">
@@ -138,7 +138,7 @@ export default function ResultsSection() {
                   className="flex-[0_0_85%] min-w-0"
                   data-testid={`result-card-mobile-${index + 1}`}
                 >
-                  <div className="border border-border rounded-2xl p-8 bg-white dark:bg-card h-full">
+                  <div className="border-2 border-[#1d8263]/20 rounded-2xl p-8 bg-gradient-to-br from-[#1d8263]/5 to-transparent h-full">
                     <div className="flex flex-col h-full">
                       {/* Header - Company Logo and Revenue */}
                       <div className="flex flex-col items-center gap-3 mb-6">
@@ -184,8 +184,8 @@ export default function ResultsSection() {
                 onClick={() => scrollTo(index)}
                 className={`h-2 rounded-full transition-all ${
                   index === selectedIndex
-                    ? "w-8 bg-foreground"
-                    : "w-2 bg-foreground/20"
+                    ? "w-8 bg-[#1d8263]"
+                    : "w-2 bg-[#1d8263]/30"
                 }`}
                 data-testid={`carousel-dot-${index}`}
                 aria-label={`Go to slide ${index + 1}`}
