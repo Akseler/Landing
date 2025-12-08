@@ -32,8 +32,8 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production
+# Install all dependencies (vite is needed at runtime)
+RUN npm ci
 
 # Copy built files from builder
 COPY --from=builder /app/dist ./dist
