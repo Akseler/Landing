@@ -5,6 +5,9 @@ services:
       dockerfile: Dockerfile
     container_name: webinar-app
     restart: unless-stopped
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     expose:
       - "3000"
     environment:
