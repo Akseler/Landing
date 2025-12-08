@@ -1,21 +1,39 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle } from "lucide-react";
+import { useEffect } from "react";
+import { useLocation } from "wouter";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function NotFound() {
-  return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md mx-4">
-        <CardContent className="pt-6">
-          <div className="flex mb-4 gap-2">
-            <AlertCircle className="h-8 w-8 text-red-500" />
-            <h1 className="text-2xl font-bold text-gray-900">404 Page Not Found</h1>
-          </div>
+  const [, setLocation] = useLocation();
 
-          <p className="mt-4 text-sm text-gray-600">
-            Did you forget to add the page to the router?
+  useEffect(() => {
+    document.title = "Akseler — Puslapis nerastas";
+  }, []);
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      
+      <main className="flex-1 flex items-center justify-center bg-gradient-to-b from-white to-gray-50 py-20">
+        <div className="text-center px-6">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            Oops, ne ten pataikei!
+          </h1>
+          
+          <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            Šitas puslapis neegzistuoja arba buvo perkeltas.
           </p>
-        </CardContent>
-      </Card>
+          
+          <button
+            onClick={() => setLocation("/")}
+            className="px-8 py-4 bg-[#1d8263] hover:bg-[#166b52] text-white font-semibold rounded-xl transition-colors duration-300"
+          >
+            Grįžti į pradžią
+          </button>
+        </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 }
