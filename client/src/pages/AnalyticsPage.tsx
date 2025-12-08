@@ -20,6 +20,8 @@ import { Link } from 'wouter';
 import { queryClient, apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
 import type { RegistrationWithSession, CallFunnelSubmission } from '@shared/schema';
+
+type CallFunnelSubmissionWithVSL = CallFunnelSubmission & { watchedVSL?: boolean };
 import akselerLogo from '@assets/akseler black_1762808480376.png';
 
 interface AnalyticsSummary {
@@ -260,21 +262,42 @@ export default function AnalyticsPage() {
     }
   });
 
-  const { data: callFunnelSubmissions, error: callFunnelSubmissionsError } = useQuery<CallFunnelSubmission[]>({
+  const { data: callFunnelSubmissions, error: callFunnelSubmissionsError } = useQuery<CallFunnelSubmissionWithVSL[]>({
     queryKey: ['/api/analytics/call-funnel-submissions'],
     enabled: isAuthenticated,
     queryFn: async () => {
-      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-      const res = await fetch('/api/analytics/call-funnel-submissions', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.status === 401) {
-        handleLogout();
-        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      try {
+        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+        const res = await fetch('/api/analytics/call-funnel-submissions', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (res.status === 401) {
+          handleLogout();
+          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+        }
+        
+        if (!res.ok) {
+          // If server returns error, try to parse it, but return empty array to keep page functional
+          const errorData = await res.json().catch(() => ({}));
+          console.error('[AnalyticsPage] Error fetching call funnel submissions:', res.status, errorData);
+          return []; // Return empty array instead of throwing
+        }
+        
+        const data = await res.json();
+        // Ensure we always return an array
+        return Array.isArray(data) ? data : [];
+      } catch (error: any) {
+        console.error('[AnalyticsPage] Error in callFunnelSubmissions query:', error);
+        // Return empty array instead of throwing to keep page functional
+        return [];
       }
-      if (!res.ok) throw new Error('Nepavyko įkelti call funnel registracijų');
-      return res.json();
-    }
+    },
+    // Retry configuration
+    retry: 1,
+    retryDelay: 1000,
+    // Default to empty array while loading
+    placeholderData: [],
   });
 
   const filteredRegistrations = useMemo(() => {
@@ -559,7 +582,7 @@ export default function AnalyticsPage() {
                   <h3 className="font-semibold text-sm">4. Email</h3>
                   <div className="text-right">
                     <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.emailSubmissions || 0}</div>
-                    <div className="text-xs text-muted-foreground">{callFunnel?.emailToSurveyRate || 0}%</div>
+                    <div className="text-xs text-muted-foreground">{callFunnel?.overallConversionRate || 0}%</div>
                   </div>
                 </div>
               </div>
@@ -612,6 +635,15 @@ export default function AnalyticsPage() {
                                   month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' 
                                 })}
                               </span>
+                              {sub.watchedVSL && (
+                                <>
+                                  <span className="text-muted-foreground hidden sm:inline">|</span>
+                                  <span className="text-[10px] sm:text-xs text-[#1d8263] font-semibold flex items-center gap-1">
+                                    <CheckCircle2 className="h-3 w-3" />
+                                    VSL
+                                  </span>
+                                </>
+                              )}
                             </div>
                             <div className="flex items-center gap-2 sm:gap-3 flex-wrap text-muted-foreground text-[10px] sm:text-xs">
                               <span>Užkl: <strong className="text-foreground">{sub.leads}</strong></span>

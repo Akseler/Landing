@@ -39,6 +39,9 @@ RUN npm ci --only=production
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/client/public ./client/public
 
+# Create data directory for persistent storage (Google Calendar token)
+RUN mkdir -p /app/data
+
 # Expose port (default 3000, can be overridden with PORT env var)
 EXPOSE 3000
 
@@ -48,4 +51,3 @@ HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
 
 # Start the application
 CMD ["node", "dist/index.js"]
-

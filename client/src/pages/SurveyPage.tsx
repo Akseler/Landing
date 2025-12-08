@@ -7,7 +7,8 @@ import { useLocation } from "wouter";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
 import { ArrowLeft, ArrowRight, Loader2 } from "lucide-react";
-import { trackPageView, trackQuizResponse, trackEvent, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
+import { trackPageView, trackQuizResponse, trackEvent, initScrollTracking, initSessionDurationTracking, getSessionId } from "@/lib/analytics";
+import { useToast } from "@/hooks/use-toast";
 
 type SurveyData = {
   leads: number;
@@ -21,6 +22,7 @@ export default function SurveyPage() {
   const [, setLocation] = useLocation();
   const [step, setStep] = useState(1);
   const [isCalculating, setIsCalculating] = useState(false);
+  const { toast } = useToast();
   const [formData, setFormData] = useState<SurveyData>({
     leads: 0,
     value: 0,
@@ -121,26 +123,59 @@ export default function SurveyPage() {
       closeRate: formData.closeRate,
       speed: formData.speed,
       email: formData.email.trim(),
+      sessionId: getSessionId(),
     };
     
     // Save to backend database
     try {
+      console.log('[SurveyPage] Submitting survey results:', { 
+        email: surveyResults.email,
+        leads: surveyResults.leads,
+        value: surveyResults.value,
+        closeRate: surveyResults.closeRate,
+        speed: surveyResults.speed
+      });
+      
       const response = await fetch('/api/call-funnel/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(surveyResults),
       });
+      
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Failed to save survey results:', response.status, errorData);
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('[SurveyPage] Failed to save survey results:', response.status, errorData);
+        
+        toast({
+          title: "Klaida",
+          description: errorData.error || `Nepavyko išsaugoti duomenų (${response.status})`,
+          variant: "destructive",
+        });
+        
+        // Still proceed to results page even if save failed
+        // The data is in sessionStorage, so results can still be shown
+      } else {
+        const result = await response.json().catch(() => null);
+        if (result && result.submission) {
+          console.log('[SurveyPage] Survey results saved successfully:', result.submission.id);
+        }
       }
-    } catch (error) {
-      console.error('Failed to save survey results:', error);
+    } catch (error: any) {
+      console.error('[SurveyPage] Error saving survey results:', error);
+      
+      toast({
+        title: "Klaida",
+        description: "Nepavyko prisijungti prie serverio. Bandykite dar kartą.",
+        variant: "destructive",
+      });
+      
+      // Still proceed to results page - data is in sessionStorage
     }
     
+    // Always save to sessionStorage and proceed, even if backend save failed
     sessionStorage.setItem('surveyResults', JSON.stringify(surveyResults));
     trackEvent('survey_email_submitted', '/survey', undefined, { email: formData.email.trim() });
-    setLocation('/calldone');
+    setLocation('/booking');
   };
 
   const totalSteps = 5;

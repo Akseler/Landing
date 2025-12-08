@@ -49,7 +49,7 @@ export async function trackEvent(
 const WEBINAR_FUNNEL_PAGES = ['/weby', '/webinar', '/quiz'];
 
 // Call funnel pages (starts from / or /call)
-const CALL_FUNNEL_PAGES = ['/', '/call', '/survey', '/calldone', '/booked'];
+const CALL_FUNNEL_PAGES = ['/', '/call', '/survey', '/booking', '/booked'];
 
 // All tracked pages
 const TRACKED_PAGES = [...WEBINAR_FUNNEL_PAGES, ...CALL_FUNNEL_PAGES];

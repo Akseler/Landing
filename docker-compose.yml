@@ -13,8 +13,17 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - SUPABASE_DATABASE_URL=${SUPABASE_DATABASE_URL}
       - ANALYTICS_PASSWORD=${ANALYTICS_PASSWORD:-Akseler500*}
+      # Google Calendar OAuth
+      - GOOGLE_OAUTH_CLIENT_ID=${GOOGLE_OAUTH_CLIENT_ID}
+      - GOOGLE_OAUTH_CLIENT_SECRET=${GOOGLE_OAUTH_CLIENT_SECRET}
+      - GOOGLE_CALENDAR_ID=${GOOGLE_CALENDAR_ID:-primary}
+      # GoHighLevel Webhook
+      - GHL_BOOKING_WEBHOOK_URL=${GHL_BOOKING_WEBHOOK_URL}
     env_file:
       - .env
+    volumes:
+      # Persist Google Calendar token between restarts
+      - ./data:/app/data
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.webinar.rule=Host(`akseler.lt`)"

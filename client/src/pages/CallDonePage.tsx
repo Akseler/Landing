@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "wouter";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
+import BookingCalendar from "@/components/BookingCalendar";
 import { TrendingUp, Clock, Zap, RefreshCcw, Trophy, HelpCircle, Filter } from "lucide-react";
 import { trackPageView, initScrollTracking, initSessionDurationTracking } from "@/lib/analytics";
 
@@ -90,7 +91,7 @@ export default function CallDonePage() {
 
   useEffect(() => {
     document.title = "Akseler";
-    trackPageView('/calldone');
+    trackPageView('/booking');
     initScrollTracking();
     initSessionDurationTracking();
     
@@ -104,17 +105,6 @@ export default function CallDonePage() {
     }
   }, [setLocation]);
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://link.msgsndr.com/js/form_embed.js';
-    script.type = 'text/javascript';
-    script.async = true;
-    document.body.appendChild(script);
-    
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
 
   if (!surveyData || !results) {
     return (
@@ -297,7 +287,7 @@ export default function CallDonePage() {
             </div>
           </div>
 
-          <div className="ml-[0px] mr-[0px] mt-[0px] mb-[0px] pt-[60px] pb-[60px]">
+          <div className="pt-16 pb-16">
             <div className="text-center mb-8">
               <h2 className="text-xl md:text-2xl font-bold mb-2">
                 Norite įsidiegti šią sistemą ir pasiimti prarastus <span className="text-[#1d8263]">{formatNumber(results.moneyLost)} &#8364;</span>?
@@ -308,15 +298,10 @@ export default function CallDonePage() {
               </p>
             </div>
             
-            <div className="w-full min-h-[700px] md:min-h-[750px]">
-              <iframe 
-                src="https://api.leadconnectorhq.com/widget/booking/FRJ4lHXLI749ZrbpIr2X" 
-                style={{ width: '100%', height: '700px', border: 'none' }}
-                id="CUG1QngP0G3ULV9R9xrp_1764282875043"
-                title="Booking Calendar"
-                data-testid="booking-calendar"
-              />
-            </div>
+            <BookingCalendar 
+              surveyData={surveyData}
+              moneyLost={results.moneyLost}
+            />
           </div>
         </div>
       </main>

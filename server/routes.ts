@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertRegistrationSchema, insertAnalyticsEventSchema, insertQuizResponseSchema, insertCallFunnelSubmissionSchema } from "@shared/schema";
 import crypto from "crypto";
+import { getAvailability, sendBookingWebhook, validateBookingData, type BookingData, getAuthUrl, exchangeCodeForTokens, isCalendarAuthorized, isOAuthConfigured } from "./calendar";
 
 // Get real IP address from request (handles proxies)
 function getClientIP(req: any): string {
@@ -260,11 +261,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Call funnel submission (survey email submit)
   app.post("/api/call-funnel/submit", async (req, res) => {
     try {
-      const validatedData = insertCallFunnelSubmissionSchema.parse(req.body);
-      const submission = await storage.createCallFunnelSubmission(validatedData);
+      console.log('[API] /api/call-funnel/submit - Received request body:', JSON.stringify(req.body, null, 2));
+      
+      // Extract sessionId and ipAddress first, keep everything else
+      const { sessionId, ipAddress, ...data } = req.body;
+      
+      // Validate email is present and not empty
+      if (!data.email || typeof data.email !== 'string' || !data.email.trim()) {
+        console.error('[API] /api/call-funnel/submit - Email validation failed:', data.email);
+        return res.status(400).json({ error: 'Email is required and cannot be empty' });
+      }
+      
+      // Trim email
+      data.email = data.email.trim();
+      
+      // Validate the data against schema
+      let validatedData;
+      try {
+        validatedData = insertCallFunnelSubmissionSchema.parse(data);
+      } catch (validationError: any) {
+        console.error('[API] /api/call-funnel/submit - Schema validation failed:', validationError.errors || validationError.message);
+        return res.status(400).json({ 
+          error: 'Invalid submission data', 
+          details: validationError.errors || validationError.message 
+        });
+      }
+      
+      // Ensure email is still present after validation
+      if (!validatedData.email || !validatedData.email.trim()) {
+        console.error('[API] /api/call-funnel/submit - Email missing after validation');
+        return res.status(400).json({ error: 'Email is required' });
+      }
+      
+      const ip = getClientIP(req);
+      const partialIP = ipAddress || maskIP(ip);
+      
+      console.log('[API] /api/call-funnel/submit - Creating submission with:', { 
+        email: validatedData.email,
+        leads: validatedData.leads,
+        value: validatedData.value,
+        closeRate: validatedData.closeRate,
+        speed: validatedData.speed,
+        sessionId: sessionId || null, 
+        ipAddress: partialIP 
+      });
+      
+      const submission = await storage.createCallFunnelSubmission({
+        ...validatedData,
+        sessionId: sessionId || null,
+        ipAddress: partialIP
+      });
+      
+      console.log('[API] /api/call-funnel/submit - Submission created successfully:', { 
+        id: submission.id, 
+        email: submission.email 
+      });
       res.json({ success: true, submission });
     } catch (error: any) {
-      res.status(400).json({ error: error.message });
+      console.error('[API] /api/call-funnel/submit - Error:', error);
+      res.status(500).json({ error: error.message || 'Failed to create submission' });
     }
   });
 
@@ -273,10 +328,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     if (!validateAnalyticsAccess(req, res)) return;
     
     try {
+      console.log('[API] /api/analytics/call-funnel-submissions - Fetching submissions...');
+      
+      // getCallFunnelSubmissions should never throw - it returns empty array on error
+      // But we'll wrap it in try-catch just to be safe
       const submissions = await storage.getCallFunnelSubmissions();
-      res.json(submissions);
+      
+      // Ensure we always return an array, even if something went wrong
+      const result = Array.isArray(submissions) ? submissions : [];
+      
+      console.log(`[API] /api/analytics/call-funnel-submissions - Returning ${result.length} submissions`);
+      res.json(result);
     } catch (error: any) {
-      res.status(500).json({ error: error.message });
+      // This should rarely happen since getCallFunnelSubmissions returns [] on error
+      // But if it does, return empty array to prevent breaking the analytics page
+      console.error('[API] /api/analytics/call-funnel-submissions - Unexpected error:', error);
+      res.json([]); // Return empty array instead of error to keep page functional
     }
   });
 
@@ -309,6 +376,174 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ success: true });
     } catch (error: any) {
       res.status(500).json({ error: error.message });
+    }
+  });
+
+  // ============================================
+  // CALENDAR BOOKING ENDPOINTS
+  // ============================================
+
+  // Check if Google Calendar is authorized
+  app.get("/api/calendar/status", async (req, res) => {
+    const configured = isOAuthConfigured();
+    const authorized = configured && isCalendarAuthorized();
+    res.json({ 
+      configured,
+      authorized,
+      message: !configured 
+        ? 'OAuth credentials not configured. Set GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET.'
+        : authorized 
+        ? 'Google Calendar is connected' 
+        : 'Google Calendar not connected. Visit /api/calendar/auth to authorize.'
+    });
+  });
+
+  // Start OAuth authorization flow
+  app.get("/api/calendar/auth", async (req, res) => {
+    if (!isOAuthConfigured()) {
+      return res.status(500).send(`
+        <html>
+          <head><title>OAuth Not Configured</title></head>
+          <body style="font-family: system-ui; padding: 40px; text-align: center;">
+            <h1 style="color: #dc2626;">⚠️ OAuth Not Configured</h1>
+            <p>Please set GOOGLE_OAUTH_CLIENT_ID and GOOGLE_OAUTH_CLIENT_SECRET environment variables.</p>
+          </body>
+        </html>
+      `);
+    }
+    const authUrl = getAuthUrl();
+    res.redirect(authUrl);
+  });
+
+  // OAuth callback - receives the authorization code
+  app.get("/api/calendar/oauth/callback", async (req, res) => {
+    const code = req.query.code as string;
+    
+    if (!code) {
+      return res.status(400).send(`
+        <html>
+          <head><title>Authorization Failed</title></head>
+          <body style="font-family: system-ui; padding: 40px; text-align: center;">
+            <h1 style="color: #dc2626;">❌ Authorization Failed</h1>
+            <p>No authorization code received.</p>
+            <a href="/api/calendar/auth">Try again</a>
+          </body>
+        </html>
+      `);
+    }
+    
+    const result = await exchangeCodeForTokens(code);
+    
+    if (result.success) {
+      res.send(`
+        <html>
+          <head><title>Authorization Successful</title></head>
+          <body style="font-family: system-ui; padding: 40px; text-align: center;">
+            <h1 style="color: #1d8263;">✅ Google Calendar Connected!</h1>
+            <p>Your calendar is now connected. The booking system will show real availability.</p>
+            <p style="margin-top: 20px;">
+              <a href="/booking" style="background: #1d8263; color: white; padding: 12px 24px; border-radius: 8px; text-decoration: none;">
+                Go to Booking Page
+              </a>
+            </p>
+          </body>
+        </html>
+      `);
+    } else {
+      res.status(500).send(`
+        <html>
+          <head><title>Authorization Failed</title></head>
+          <body style="font-family: system-ui; padding: 40px; text-align: center;">
+            <h1 style="color: #dc2626;">❌ Authorization Failed</h1>
+            <p>${result.error}</p>
+            <a href="/api/calendar/auth">Try again</a>
+          </body>
+        </html>
+      `);
+    }
+  });
+
+  // Get available time slots from Google Calendar
+  app.get("/api/calendar/availability", async (req, res) => {
+    try {
+      const { start, end } = req.query;
+      
+      console.log('[API] /api/calendar/availability - Fetching availability');
+      
+      const availability = await getAvailability(
+        start as string | undefined,
+        end as string | undefined
+      );
+      
+      console.log(`[API] /api/calendar/availability - Found ${availability.length} days with slots`);
+      res.json(availability);
+    } catch (error: any) {
+      console.error('[API] /api/calendar/availability - Error:', error);
+      res.status(500).json({ error: 'Failed to fetch availability' });
+    }
+  });
+
+  // Book a time slot and send webhook to GHL
+  app.post("/api/calendar/book", async (req, res) => {
+    try {
+      console.log('[API] /api/calendar/book - Received booking request');
+      
+      const bookingData: BookingData = req.body;
+      
+      // Validate booking data
+      const validation = validateBookingData(bookingData);
+      if (!validation.valid) {
+        console.log('[API] /api/calendar/book - Validation failed:', validation.errors);
+        return res.status(400).json({ 
+          error: 'Validation failed', 
+          errors: validation.errors 
+        });
+      }
+      
+      // Send webhook to GoHighLevel
+      const webhookResult = await sendBookingWebhook(bookingData);
+      
+      if (!webhookResult.success) {
+        console.error('[API] /api/calendar/book - Webhook failed:', webhookResult.error);
+        return res.status(500).json({ 
+          error: 'Failed to complete booking', 
+          details: webhookResult.error 
+        });
+      }
+      
+      console.log('[API] /api/calendar/book - Booking successful for:', bookingData.email);
+      
+      // Track booking event for analytics
+      try {
+        const ip = getClientIP(req);
+        const partialIP = maskIP(ip);
+        const sessionId = req.body.sessionId;
+        
+        if (sessionId) {
+          await storage.createEvent({
+            sessionId,
+            eventType: 'booking_completed',
+            page: '/booking',
+            buttonId: 'booking-calendar',
+            metadata: {
+              email: bookingData.email,
+              datetime: bookingData.datetime,
+              ipAddress: partialIP,
+            },
+          });
+        }
+      } catch (analyticsError) {
+        console.error('[API] /api/calendar/book - Analytics tracking error:', analyticsError);
+        // Don't fail the booking if analytics fails
+      }
+      
+      res.json({ 
+        success: true, 
+        message: 'Rezervacija sėkmingai užregistruota!' 
+      });
+    } catch (error: any) {
+      console.error('[API] /api/calendar/book - Error:', error);
+      res.status(500).json({ error: 'Failed to process booking' });
     }
   });
 

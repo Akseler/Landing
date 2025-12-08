@@ -11,7 +11,7 @@ import WebinarPage from "@/pages/WebinarPage";
 import QuizPage from "@/pages/QuizPage";
 import SurveyPage from "@/pages/SurveyPage";
 import DonePage from "@/pages/DonePage";
-import CallDonePage from "@/pages/CallDonePage";
+import BookingPage from "@/pages/CallDonePage";
 import BookedPage from "@/pages/BookedPage";
 import SuccessPage from "@/pages/SuccessPage";
 import ThankYouPage from "@/pages/ThankYouPage";
@@ -40,7 +40,7 @@ function Router() {
         <Route path="/quiz" component={QuizPage} />
         <Route path="/survey" component={SurveyPage} />
         <Route path="/done" component={DonePage} />
-        <Route path="/calldone" component={CallDonePage} />
+        <Route path="/booking" component={BookingPage} />
         <Route path="/booked" component={BookedPage} />
         <Route path="/success" component={SuccessPage} />
         <Route path="/thank-you" component={ThankYouPage} />
