@@ -396,6 +396,63 @@ export async function sendBookingWebhook(booking: BookingData): Promise<{ succes
   }
 }
 
+// Send survey data to webhook
+export async function sendSurveyWebhook(surveyData: {
+  email: string;
+  leads: number;
+  value: number;
+  closeRate: number;
+  speed: string;
+}): Promise<{ success: boolean; error?: string }> {
+  const webhookUrl = process.env.GHL_SURVEY_WEBHOOK_URL || 'https://services.leadconnectorhq.com/hooks/VOJnJpYkp9TeABP2pBiV/webhook-trigger/0xIGwKvdzFHSCg7M4jje';
+  
+  if (!webhookUrl) {
+    console.error('[Calendar] GHL_SURVEY_WEBHOOK_URL not configured');
+    return { success: false, error: 'Webhook URL not configured' };
+  }
+  
+  try {
+    const payload = {
+      email: surveyData.email,
+      leads: surveyData.leads,
+      dealValue: surveyData.value,
+      closeRate: surveyData.closeRate,
+      responseSpeed: surveyData.speed,
+      // Calculated fields
+      salesNow: Math.round(surveyData.leads * (surveyData.closeRate / 100)),
+      revNow: Math.round(surveyData.leads * (surveyData.closeRate / 100) * surveyData.value),
+      source: 'akseler.lt',
+      formName: 'Survey Submission',
+      timestamp: new Date().toISOString(),
+    };
+    
+    console.log('[Calendar] Sending survey webhook:', { 
+      email: surveyData.email,
+      leads: surveyData.leads 
+    });
+    
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Calendar] Survey webhook failed:', response.status, errorText);
+      return { success: false, error: `Webhook failed: ${response.status}` };
+    }
+    
+    console.log('[Calendar] Survey webhook sent successfully');
+    return { success: true };
+  } catch (error: any) {
+    console.error('[Calendar] Error sending survey webhook:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
 // Send contact info to lead capture webhook
 export async function sendContactWebhook(contactInfo: {
   name: string;

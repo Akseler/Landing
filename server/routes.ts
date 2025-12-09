@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertRegistrationSchema, insertAnalyticsEventSchema, insertQuizResponseSchema, insertCallFunnelSubmissionSchema } from "@shared/schema";
 import crypto from "crypto";
-import { getAvailability, sendBookingWebhook, sendContactWebhook, validateBookingData, type BookingData, getAuthUrl, exchangeCodeForTokens, isCalendarAuthorized, isOAuthConfigured } from "./calendar";
+import { getAvailability, sendBookingWebhook, sendContactWebhook, sendSurveyWebhook, validateBookingData, type BookingData, getAuthUrl, exchangeCodeForTokens, isCalendarAuthorized, isOAuthConfigured } from "./calendar";
 
 // Get real IP address from request (handles proxies)
 function getClientIP(req: any): string {
@@ -316,6 +316,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
         id: submission.id, 
         email: submission.email 
       });
+      
+      // Send survey data to webhook (fire-and-forget)
+      try {
+        const webhookResult = await sendSurveyWebhook({
+          email: validatedData.email,
+          leads: validatedData.leads,
+          value: validatedData.value,
+          closeRate: validatedData.closeRate,
+          speed: validatedData.speed,
+        });
+        
+        if (!webhookResult.success) {
+          console.error('[API] /api/call-funnel/submit - Survey webhook failed:', webhookResult.error);
+          // Don't fail the request - just log it
+        } else {
+          console.log('[API] /api/call-funnel/submit - Survey webhook sent for:', validatedData.email);
+        }
+      } catch (webhookError: any) {
+        console.error('[API] /api/call-funnel/submit - Survey webhook error:', webhookError);
+        // Don't fail the request - webhook is fire-and-forget
+      }
+      
       res.json({ success: true, submission });
     } catch (error: any) {
       console.error('[API] /api/call-funnel/submit - Error:', error);
