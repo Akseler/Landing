@@ -674,131 +674,116 @@ export class DatabaseStorage implements IStorage {
   async deleteCallFunnelSubmission(id: string): Promise<void> {
     const database = getDb();
     
-    console.log(`[deleteCallFunnelSubmission] Starting deletion for ID: ${id}`);
-    
-    // First, get the submission to find its sessionId and ipAddress
-    const [submission] = await database
-      .select({ 
-        sessionId: callFunnelSubmissions.sessionId,
-        ipAddress: callFunnelSubmissions.ipAddress,
-        email: callFunnelSubmissions.email
-      })
-      .from(callFunnelSubmissions)
-      .where(eq(callFunnelSubmissions.id, id));
-    
-    if (!submission) {
-      // Submission not found, nothing to delete
-      console.warn(`[deleteCallFunnelSubmission] Submission ${id} not found`);
-      return;
-    }
-    
-    console.log(`[deleteCallFunnelSubmission] Found submission:`, {
-      id,
-      email: submission.email,
-      sessionId: submission.sessionId,
-      ipAddress: submission.ipAddress
-    });
-    
-    // Delete all call funnel related events for this submission
-    // Strategy: Delete ALL events for the session(s) that are related to call funnel
-    // This must match getCallFunnelSummary logic exactly:
-    // - Landing: page IN ('/', '/call') - counts ALL events with these pages (any eventType)
-    // - Video: eventType = 'video_play' AND page IN ('/', '/call')
-    // - Survey: page = '/survey' - counts ALL events with this page (any eventType)
-    // - Email: eventType = 'survey_email_submitted'
-    
-    // Build condition for call funnel pages/events
-    // We need to delete ALL events on these pages to remove them from statistics
-    const callFunnelPagesCondition = or(
-      eq(analyticsEvents.page, '/'),
-      eq(analyticsEvents.page, '/call'),
-      eq(analyticsEvents.page, '/survey')
-    );
-    
-    const emailSubmissionCondition = eq(analyticsEvents.eventType, 'survey_email_submitted');
-    
-    const callFunnelEventsCondition = or(
-      callFunnelPagesCondition,
-      emailSubmissionCondition
-    );
-    
-    if (submission.sessionId) {
-      // Delete all call funnel related events for this specific session
-      // This will remove the session from:
-      // - Landing count (page = '/' or '/call')
-      // - Survey count (page = '/survey')
-      // - Video count (if there was a video_play event on '/' or '/call')
-      // - Email count (eventType = 'survey_email_submitted')
+    try {
+      console.log(`[deleteCallFunnelSubmission] Starting deletion for ID: ${id}`);
       
-      // First, count how many events will be deleted
-      const eventsToDelete = await database
-        .select({ count: drizzleSql<number>`count(*)` })
-        .from(analyticsEvents)
-        .where(
-          and(
-            eq(analyticsEvents.sessionId, submission.sessionId),
-            callFunnelEventsCondition
-          )
-        );
+      // First, get the submission to find its sessionId and ipAddress
+      const [submission] = await database
+        .select({ 
+          sessionId: callFunnelSubmissions.sessionId,
+          ipAddress: callFunnelSubmissions.ipAddress,
+          email: callFunnelSubmissions.email
+        })
+        .from(callFunnelSubmissions)
+        .where(eq(callFunnelSubmissions.id, id));
       
-      const eventCount = eventsToDelete[0]?.count || 0;
-      console.log(`[deleteCallFunnelSubmission] Found ${eventCount} events to delete for sessionId: ${submission.sessionId}`);
+      if (!submission) {
+        // Submission not found, nothing to delete
+        console.warn(`[deleteCallFunnelSubmission] Submission ${id} not found`);
+        throw new Error(`Submission ${id} not found`);
+      }
       
-      const deleteResult = await database
-        .delete(analyticsEvents)
-        .where(
-          and(
-            eq(analyticsEvents.sessionId, submission.sessionId),
-            callFunnelEventsCondition
-          )
-        );
+      // Normalize null/undefined values to empty strings for easier checking
+      const sessionId = submission.sessionId ? String(submission.sessionId).trim() : null;
+      const ipAddress = submission.ipAddress ? String(submission.ipAddress).trim() : null;
       
-      console.log(`[deleteCallFunnelSubmission] Deleted ${eventCount} events for sessionId: ${submission.sessionId}`);
-    } else if (submission.ipAddress) {
-      // If no sessionId, find all sessions with this IP address
-      const sessionsWithIP = await database
-        .select({ id: analyticsSessions.id })
-        .from(analyticsSessions)
-        .where(eq(analyticsSessions.ipAddress, submission.ipAddress));
+      console.log(`[deleteCallFunnelSubmission] Found submission:`, {
+        id,
+        email: submission.email,
+        sessionId: sessionId || 'null',
+        ipAddress: ipAddress || 'null'
+      });
       
-      const sessionIds = sessionsWithIP.map(s => s.id);
+      // Delete all call funnel related events for this submission
+      // Strategy: Delete ALL events for the session(s) that are related to call funnel
+      // This must match getCallFunnelSummary logic exactly:
+      // - Landing: page IN ('/', '/call') - counts ALL events with these pages (any eventType)
+      // - Video: eventType = 'video_play' AND page IN ('/', '/call')
+      // - Survey: page = '/survey' - counts ALL events with this page (any eventType)
+      // - Email: eventType = 'survey_email_submitted'
       
-      if (sessionIds.length > 0) {
-        // Delete all call funnel related events for these sessions
-        // First, count how many events will be deleted
-        const eventsToDelete = await database
-          .select({ count: drizzleSql<number>`count(*)` })
-          .from(analyticsEvents)
-          .where(
-            and(
-              inArray(analyticsEvents.sessionId, sessionIds),
-              callFunnelEventsCondition
-            )
-          );
-        
-        const eventCount = eventsToDelete[0]?.count || 0;
-        console.log(`[deleteCallFunnelSubmission] Found ${eventCount} events to delete for ${sessionIds.length} sessions with IP: ${submission.ipAddress}`);
+      // Build condition for call funnel pages/events
+      // We need to delete ALL events on these pages to remove them from statistics
+      // This includes: landing (/ or /call), survey (/survey), and email submissions
+      const callFunnelPagesCondition = or(
+        eq(analyticsEvents.page, '/'),
+        eq(analyticsEvents.page, '/call'),
+        eq(analyticsEvents.page, '/survey'),
+        eq(analyticsEvents.page, '/booking')
+      );
+      
+      const emailSubmissionCondition = eq(analyticsEvents.eventType, 'survey_email_submitted');
+      
+      const callFunnelEventsCondition = or(
+        callFunnelPagesCondition,
+        emailSubmissionCondition
+      );
+      
+      if (sessionId && sessionId !== '') {
+        // Delete all call funnel related events for this specific session
+        // This will remove the session from:
+        // - Landing count (page = '/' or '/call')
+        // - Survey count (page = '/survey')
+        // - Video count (if there was a video_play event on '/' or '/call')
+        // - Email count (eventType = 'survey_email_submitted')
         
         const deleteResult = await database
           .delete(analyticsEvents)
           .where(
             and(
-              inArray(analyticsEvents.sessionId, sessionIds),
+              eq(analyticsEvents.sessionId, sessionId),
               callFunnelEventsCondition
             )
           );
         
-        console.log(`[deleteCallFunnelSubmission] Deleted ${eventCount} events for ${sessionIds.length} sessions with IP: ${submission.ipAddress}`);
+        console.log(`[deleteCallFunnelSubmission] Deleted events for sessionId: ${sessionId}`);
+      } else if (ipAddress && ipAddress !== '') {
+        // If no sessionId, find all sessions with this IP address
+        const sessionsWithIP = await database
+          .select({ id: analyticsSessions.id })
+          .from(analyticsSessions)
+          .where(eq(analyticsSessions.ipAddress, ipAddress));
+        
+        const sessionIds = sessionsWithIP
+          .map(s => s.id)
+          .filter(id => id && String(id).trim() !== '');
+        
+        if (sessionIds.length > 0) {
+          // Delete all call funnel related events for these sessions
+          const deleteResult = await database
+            .delete(analyticsEvents)
+            .where(
+              and(
+                inArray(analyticsEvents.sessionId, sessionIds),
+                callFunnelEventsCondition
+              )
+            );
+          
+          console.log(`[deleteCallFunnelSubmission] Deleted events for ${sessionIds.length} sessions with IP: ${ipAddress}`);
+        } else {
+          console.warn(`[deleteCallFunnelSubmission] No sessions found for IP: ${ipAddress}`);
+        }
       } else {
-        console.warn(`[deleteCallFunnelSubmission] No sessions found for IP: ${submission.ipAddress}`);
+        console.warn(`[deleteCallFunnelSubmission] No sessionId or ipAddress found for submission ${id}`);
       }
-    } else {
-      console.warn(`[deleteCallFunnelSubmission] No sessionId or ipAddress found for submission ${id}`);
+      
+      // Finally, delete the submission itself
+      await database.delete(callFunnelSubmissions).where(eq(callFunnelSubmissions.id, id));
+      console.log(`[deleteCallFunnelSubmission] Successfully deleted submission ${id}`);
+    } catch (error: any) {
+      console.error(`[deleteCallFunnelSubmission] Error deleting submission ${id}:`, error);
+      throw error;
     }
-    
-    // Finally, delete the submission itself
-    await database.delete(callFunnelSubmissions).where(eq(callFunnelSubmissions.id, id));
-    console.log(`[deleteCallFunnelSubmission] Successfully deleted submission ${id}`);
   }
 }
 

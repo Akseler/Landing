@@ -425,12 +425,28 @@ export default function AnalyticsPage() {
         }
         
         if (!res.ok) {
-          const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
+          let errorData;
+          try {
+            const text = await res.text();
+            errorData = text ? JSON.parse(text) : { error: 'Unknown error' };
+          } catch {
+            errorData = { error: `Server error: ${res.status}` };
+          }
           console.error('[AnalyticsPage] Delete submission error:', res.status, errorData);
           throw new Error(errorData.error || 'Nepavyko ištrinti įrašo');
         }
         
-        return res.json();
+        // Try to parse JSON, but handle empty responses
+        const text = await res.text();
+        if (!text || text.trim() === '') {
+          return { success: true };
+        }
+        
+        try {
+          return JSON.parse(text);
+        } catch {
+          return { success: true };
+        }
       } catch (error: any) {
         console.error('[AnalyticsPage] Error deleting submission:', error);
         throw error;
