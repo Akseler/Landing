@@ -345,6 +345,7 @@ export class DatabaseStorage implements IStorage {
   }> {
     const database = getDb();
     
+    try {
     // Build date filter condition
     const dateCondition = startDate && endDate 
       ? drizzleSql`AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
@@ -387,8 +388,12 @@ export class DatabaseStorage implements IStorage {
       .from(analyticsEvents)
       .where(drizzleSql`${analyticsEvents.page} = '/' ${landingDateCondition}`);
     
-    // Get unique session IDs
-    const landingSessionIds = [...new Set(landingSessionsResult.map(s => s.sessionId))];
+    // Get unique session IDs (filter out null/undefined)
+    const landingSessionIds = [...new Set(
+      landingSessionsResult
+        .map(s => s.sessionId)
+        .filter((id): id is string => id !== null && id !== undefined && id !== '')
+    )];
     
     // Count email submissions (survey_email_submitted events) from landing page sessions
     let emailSubmissions;
@@ -465,6 +470,22 @@ export class DatabaseStorage implements IStorage {
       bookingRate: Math.round(bookingRate * 10) / 10,
       overallConversionRate: Math.round(overallConversionRate * 10) / 10,
     };
+    } catch (error) {
+      console.error('[getCallFunnelSummary] Error:', error);
+      // Return default values on error
+      return {
+        callPageVisitors: 0,
+        videoViews: 0,
+        videoToLandingRate: 0,
+        surveyPageVisitors: 0,
+        surveyToVideoRate: 0,
+        emailSubmissions: 0,
+        emailToSurveyRate: 0,
+        bookings: 0,
+        bookingRate: 0,
+        overallConversionRate: 0,
+      };
+    }
   }
 
   async getEventsBySession(sessionId: string): Promise<AnalyticsEvent[]> {
