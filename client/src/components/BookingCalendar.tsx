@@ -5,7 +5,10 @@ import { Label } from '@/components/ui/label';
 import { Loader2, ArrowLeft, ArrowRight, Check, Calendar, Clock, User, Building2, Phone, Mail, CheckCircle2 } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 import { lt } from 'date-fns/locale';
+import { toZonedTime } from 'date-fns-tz';
 import { trackEvent, getSessionId } from '@/lib/analytics';
+
+const TIMEZONE = 'Europe/Vilnius';
 
 // Types
 interface TimeSlot {
@@ -186,10 +189,11 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
     ? availability.find(d => d.date === selectedDate)?.slots || []
     : [];
 
-  // Format time for display
+  // Format time for display (convert to Vilnius timezone)
   const formatTime = (isoString: string) => {
     const date = parseISO(isoString);
-    return format(date, 'HH:mm');
+    const vilniusTime = toZonedTime(date, TIMEZONE);
+    return format(vilniusTime, 'HH:mm');
   };
 
   // Format date for display
