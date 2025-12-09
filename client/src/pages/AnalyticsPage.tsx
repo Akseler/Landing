@@ -198,68 +198,112 @@ export default function AnalyticsPage() {
     queryKey: ['/api/analytics/summary', dateFilter],
     enabled: isAuthenticated,
     queryFn: async () => {
-      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-      const res = await fetch(`/api/analytics/summary${dateParams}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.status === 401) {
-        handleLogout();
-        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      try {
+        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+        const res = await fetch(`/api/analytics/summary${dateParams}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401) {
+          handleLogout();
+          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+        }
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          console.error('[AnalyticsPage] Error fetching summary:', res.status, errorData);
+          throw new Error('Nepavyko įkelti statistikos');
+        }
+        return res.json();
+      } catch (error: any) {
+        console.error('[AnalyticsPage] Error in summary query:', error);
+        throw error;
       }
-      if (!res.ok) throw new Error('Nepavyko įkelti statistikos');
-      return res.json();
-    }
+    },
+    retry: 1,
+    retryDelay: 1000,
   });
 
   const { data: sessions, error: sessionsError } = useQuery<Session[]>({
     queryKey: ['/api/analytics/sessions'],
     enabled: isAuthenticated,
     queryFn: async () => {
-      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-      const res = await fetch('/api/analytics/sessions', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.status === 401) {
-        handleLogout();
-        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      try {
+        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+        const res = await fetch('/api/analytics/sessions', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401) {
+          handleLogout();
+          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+        }
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          console.error('[AnalyticsPage] Error fetching sessions:', res.status, errorData);
+          throw new Error('Nepavyko įkelti sesijų');
+        }
+        return res.json();
+      } catch (error: any) {
+        console.error('[AnalyticsPage] Error in sessions query:', error);
+        throw error;
       }
-      if (!res.ok) throw new Error('Nepavyko įkelti sesijų');
-      return res.json();
-    }
+    },
+    retry: 1,
+    retryDelay: 1000,
   });
 
   const { data: registrations, error: registrationsError } = useQuery<RegistrationWithSession[]>({
     queryKey: ['/api/analytics/registrations'],
     enabled: isAuthenticated,
     queryFn: async () => {
-      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-      const res = await fetch('/api/analytics/registrations', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.status === 401) {
-        handleLogout();
-        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      try {
+        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+        const res = await fetch('/api/analytics/registrations', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401) {
+          handleLogout();
+          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+        }
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          console.error('[AnalyticsPage] Error fetching registrations:', res.status, errorData);
+          throw new Error('Nepavyko įkelti registracijų');
+        }
+        return res.json();
+      } catch (error: any) {
+        console.error('[AnalyticsPage] Error in registrations query:', error);
+        throw error;
       }
-      if (!res.ok) throw new Error('Nepavyko įkelti registracijų');
-      return res.json();
-    }
+    },
+    retry: 1,
+    retryDelay: 1000,
   });
 
   const { data: callFunnel, error: callFunnelError } = useQuery<CallFunnelSummary>({
     queryKey: ['/api/analytics/call-funnel', dateFilter],
     enabled: isAuthenticated,
     queryFn: async () => {
-      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-      const res = await fetch(`/api/analytics/call-funnel${dateParams}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.status === 401) {
-        handleLogout();
-        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      try {
+        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+        const res = await fetch(`/api/analytics/call-funnel${dateParams}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (res.status === 401) {
+          handleLogout();
+          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+        }
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({}));
+          console.error('[AnalyticsPage] Error fetching call funnel:', res.status, errorData);
+          throw new Error('Nepavyko įkelti Call funnel statistikos');
+        }
+        return res.json();
+      } catch (error: any) {
+        console.error('[AnalyticsPage] Error in callFunnel query:', error);
+        throw error;
       }
-      if (!res.ok) throw new Error('Nepavyko įkelti Call funnel statistikos');
-      return res.json();
-    }
+    },
+    retry: 1,
+    retryDelay: 1000,
   });
 
   const { data: callFunnelSubmissions, error: callFunnelSubmissionsError } = useQuery<CallFunnelSubmissionWithVSL[]>({
