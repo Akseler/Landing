@@ -467,7 +467,9 @@ export class DatabaseStorage implements IStorage {
       .groupBy(analyticsSessions.id)
       .orderBy(desc(analyticsSessions.lastVisit));
 
-    return sessions.map(s => ({ ...s.session, eventCount: s.eventCount || 0 }));
+    return sessions
+      .filter(s => s.session !== null && s.session !== undefined)
+      .map(s => ({ ...s.session!, eventCount: s.eventCount || 0 }));
   }
 
   async clearAllAnalyticsData(): Promise<void> {
@@ -694,8 +696,12 @@ export class DatabaseStorage implements IStorage {
       }
       
       // Normalize null/undefined values to empty strings for easier checking
-      const sessionId = submission.sessionId ? String(submission.sessionId).trim() : null;
-      const ipAddress = submission.ipAddress ? String(submission.ipAddress).trim() : null;
+      const sessionId = (submission.sessionId && typeof submission.sessionId === 'string') 
+        ? submission.sessionId.trim() 
+        : null;
+      const ipAddress = (submission.ipAddress && typeof submission.ipAddress === 'string') 
+        ? submission.ipAddress.trim() 
+        : null;
       
       console.log(`[deleteCallFunnelSubmission] Found submission:`, {
         id,
