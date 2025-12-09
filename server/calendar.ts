@@ -5,7 +5,7 @@ import fs from 'fs';
 import path from 'path';
 
 const TIMEZONE = 'Europe/Vilnius';
-const SLOT_HOURS = [10, 11, 12, 13, 14, 15, 16, 17]; // 10:00 to 17:00 (last slot ends at 18:00)
+const SLOT_HOURS = [10, 11, 12, 13, 14, 15, 16, 17, 18]; // 10:00 to 18:00 (last slot ends at 19:00)
 const DAYS_AHEAD = 14; // 2 weeks
 
 // OAuth Configuration - credentials from environment variables
