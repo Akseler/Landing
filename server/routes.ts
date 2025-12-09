@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertRegistrationSchema, insertAnalyticsEventSchema, insertQuizResponseSchema, insertCallFunnelSubmissionSchema } from "@shared/schema";
 import crypto from "crypto";
-import { getAvailability, sendBookingWebhook, validateBookingData, type BookingData, getAuthUrl, exchangeCodeForTokens, isCalendarAuthorized, isOAuthConfigured } from "./calendar";
+import { getAvailability, sendBookingWebhook, sendContactWebhook, validateBookingData, type BookingData, getAuthUrl, exchangeCodeForTokens, isCalendarAuthorized, isOAuthConfigured } from "./calendar";
 
 // Get real IP address from request (handles proxies)
 function getClientIP(req: any): string {
@@ -480,6 +480,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error: any) {
       console.error('[API] /api/calendar/availability - Error:', error);
       res.status(500).json({ error: 'Failed to fetch availability' });
+    }
+  });
+
+  // Send contact info to lead capture webhook
+  app.post("/api/calendar/contact", async (req, res) => {
+    try {
+      console.log('[API] /api/calendar/contact - Received contact info');
+      
+      const { name, company, phone, email } = req.body;
+      
+      // Basic validation
+      if (!name || !company || !phone || !email) {
+        return res.status(400).json({ 
+          error: 'Missing required fields',
+          required: ['name', 'company', 'phone', 'email']
+        });
+      }
+      
+      // Send webhook to GoHighLevel
+      const webhookResult = await sendContactWebhook({ name, company, phone, email });
+      
+      if (!webhookResult.success) {
+        console.error('[API] /api/calendar/contact - Webhook failed:', webhookResult.error);
+        // Don't fail the request - just log it
+      } else {
+        console.log('[API] /api/calendar/contact - Contact webhook sent for:', email);
+      }
+      
+      // Always return success - webhook is fire-and-forget
+      res.json({ 
+        success: true, 
+        message: 'Kontaktinė informacija gauta' 
+      });
+    } catch (error: any) {
+      console.error('[API] /api/calendar/contact - Error:', error);
+      // Don't fail - just return success
+      res.json({ success: true });
     }
   });
 

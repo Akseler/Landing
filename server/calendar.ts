@@ -396,6 +396,66 @@ export async function sendBookingWebhook(booking: BookingData): Promise<{ succes
   }
 }
 
+// Send contact info to lead capture webhook
+export async function sendContactWebhook(contactInfo: {
+  name: string;
+  company: string;
+  phone: string;
+  email: string;
+}): Promise<{ success: boolean; error?: string }> {
+  const webhookUrl = process.env.GHL_CONTACT_WEBHOOK_URL || 'https://services.leadconnectorhq.com/hooks/VOJnJpYkp9TeABP2pBiV/webhook-trigger/oDItvATLqhyJAv3lhPyv';
+  
+  if (!webhookUrl) {
+    console.error('[Calendar] GHL_CONTACT_WEBHOOK_URL not configured');
+    return { success: false, error: 'Webhook URL not configured' };
+  }
+  
+  try {
+    // Parse name into first and last name
+    const nameParts = contactInfo.name.trim().split(' ');
+    const firstName = nameParts[0] || contactInfo.name;
+    const lastName = nameParts.slice(1).join(' ') || '';
+    
+    const payload = {
+      firstName: firstName,
+      lastName: lastName,
+      name: contactInfo.name,
+      email: contactInfo.email,
+      phone: contactInfo.phone,
+      companyName: contactInfo.company,
+      company: contactInfo.company,
+      source: 'akseler.lt',
+      formName: 'Booking Contact Form',
+      timestamp: new Date().toISOString(),
+    };
+    
+    console.log('[Calendar] Sending contact webhook:', { 
+      email: contactInfo.email,
+      name: contactInfo.name 
+    });
+    
+    const response = await fetch(webhookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    });
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[Calendar] Contact webhook failed:', response.status, errorText);
+      return { success: false, error: `Webhook failed: ${response.status}` };
+    }
+    
+    console.log('[Calendar] Contact webhook sent successfully');
+    return { success: true };
+  } catch (error: any) {
+    console.error('[Calendar] Error sending contact webhook:', error.message);
+    return { success: false, error: error.message };
+  }
+}
+
 // Validate booking data
 export function validateBookingData(data: any): { valid: boolean; errors: string[] } {
   const errors: string[] = [];

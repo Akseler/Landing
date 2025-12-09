@@ -108,11 +108,40 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
     return Object.keys(errors).length === 0;
   };
 
+  // Send contact info to webhook
+  const sendContactWebhook = async () => {
+    try {
+      const response = await fetch('/api/calendar/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: contactInfo.name,
+          company: contactInfo.company,
+          phone: contactInfo.phone,
+          email: contactInfo.email,
+        }),
+      });
+      
+      if (response.ok) {
+        console.log('[Booking] Contact webhook sent successfully');
+      } else {
+        console.error('[Booking] Contact webhook failed');
+      }
+    } catch (error) {
+      console.error('[Booking] Error sending contact webhook:', error);
+      // Don't block the flow if webhook fails
+    }
+  };
+
   // Handle step navigation
   const goToNextStep = () => {
     if (step === 'contact') {
       if (validateContactInfo()) {
         trackEvent('booking_contact_submitted', '/booking', 'booking-contact-form');
+        // Send contact info to webhook
+        sendContactWebhook();
         setStep('date');
       }
     } else if (step === 'date') {
