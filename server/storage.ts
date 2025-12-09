@@ -42,6 +42,8 @@ export interface IStorage {
     surveyToVideoRate: number;
     emailSubmissions: number;
     emailToSurveyRate: number;
+    bookings: number;
+    bookingRate: number;
     overallConversionRate: number;
   }>;
   
@@ -208,6 +210,7 @@ export class DatabaseStorage implements IStorage {
   }> {
     const database = getDb();
     
+    try {
     // Build date filter condition
     const dateCondition = startDate && endDate 
       ? drizzleSql`AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
@@ -329,6 +332,26 @@ export class DatabaseStorage implements IStorage {
       averageSessionDuration,
       averageScrollDepth,
     };
+    } catch (error) {
+      console.error('[getAnalyticsSummary] Error:', error);
+      return {
+        totalVisits: 0,
+        uniqueVisitors: 0,
+        webinarViewSessions: 0,
+        webinarConversionRate: 0,
+        quizStarts: 0,
+        quizStartRate: 0,
+        quizStartFromWebinar: 0,
+        quizCompletions: 0,
+        quizCompletionRate: 0,
+        quizCompletionFromStarts: 0,
+        registrations: 0,
+        registrationRate: 0,
+        registrationFromCompletions: 0,
+        averageSessionDuration: 0,
+        averageScrollDepth: 0,
+      };
+    }
   }
 
   async getCallFunnelSummary(startDate?: Date, endDate?: Date): Promise<{
