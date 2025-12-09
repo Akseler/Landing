@@ -126,56 +126,41 @@ export default function SurveyPage() {
       sessionId: getSessionId(),
     };
     
-    // Save to backend database
-    try {
-      console.log('[SurveyPage] Submitting survey results:', { 
-        email: surveyResults.email,
-        leads: surveyResults.leads,
-        value: surveyResults.value,
-        closeRate: surveyResults.closeRate,
-        speed: surveyResults.speed
-      });
-      
-      const response = await fetch('/api/call-funnel/submit', {
+    // Save to sessionStorage first for smooth transition
+    sessionStorage.setItem('surveyResults', JSON.stringify(surveyResults));
+    trackEvent('survey_email_submitted', '/survey', undefined, { email: formData.email.trim() });
+    
+    // Show loading state
+    setIsCalculating(true);
+    
+    // Save to backend database (non-blocking - don't wait for webhook)
+    fetch('/api/call-funnel/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(surveyResults),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
-        console.error('[SurveyPage] Failed to save survey results:', response.status, errorData);
-        
-        toast({
-          title: "Klaida",
-          description: errorData.error || `Nepavyko išsaugoti duomenų (${response.status})`,
-          variant: "destructive",
-        });
-        
-        // Still proceed to results page even if save failed
-        // The data is in sessionStorage, so results can still be shown
-      } else {
-        const result = await response.json().catch(() => null);
-        if (result && result.submission) {
-          console.log('[SurveyPage] Survey results saved successfully:', result.submission.id);
+      })
+      .then(async (response) => {
+        if (response.ok) {
+          const result = await response.json().catch(() => null);
+          if (result && result.submission) {
+            console.log('[SurveyPage] Survey results saved successfully:', result.submission.id);
+          }
+        } else {
+          // Log error but don't show to user - webhook errors are non-critical
+          const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+          console.error('[SurveyPage] Failed to save survey results:', response.status, errorData);
         }
-      }
-    } catch (error: any) {
-      console.error('[SurveyPage] Error saving survey results:', error);
-      
-      toast({
-        title: "Klaida",
-        description: "Nepavyko prisijungti prie serverio. Bandykite dar kartą.",
-        variant: "destructive",
+      })
+      .catch((error) => {
+        // Log network errors but don't show to user - webhook is fire-and-forget
+        console.error('[SurveyPage] Error saving survey results (non-critical):', error);
       });
-      
-      // Still proceed to results page - data is in sessionStorage
-    }
     
-    // Always save to sessionStorage and proceed, even if backend save failed
-    sessionStorage.setItem('surveyResults', JSON.stringify(surveyResults));
-    trackEvent('survey_email_submitted', '/survey', undefined, { email: formData.email.trim() });
-    setLocation('/booking');
+    // Smooth transition to results page after short delay
+    setTimeout(() => {
+      setIsCalculating(false);
+      setLocation('/booking');
+    }, 1500);
   };
 
   const totalSteps = 5;

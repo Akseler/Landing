@@ -435,25 +435,50 @@ export async function sendSurveyWebhook(surveyData: {
       leads: surveyData.leads 
     });
     
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
-    });
+    // Add timeout to prevent hanging
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
     
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('[Calendar] Survey webhook failed:', response.status, errorText);
-      return { success: false, error: `Webhook failed: ${response.status}` };
+    try {
+      const response = await fetch(webhookUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+        signal: controller.signal,
+      });
+      
+      clearTimeout(timeoutId);
+      
+      if (!response.ok) {
+        const errorText = await response.text().catch(() => 'Unknown error');
+        console.error('[Calendar] Survey webhook failed:', response.status, errorText);
+        return { success: false, error: `Webhook failed: ${response.status}` };
+      }
+      
+      console.log('[Calendar] Survey webhook sent successfully');
+      return { success: true };
+    } catch (fetchError: any) {
+      clearTimeout(timeoutId);
+      
+      // Handle DNS errors and network errors gracefully
+      if (fetchError.name === 'AbortError') {
+        console.error('[Calendar] Survey webhook timeout');
+        return { success: false, error: 'Webhook timeout' };
+      }
+      
+      // DNS errors (EAI_AGAIN, ENOTFOUND, etc.) should not crash
+      if (fetchError.code === 'EAI_AGAIN' || fetchError.code === 'ENOTFOUND' || fetchError.code === 'ECONNREFUSED') {
+        console.error('[Calendar] Survey webhook network error (DNS/Connection):', fetchError.code, fetchError.message);
+        return { success: false, error: `Network error: ${fetchError.code}` };
+      }
+      
+      throw fetchError; // Re-throw unexpected errors
     }
-    
-    console.log('[Calendar] Survey webhook sent successfully');
-    return { success: true };
   } catch (error: any) {
-    console.error('[Calendar] Error sending survey webhook:', error.message);
-    return { success: false, error: error.message };
+    console.error('[Calendar] Error sending survey webhook:', error.message || error);
+    return { success: false, error: error.message || 'Unknown error' };
   }
 }
 
