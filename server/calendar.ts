@@ -423,24 +423,52 @@ export async function sendSurveyWebhook(surveyData: {
     const firstName = nameParts[0] || emailName;
     const lastName = nameParts.slice(1).join(' ') || '';
     
+    // Calculate projected values
+    const closeRateDecimal = surveyData.closeRate / 100;
+    const salesNow = Math.round(surveyData.leads * closeRateDecimal);
+    const revNow = salesNow * surveyData.value;
+    
+    // Boost calculations
+    const boostSpeed = 0.04;
+    const salesSpeed = Math.round(surveyData.leads * boostSpeed);
+    const revSpeed = salesSpeed * surveyData.value;
+    
+    const remainingLeads = surveyData.leads - (salesNow + salesSpeed);
+    const boostNurture = 0.025;
+    const salesNurture = Math.round(remainingLeads * boostNurture);
+    const revNurture = salesNurture * surveyData.value;
+    
+    const salesTotal = salesNow + salesSpeed + salesNurture;
+    const revTotal = salesTotal * surveyData.value;
+    const newCloseRate = surveyData.leads > 0 ? Math.round((salesTotal / surveyData.leads) * 100) : 0;
+    const moneyLost = revTotal - revNow;
+    
     const payload = {
-      // Required contact fields (GHL standard)
+      // Required contact fields for GHL
       email: surveyData.email,
       firstName: firstName,
       lastName: lastName,
-      name: emailName,
-      // Survey data
-      leads: surveyData.leads,
-      dealValue: surveyData.value,
-      closeRate: surveyData.closeRate,
-      responseSpeed: surveyData.speed,
-      // Calculated fields
-      salesNow: Math.round(surveyData.leads * (surveyData.closeRate / 100)),
-      revNow: Math.round(surveyData.leads * (surveyData.closeRate / 100) * surveyData.value),
+      name: `${firstName} ${lastName}`.trim(),
+      phone: '', // GHL may require phone field even if empty
+      
+      // Survey input data as custom fields
+      survey_leads: String(surveyData.leads),
+      survey_deal_value: String(surveyData.value),
+      survey_close_rate: String(surveyData.closeRate),
+      survey_response_speed: surveyData.speed,
+      
+      // Calculated results as custom fields
+      current_sales: String(salesNow),
+      current_revenue: String(revNow),
+      projected_sales: String(salesTotal),
+      projected_revenue: String(revTotal),
+      projected_close_rate: String(newCloseRate),
+      potential_money_lost: String(moneyLost),
+      
       // Metadata
       source: 'akseler.lt',
-      formName: 'Survey Submission',
-      timestamp: new Date().toISOString(),
+      form_name: 'Survey Email Submission',
+      submitted_at: new Date().toISOString(),
     };
     
     console.log('[Calendar] Sending survey webhook payload:', JSON.stringify(payload, null, 2));
