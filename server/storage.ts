@@ -482,7 +482,7 @@ export class DatabaseStorage implements IStorage {
 
   async createCallFunnelSubmission(submission: InsertCallFunnelSubmission): Promise<CallFunnelSubmission> {
     try {
-      const database = getDb();
+    const database = getDb();
       
       // Validate required fields
       if (!submission.email || !submission.email.trim()) {
@@ -512,12 +512,12 @@ export class DatabaseStorage implements IStorage {
       });
       
       const result = await database
-        .insert(callFunnelSubmissions)
+      .insert(callFunnelSubmissions)
         .values({
           ...submission,
           email: submission.email.trim() // Ensure email is trimmed
         })
-        .returning();
+      .returning();
       
       if (!result || result.length === 0) {
         throw new Error('Failed to create submission - no data returned from database');
@@ -529,7 +529,7 @@ export class DatabaseStorage implements IStorage {
         email: created.email
       });
       
-      return created;
+    return created;
     } catch (error: any) {
       console.error('[createCallFunnelSubmission] Error creating submission:', error);
       if (error.code === '23505') { // Unique constraint violation
@@ -544,7 +544,7 @@ export class DatabaseStorage implements IStorage {
 
   async getCallFunnelSubmissions(): Promise<(CallFunnelSubmission & { watchedVSL: boolean })[]> {
     try {
-      const database = getDb();
+    const database = getDb();
       if (!database) {
         console.error('[getCallFunnelSubmissions] Database not available');
         return [];
@@ -674,19 +674,30 @@ export class DatabaseStorage implements IStorage {
   async deleteCallFunnelSubmission(id: string): Promise<void> {
     const database = getDb();
     
+    console.log(`[deleteCallFunnelSubmission] Starting deletion for ID: ${id}`);
+    
     // First, get the submission to find its sessionId and ipAddress
     const [submission] = await database
       .select({ 
         sessionId: callFunnelSubmissions.sessionId,
-        ipAddress: callFunnelSubmissions.ipAddress
+        ipAddress: callFunnelSubmissions.ipAddress,
+        email: callFunnelSubmissions.email
       })
       .from(callFunnelSubmissions)
       .where(eq(callFunnelSubmissions.id, id));
     
     if (!submission) {
       // Submission not found, nothing to delete
+      console.warn(`[deleteCallFunnelSubmission] Submission ${id} not found`);
       return;
     }
+    
+    console.log(`[deleteCallFunnelSubmission] Found submission:`, {
+      id,
+      email: submission.email,
+      sessionId: submission.sessionId,
+      ipAddress: submission.ipAddress
+    });
     
     // Delete all call funnel related events for this submission
     // Strategy: Delete ALL events for the session(s) that are related to call funnel
@@ -718,6 +729,21 @@ export class DatabaseStorage implements IStorage {
       // - Survey count (page = '/survey')
       // - Video count (if there was a video_play event on '/' or '/call')
       // - Email count (eventType = 'survey_email_submitted')
+      
+      // First, count how many events will be deleted
+      const eventsToDelete = await database
+        .select({ count: drizzleSql<number>`count(*)` })
+        .from(analyticsEvents)
+        .where(
+          and(
+            eq(analyticsEvents.sessionId, submission.sessionId),
+            callFunnelEventsCondition
+          )
+        );
+      
+      const eventCount = eventsToDelete[0]?.count || 0;
+      console.log(`[deleteCallFunnelSubmission] Found ${eventCount} events to delete for sessionId: ${submission.sessionId}`);
+      
       const deleteResult = await database
         .delete(analyticsEvents)
         .where(
@@ -727,7 +753,7 @@ export class DatabaseStorage implements IStorage {
           )
         );
       
-      console.log(`[deleteCallFunnelSubmission] Deleted events for sessionId: ${submission.sessionId}`);
+      console.log(`[deleteCallFunnelSubmission] Deleted ${eventCount} events for sessionId: ${submission.sessionId}`);
     } else if (submission.ipAddress) {
       // If no sessionId, find all sessions with this IP address
       const sessionsWithIP = await database
@@ -739,6 +765,20 @@ export class DatabaseStorage implements IStorage {
       
       if (sessionIds.length > 0) {
         // Delete all call funnel related events for these sessions
+        // First, count how many events will be deleted
+        const eventsToDelete = await database
+          .select({ count: drizzleSql<number>`count(*)` })
+          .from(analyticsEvents)
+          .where(
+            and(
+              inArray(analyticsEvents.sessionId, sessionIds),
+              callFunnelEventsCondition
+            )
+          );
+        
+        const eventCount = eventsToDelete[0]?.count || 0;
+        console.log(`[deleteCallFunnelSubmission] Found ${eventCount} events to delete for ${sessionIds.length} sessions with IP: ${submission.ipAddress}`);
+        
         const deleteResult = await database
           .delete(analyticsEvents)
           .where(
@@ -748,12 +788,17 @@ export class DatabaseStorage implements IStorage {
             )
           );
         
-        console.log(`[deleteCallFunnelSubmission] Deleted events for ${sessionIds.length} sessions with IP: ${submission.ipAddress}`);
+        console.log(`[deleteCallFunnelSubmission] Deleted ${eventCount} events for ${sessionIds.length} sessions with IP: ${submission.ipAddress}`);
+      } else {
+        console.warn(`[deleteCallFunnelSubmission] No sessions found for IP: ${submission.ipAddress}`);
       }
+    } else {
+      console.warn(`[deleteCallFunnelSubmission] No sessionId or ipAddress found for submission ${id}`);
     }
     
     // Finally, delete the submission itself
     await database.delete(callFunnelSubmissions).where(eq(callFunnelSubmissions.id, id));
+    console.log(`[deleteCallFunnelSubmission] Successfully deleted submission ${id}`);
   }
 }
 

@@ -389,12 +389,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = req.params.id;
       if (!id) {
+        console.error('[API] /api/analytics/call-funnel-submission/:id - Invalid ID');
         return res.status(400).json({ error: "Invalid submission ID" });
       }
+      
+      console.log(`[API] /api/analytics/call-funnel-submission/${id} - Deleting submission...`);
       await storage.deleteCallFunnelSubmission(id);
-      res.json({ success: true });
+      console.log(`[API] /api/analytics/call-funnel-submission/${id} - Successfully deleted`);
+      
+      res.json({ success: true, message: "Submission and all related events deleted" });
     } catch (error: any) {
-      res.status(500).json({ error: error.message });
+      console.error(`[API] /api/analytics/call-funnel-submission/${req.params.id} - Error:`, error);
+      res.status(500).json({ error: error.message || 'Failed to delete submission' });
     }
   });
 

@@ -412,21 +412,41 @@ export default function AnalyticsPage() {
 
   const deleteCallSubmissionMutation = useMutation({
     mutationFn: async (id: string) => {
-      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-      const res = await fetch(`/api/analytics/call-funnel-submission/${id}`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (!res.ok) throw new Error('Nepavyko ištrinti įrašo');
-      return res.json();
+      try {
+        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+        const res = await fetch(`/api/analytics/call-funnel-submission/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        
+        if (res.status === 401) {
+          handleLogout();
+          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+        }
+        
+        if (!res.ok) {
+          const errorData = await res.json().catch(() => ({ error: 'Unknown error' }));
+          console.error('[AnalyticsPage] Delete submission error:', res.status, errorData);
+          throw new Error(errorData.error || 'Nepavyko ištrinti įrašo');
+        }
+        
+        return res.json();
+      } catch (error: any) {
+        console.error('[AnalyticsPage] Error deleting submission:', error);
+        throw error;
+      }
     },
     onSuccess: () => {
+      // Invalidate all related queries to refresh data
       queryClient.invalidateQueries({ queryKey: ['/api/analytics/call-funnel-submissions'] });
       queryClient.invalidateQueries({ queryKey: ['/api/analytics/call-funnel'] });
       queryClient.invalidateQueries({ queryKey: ['/api/analytics/call-funnel', dateFilter] });
-      toast({ title: "Ištrinta", description: "Įrašas ištrintas" });
+      queryClient.invalidateQueries({ queryKey: ['/api/analytics/summary'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/analytics/summary', dateFilter] });
+      toast({ title: "Ištrinta", description: "Įrašas ir visi susiję duomenys ištrinti" });
     },
     onError: (error: Error) => {
+      console.error('[AnalyticsPage] Delete submission mutation error:', error);
       toast({ title: "Klaida", description: error.message, variant: "destructive" });
     },
   });
