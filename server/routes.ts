@@ -488,7 +488,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       console.log('[API] /api/calendar/contact - Received contact info');
       
-      const { name, company, phone, email } = req.body;
+      const { name, company, phone, email, surveyData } = req.body;
       
       // Basic validation
       if (!name || !company || !phone || !email) {
@@ -499,7 +499,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
       
       // Send webhook to GoHighLevel
-      const webhookResult = await sendContactWebhook({ name, company, phone, email });
+      const webhookResult = await sendContactWebhook({ 
+        name, 
+        company, 
+        phone, 
+        email,
+        surveyData: surveyData || undefined
+      });
       
       if (!webhookResult.success) {
         console.error('[API] /api/calendar/contact - Webhook failed:', webhookResult.error);

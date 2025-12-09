@@ -121,6 +121,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
           company: contactInfo.company,
           phone: contactInfo.phone,
           email: contactInfo.email,
+          surveyData: surveyData || undefined,
         }),
       });
       

@@ -402,6 +402,12 @@ export async function sendContactWebhook(contactInfo: {
   company: string;
   phone: string;
   email: string;
+  surveyData?: {
+    leads: number;
+    value: number;
+    closeRate: number;
+    speed: string;
+  };
 }): Promise<{ success: boolean; error?: string }> {
   const webhookUrl = process.env.GHL_CONTACT_WEBHOOK_URL || 'https://services.leadconnectorhq.com/hooks/VOJnJpYkp9TeABP2pBiV/webhook-trigger/oDItvATLqhyJAv3lhPyv';
   
@@ -427,6 +433,16 @@ export async function sendContactWebhook(contactInfo: {
       source: 'akseler.lt',
       formName: 'Booking Contact Form',
       timestamp: new Date().toISOString(),
+      // Survey data
+      ...(contactInfo.surveyData && {
+        leads: contactInfo.surveyData.leads,
+        dealValue: contactInfo.surveyData.value,
+        closeRate: contactInfo.surveyData.closeRate,
+        responseSpeed: contactInfo.surveyData.speed,
+        // Calculated fields
+        salesNow: Math.round(contactInfo.surveyData.leads * (contactInfo.surveyData.closeRate / 100)),
+        revNow: Math.round(contactInfo.surveyData.leads * (contactInfo.surveyData.closeRate / 100) * contactInfo.surveyData.value),
+      }),
     };
     
     console.log('[Calendar] Sending contact webhook:', { 
