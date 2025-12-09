@@ -50,6 +50,8 @@ interface CallFunnelSummary {
   surveyToVideoRate: number;
   emailSubmissions: number;
   emailToSurveyRate: number;
+  bookings: number;
+  bookingRate: number;
   overallConversionRate: number;
 }
 
@@ -662,7 +664,16 @@ export default function AnalyticsPage() {
                   <h3 className="font-semibold text-sm">4. Email</h3>
                   <div className="text-right">
                     <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.emailSubmissions || 0}</div>
-                    <div className="text-xs text-muted-foreground">{callFunnel?.overallConversionRate || 0}%</div>
+                    <div className="text-xs text-muted-foreground">{callFunnel?.emailToSurveyRate || 0}%</div>
+                  </div>
+                </div>
+              </div>
+              <div className="p-3 bg-card rounded-md border">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-semibold text-sm">5. Bookings</h3>
+                  <div className="text-right">
+                    <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.bookings || 0}</div>
+                    <div className="text-xs text-muted-foreground">{callFunnel?.bookingRate || 0}%</div>
                   </div>
                 </div>
               </div>

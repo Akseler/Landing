@@ -339,6 +339,8 @@ export class DatabaseStorage implements IStorage {
     surveyToVideoRate: number;
     emailSubmissions: number;
     emailToSurveyRate: number;
+    bookings: number;
+    bookingRate: number;
     overallConversionRate: number;
   }> {
     const database = getDb();
@@ -413,17 +415,43 @@ export class DatabaseStorage implements IStorage {
       emailSubmissions = { count: 0 };
     }
 
+    // Count bookings (booking_completed events) from landing page sessions
+    let bookingsResult;
+    if (landingSessionIds.length > 0) {
+      const bookingEventConditions = [
+        eq(analyticsEvents.eventType, 'booking_completed'),
+        inArray(analyticsEvents.sessionId, landingSessionIds)
+      ];
+      
+      if (startDate && endDate) {
+        bookingEventConditions.push(
+          drizzleSql`${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
+        );
+      }
+      
+      const [bookingEvents] = await database
+        .select({ count: drizzleSql<number>`COUNT(*)` })
+        .from(analyticsEvents)
+        .where(and(...bookingEventConditions));
+      
+      bookingsResult = bookingEvents;
+    } else {
+      bookingsResult = { count: 0 };
+    }
+
     const callCount = callPageVisitors?.count || 0;
     const landingCount = landingPageVisitors?.count || 0;
     const videoCount = videoViews?.count || 0;
     const surveyCount = surveyPageVisitors?.count || 0;
     const emailCount = emailSubmissions?.count || 0;
+    const bookingsCount = bookingsResult?.count || 0;
 
     // Calculate conversion rates
     const videoToLandingRate = callCount > 0 ? (videoCount / callCount) * 100 : 0;
     const surveyToLandingRate = landingCount > 0 ? (surveyCount / landingCount) * 100 : 0; // Survey % from landing page (/) visitors
     const emailToSurveyRate = surveyCount > 0 ? (emailCount / surveyCount) * 100 : 0;
-    const overallConversionRate = landingCount > 0 ? (emailCount / landingCount) * 100 : 0; // Email % from landing page (/) visitors
+    const bookingRate = emailCount > 0 ? (bookingsCount / emailCount) * 100 : 0; // Booking % from email submissions
+    const overallConversionRate = landingCount > 0 ? (bookingsCount / landingCount) * 100 : 0; // Final conversion: bookings from landing visitors
 
     return {
       callPageVisitors: callCount,
@@ -433,6 +461,8 @@ export class DatabaseStorage implements IStorage {
       surveyToVideoRate: Math.round(surveyToLandingRate * 10) / 10, // Actually surveyToLandingRate, but keeping field name for compatibility
       emailSubmissions: emailCount,
       emailToSurveyRate: Math.round(emailToSurveyRate * 10) / 10,
+      bookings: bookingsCount,
+      bookingRate: Math.round(bookingRate * 10) / 10,
       overallConversionRate: Math.round(overallConversionRate * 10) / 10,
     };
   }
@@ -722,7 +752,7 @@ export class DatabaseStorage implements IStorage {
       
       // Build condition for call funnel pages/events
       // We need to delete ALL events on these pages to remove them from statistics
-      // This includes: landing (/ or /call), survey (/survey), and email submissions
+      // This includes: landing (/ or /call), survey (/survey), booking (/booking), email submissions, and booking completions
       const callFunnelPagesCondition = or(
         eq(analyticsEvents.page, '/'),
         eq(analyticsEvents.page, '/call'),
@@ -731,22 +761,22 @@ export class DatabaseStorage implements IStorage {
       );
       
       const emailSubmissionCondition = eq(analyticsEvents.eventType, 'survey_email_submitted');
+      const bookingCompletedCondition = eq(analyticsEvents.eventType, 'booking_completed');
       
       const callFunnelEventsCondition = or(
         callFunnelPagesCondition,
-        emailSubmissionCondition
+        emailSubmissionCondition,
+        bookingCompletedCondition
       );
+      
+      let deletedEventsCount = 0;
       
       if (sessionId && sessionId !== '') {
         // Delete all call funnel related events for this specific session
-        // This will remove the session from:
-        // - Landing count (page = '/' or '/call')
-        // - Survey count (page = '/survey')
-        // - Video count (if there was a video_play event on '/' or '/call')
-        // - Email count (eventType = 'survey_email_submitted')
-        
-        const deleteResult = await database
-          .delete(analyticsEvents)
+        // First count how many events we'll delete
+        const [countResult] = await database
+          .select({ count: drizzleSql<number>`COUNT(*)` })
+          .from(analyticsEvents)
           .where(
             and(
               eq(analyticsEvents.sessionId, sessionId),
@@ -754,7 +784,20 @@ export class DatabaseStorage implements IStorage {
             )
           );
         
-        console.log(`[deleteCallFunnelSubmission] Deleted events for sessionId: ${sessionId}`);
+        deletedEventsCount = countResult?.count || 0;
+        console.log(`[deleteCallFunnelSubmission] Found ${deletedEventsCount} events to delete for sessionId: ${sessionId}`);
+        
+        if (deletedEventsCount > 0) {
+          await database
+            .delete(analyticsEvents)
+            .where(
+              and(
+                eq(analyticsEvents.sessionId, sessionId),
+                callFunnelEventsCondition
+              )
+            );
+          console.log(`[deleteCallFunnelSubmission] Deleted ${deletedEventsCount} events for sessionId: ${sessionId}`);
+        }
       } else if (ipAddress && ipAddress !== '') {
         // If no sessionId, find all sessions with this IP address
         const sessionsWithIP = await database
@@ -766,10 +809,13 @@ export class DatabaseStorage implements IStorage {
           .map(s => s.id)
           .filter(id => id && String(id).trim() !== '');
         
+        console.log(`[deleteCallFunnelSubmission] Found ${sessionIds.length} sessions with IP: ${ipAddress}`);
+        
         if (sessionIds.length > 0) {
-          // Delete all call funnel related events for these sessions
-          const deleteResult = await database
-            .delete(analyticsEvents)
+          // First count
+          const [countResult] = await database
+            .select({ count: drizzleSql<number>`COUNT(*)` })
+            .from(analyticsEvents)
             .where(
               and(
                 inArray(analyticsEvents.sessionId, sessionIds),
@@ -777,16 +823,74 @@ export class DatabaseStorage implements IStorage {
               )
             );
           
-          console.log(`[deleteCallFunnelSubmission] Deleted events for ${sessionIds.length} sessions with IP: ${ipAddress}`);
-        } else {
-          console.warn(`[deleteCallFunnelSubmission] No sessions found for IP: ${ipAddress}`);
+          deletedEventsCount = countResult?.count || 0;
+          
+          if (deletedEventsCount > 0) {
+            await database
+              .delete(analyticsEvents)
+              .where(
+                and(
+                  inArray(analyticsEvents.sessionId, sessionIds),
+                  callFunnelEventsCondition
+                )
+              );
+            console.log(`[deleteCallFunnelSubmission] Deleted ${deletedEventsCount} events for ${sessionIds.length} sessions with IP: ${ipAddress}`);
+          }
         }
       } else {
-        console.warn(`[deleteCallFunnelSubmission] No sessionId or ipAddress found for submission ${id}`);
+        // No sessionId or ipAddress - try to find by email in survey_email_submitted events
+        console.warn(`[deleteCallFunnelSubmission] No sessionId or ipAddress found, trying to find by email: ${submission.email}`);
+        
+        // Find sessions that have survey_email_submitted event with matching email in metadata
+        const emailEvents = await database
+          .select({ sessionId: analyticsEvents.sessionId })
+          .from(analyticsEvents)
+          .where(
+            and(
+              eq(analyticsEvents.eventType, 'survey_email_submitted'),
+              drizzleSql`${analyticsEvents.metadata}->>'email' = ${submission.email}`
+            )
+          );
+        
+        const foundSessionIds = emailEvents
+          .map(e => e.sessionId)
+          .filter((sid): sid is string => !!sid);
+        
+        console.log(`[deleteCallFunnelSubmission] Found ${foundSessionIds.length} sessions by email search`);
+        
+        if (foundSessionIds.length > 0) {
+          const [countResult] = await database
+            .select({ count: drizzleSql<number>`COUNT(*)` })
+            .from(analyticsEvents)
+            .where(
+              and(
+                inArray(analyticsEvents.sessionId, foundSessionIds),
+                callFunnelEventsCondition
+              )
+            );
+          
+          deletedEventsCount = countResult?.count || 0;
+          
+          if (deletedEventsCount > 0) {
+            await database
+              .delete(analyticsEvents)
+              .where(
+                and(
+                  inArray(analyticsEvents.sessionId, foundSessionIds),
+                  callFunnelEventsCondition
+                )
+              );
+            console.log(`[deleteCallFunnelSubmission] Deleted ${deletedEventsCount} events via email lookup`);
+          }
+        } else {
+          console.warn(`[deleteCallFunnelSubmission] Could not find any sessions for submission ${id} - events will remain`);
+        }
       }
       
+      console.log(`[deleteCallFunnelSubmission] Total events deleted: ${deletedEventsCount}`);
+      
       // Finally, delete the submission itself
-      await database.delete(callFunnelSubmissions).where(eq(callFunnelSubmissions.id, id));
+    await database.delete(callFunnelSubmissions).where(eq(callFunnelSubmissions.id, id));
       console.log(`[deleteCallFunnelSubmission] Successfully deleted submission ${id}`);
     } catch (error: any) {
       console.error(`[deleteCallFunnelSubmission] Error deleting submission ${id}:`, error);
