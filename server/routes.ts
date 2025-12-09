@@ -317,28 +317,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
         email: submission.email 
       });
       
-      // Send survey data to webhook (fire-and-forget)
-      try {
-        const webhookResult = await sendSurveyWebhook({
-          email: validatedData.email,
-          leads: validatedData.leads,
-          value: validatedData.value,
-          closeRate: validatedData.closeRate,
-          speed: validatedData.speed,
-        });
-        
+      // Send response immediately, don't wait for webhook
+      res.json({ success: true, submission });
+      
+      // Send survey data to webhook in background (fire-and-forget, non-blocking)
+      sendSurveyWebhook({
+        email: validatedData.email,
+        leads: validatedData.leads,
+        value: validatedData.value,
+        closeRate: validatedData.closeRate,
+        speed: validatedData.speed,
+      }).then((webhookResult) => {
         if (!webhookResult.success) {
           console.error('[API] /api/call-funnel/submit - Survey webhook failed:', webhookResult.error);
-          // Don't fail the request - just log it
         } else {
           console.log('[API] /api/call-funnel/submit - Survey webhook sent for:', validatedData.email);
         }
-      } catch (webhookError: any) {
+      }).catch((webhookError: any) => {
         console.error('[API] /api/call-funnel/submit - Survey webhook error:', webhookError);
-        // Don't fail the request - webhook is fire-and-forget
-      }
-      
-      res.json({ success: true, submission });
+      });
     } catch (error: any) {
       console.error('[API] /api/call-funnel/submit - Error:', error);
       res.status(500).json({ error: error.message || 'Failed to create submission' });

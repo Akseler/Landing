@@ -253,19 +253,23 @@ export async function getAvailability(startDateStr?: string, endDateStr?: string
       
       for (const hour of SLOT_HOURS) {
         // Create slot time in Vilnius timezone
-        let slotTime = setHours(currentDate, hour);
-        slotTime = setMinutes(slotTime, 0);
-        slotTime = setSeconds(slotTime, 0);
-        slotTime = setMilliseconds(slotTime, 0);
+        // currentDate is already a Date object representing a day in Vilnius timezone (from toZonedTime)
+        // We need to set the hour while keeping it in Vilnius timezone context
+        const dayStart = startOfDay(currentDate);
+        let slotTimeVilnius = setHours(dayStart, hour);
+        slotTimeVilnius = setMinutes(slotTimeVilnius, 0);
+        slotTimeVilnius = setSeconds(slotTimeVilnius, 0);
+        slotTimeVilnius = setMilliseconds(slotTimeVilnius, 0);
         
-        // Convert to UTC for comparison
-        const slotStartUTC = fromZonedTime(slotTime, TIMEZONE);
+        // Convert Vilnius time to UTC for comparison with Google Calendar (which returns UTC)
+        // fromZonedTime treats the Date as if it's in the specified timezone and converts to UTC
+        const slotStartUTC = fromZonedTime(slotTimeVilnius, TIMEZONE);
         const slotEndUTC = new Date(slotStartUTC.getTime() + 60 * 60 * 1000); // 1 hour slot
         
-        // Check if slot is in the past
+        // Check if slot is in the past (compare UTC times)
         const isPast = slotStartUTC < now;
         
-        // Check if slot is busy
+        // Check if slot is busy (busyTimes from Google are in UTC)
         const isBusy = isSlotBusy(slotStartUTC, slotEndUTC, busyTimes);
         
         daySlots.push({
