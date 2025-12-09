@@ -678,16 +678,18 @@ export class DatabaseStorage implements IStorage {
     
     try {
       console.log(`[deleteCallFunnelSubmission] Starting deletion for ID: ${id}`);
-      
-      // First, get the submission to find its sessionId and ipAddress
-      const [submission] = await database
-        .select({ 
-          sessionId: callFunnelSubmissions.sessionId,
-          ipAddress: callFunnelSubmissions.ipAddress,
-          email: callFunnelSubmissions.email
-        })
-        .from(callFunnelSubmissions)
-        .where(eq(callFunnelSubmissions.id, id));
+      // First, get the submission to find its sessionId and ipAddress.
+      // Use the Drizzle query API instead of a manual select object to avoid
+      // issues with undefined field configs triggering Drizzle internals like
+      // orderSelectedFields(Object.entries(undefined)).
+      const submission = await database.query.callFunnelSubmissions.findFirst({
+        where: eq(callFunnelSubmissions.id, id),
+        columns: {
+          sessionId: true,
+          ipAddress: true,
+          email: true,
+        },
+      });
       
       if (!submission) {
         // Submission not found, nothing to delete
