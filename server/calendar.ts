@@ -416,8 +416,20 @@ export async function sendSurveyWebhook(surveyData: {
   }
   
   try {
+    // Extract name from email if possible, or use email as name
+    const emailParts = surveyData.email.split('@');
+    const emailName = emailParts[0] || 'Survey User';
+    const nameParts = emailName.split('.');
+    const firstName = nameParts[0] || emailName;
+    const lastName = nameParts.slice(1).join(' ') || '';
+    
     const payload = {
+      // Required contact fields (GHL standard)
       email: surveyData.email,
+      firstName: firstName,
+      lastName: lastName,
+      name: emailName,
+      // Survey data
       leads: surveyData.leads,
       dealValue: surveyData.value,
       closeRate: surveyData.closeRate,
@@ -425,15 +437,13 @@ export async function sendSurveyWebhook(surveyData: {
       // Calculated fields
       salesNow: Math.round(surveyData.leads * (surveyData.closeRate / 100)),
       revNow: Math.round(surveyData.leads * (surveyData.closeRate / 100) * surveyData.value),
+      // Metadata
       source: 'akseler.lt',
       formName: 'Survey Submission',
       timestamp: new Date().toISOString(),
     };
     
-    console.log('[Calendar] Sending survey webhook:', { 
-      email: surveyData.email,
-      leads: surveyData.leads 
-    });
+    console.log('[Calendar] Sending survey webhook payload:', JSON.stringify(payload, null, 2));
     
     // Add timeout to prevent hanging
     const controller = new AbortController();
