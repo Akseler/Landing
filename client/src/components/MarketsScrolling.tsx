@@ -1,4 +1,10 @@
-export default function MarketsScrolling() {
+export default function MarketsScrolling({
+  hideTitle = false,
+  compact = false,
+}: {
+  hideTitle?: boolean;
+  compact?: boolean;
+}) {
   const marketsRow1 = [
     "NT paslaugos",
     "Odontologija",
@@ -18,17 +24,29 @@ export default function MarketsScrolling() {
   ];
 
   return (
-    <section className="pt-16 md:pt-20 pb-20 md:pb-24 overflow-hidden">
-      <div className="max-w-4xl mx-auto mb-8 md:mb-12 px-6 lg:px-12">
-        {/* Mobile version */}
-        <h2 className="block md:hidden text-[24px] font-bold text-center tracking-tight" data-testid="text-markets-scrolling-title">
-          Pritaikoma įvairiose rinkose
-        </h2>
-        {/* Desktop version */}
-        <h2 className="hidden md:block text-[32px] lg:text-[36px] font-bold text-center tracking-tight whitespace-nowrap leading-tight" data-testid="text-markets-scrolling-title-desktop">
-          Pritaikoma įvairiose B2C rinkose
-        </h2>
-      </div>
+    <section
+      className={`overflow-hidden ${
+        compact ? "pt-6 md:pt-8 pb-8 md:pb-10" : "pt-16 md:pt-20 pb-20 md:pb-24"
+      }`}
+    >
+      {!hideTitle ? (
+        <div className="max-w-4xl mx-auto mb-8 md:mb-12 px-6 lg:px-12">
+          {/* Mobile version */}
+          <h2
+            className="block md:hidden text-[24px] font-bold text-center tracking-tight"
+            data-testid="text-markets-scrolling-title"
+          >
+            Pritaikoma įvairiose rinkose
+          </h2>
+          {/* Desktop version */}
+          <h2
+            className="hidden md:block text-[32px] lg:text-[36px] font-bold text-center tracking-tight whitespace-nowrap leading-tight"
+            data-testid="text-markets-scrolling-title-desktop"
+          >
+            Pritaikoma įvairiose B2C rinkose
+          </h2>
+        </div>
+      ) : null}
       <div className="relative w-full max-w-5xl mx-auto">
         {/* Gradient overlays for smooth edges */}
         <div className="absolute inset-y-0 left-0 w-32 md:w-48 lg:w-64 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>

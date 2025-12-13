@@ -314,7 +314,7 @@ export default function SolutionSection() {
               className="px-6 py-2 text-sm font-semibold border-2 border-[#1d8263]/30 bg-[#1d8263]/5 text-[#1d8263]"
               data-testid="badge-solution"
             >
-              KAIP VEIKIA AI DARBUOTOJAI
+              Kodėl įmonės renkasi Akseler
             </Badge>
           </div>
           

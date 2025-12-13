@@ -17,6 +17,7 @@ import SuccessPage from "@/pages/SuccessPage";
 import ThankYouPage from "@/pages/ThankYouPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import NotFound from "@/pages/not-found";
+import TestLandingPage from "@/pages/TestLandingPage";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -45,6 +46,7 @@ function Router() {
         <Route path="/success" component={SuccessPage} />
         <Route path="/thank-you" component={ThankYouPage} />
         <Route path="/analytics" component={AnalyticsPage} />
+        <Route path="/test" component={TestLandingPage} />
         <Route component={NotFound} />
       </Switch>
     </>

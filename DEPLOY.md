@@ -142,3 +142,6 @@ docker-compose up -d
 - [ ] Domenas nukreiptas į serverio IP
 - [ ] Testuoti visi puslapiai ir funkcionalumas
 
+
+
+
