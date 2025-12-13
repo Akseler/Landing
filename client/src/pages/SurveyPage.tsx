@@ -149,7 +149,7 @@ export default function SurveyPage() {
           // Log error but don't show to user - webhook errors are non-critical
           const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
           console.error('[SurveyPage] Failed to save survey results:', response.status, errorData);
-        }
+    }
       })
       .catch((error) => {
         // Log network errors but don't show to user - webhook is fire-and-forget

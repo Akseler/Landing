@@ -263,9 +263,9 @@ export default function CallHeroSection() {
         <p className="text-base text-foreground/60 font-medium mb-4">Mumis pasitiki</p>
         <div className="flex justify-center items-center gap-8 opacity-60">
           <img src={specdarbaiLogo} alt="SPECDARBAI" className="h-12 max-w-[150px] w-auto object-contain grayscale" data-testid="logo-specdarbai-desktop" />
-          <span className="text-foreground/40 text-2xl">|</span>
+            <span className="text-foreground/40 text-2xl">|</span>
           <img src={veeslaLogo} alt="VEESLA" className="h-12 max-w-[150px] w-auto object-contain grayscale" data-testid="logo-veesla-desktop" />
-          <span className="text-foreground/40 text-2xl">|</span>
+            <span className="text-foreground/40 text-2xl">|</span>
           <img src={energija24Logo} alt="energija24" className="h-12 max-w-[150px] w-auto object-contain grayscale" data-testid="logo-energija24-desktop" />
         </div>
       </div>

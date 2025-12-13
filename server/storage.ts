@@ -350,7 +350,7 @@ export class DatabaseStorage implements IStorage {
         registrationFromCompletions: 0,
         averageSessionDuration: 0,
         averageScrollDepth: 0,
-      };
+    };
     }
   }
 

@@ -201,24 +201,24 @@ export default function AnalyticsPage() {
     enabled: isAuthenticated,
     queryFn: async () => {
       try {
-        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-        const res = await fetch(`/api/analytics/summary${dateParams}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.status === 401) {
-          handleLogout();
-          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
-        }
+      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+      const res = await fetch(`/api/analytics/summary${dateParams}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401) {
+        handleLogout();
+        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      }
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
           console.error('[AnalyticsPage] Error fetching summary:', res.status, errorData);
           throw new Error('Nepavyko įkelti statistikos');
         }
-        return res.json();
+      return res.json();
       } catch (error: any) {
         console.error('[AnalyticsPage] Error in summary query:', error);
         throw error;
-      }
+    }
     },
     retry: 1,
     retryDelay: 1000,
@@ -229,24 +229,24 @@ export default function AnalyticsPage() {
     enabled: isAuthenticated,
     queryFn: async () => {
       try {
-        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-        const res = await fetch('/api/analytics/sessions', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.status === 401) {
-          handleLogout();
-          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
-        }
+      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+      const res = await fetch('/api/analytics/sessions', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401) {
+        handleLogout();
+        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      }
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
           console.error('[AnalyticsPage] Error fetching sessions:', res.status, errorData);
           throw new Error('Nepavyko įkelti sesijų');
         }
-        return res.json();
+      return res.json();
       } catch (error: any) {
         console.error('[AnalyticsPage] Error in sessions query:', error);
         throw error;
-      }
+    }
     },
     retry: 1,
     retryDelay: 1000,
@@ -257,24 +257,24 @@ export default function AnalyticsPage() {
     enabled: isAuthenticated,
     queryFn: async () => {
       try {
-        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-        const res = await fetch('/api/analytics/registrations', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.status === 401) {
-          handleLogout();
-          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
-        }
+      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+      const res = await fetch('/api/analytics/registrations', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401) {
+        handleLogout();
+        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      }
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
           console.error('[AnalyticsPage] Error fetching registrations:', res.status, errorData);
           throw new Error('Nepavyko įkelti registracijų');
         }
-        return res.json();
+      return res.json();
       } catch (error: any) {
         console.error('[AnalyticsPage] Error in registrations query:', error);
         throw error;
-      }
+    }
     },
     retry: 1,
     retryDelay: 1000,
@@ -285,24 +285,24 @@ export default function AnalyticsPage() {
     enabled: isAuthenticated,
     queryFn: async () => {
       try {
-        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-        const res = await fetch(`/api/analytics/call-funnel${dateParams}`, {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        if (res.status === 401) {
-          handleLogout();
-          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
-        }
+      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+      const res = await fetch(`/api/analytics/call-funnel${dateParams}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401) {
+        handleLogout();
+        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      }
         if (!res.ok) {
           const errorData = await res.json().catch(() => ({}));
           console.error('[AnalyticsPage] Error fetching call funnel:', res.status, errorData);
           throw new Error('Nepavyko įkelti Call funnel statistikos');
         }
-        return res.json();
+      return res.json();
       } catch (error: any) {
         console.error('[AnalyticsPage] Error in callFunnel query:', error);
         throw error;
-      }
+    }
     },
     retry: 1,
     retryDelay: 1000,
@@ -313,15 +313,15 @@ export default function AnalyticsPage() {
     enabled: isAuthenticated,
     queryFn: async () => {
       try {
-        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-        const res = await fetch('/api/analytics/call-funnel-submissions', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+      const res = await fetch('/api/analytics/call-funnel-submissions', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
         
-        if (res.status === 401) {
-          handleLogout();
-          throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
-        }
+      if (res.status === 401) {
+        handleLogout();
+        throw new Error('Sesija baigėsi. Prašome prisijungti iš naujo.');
+      }
         
         if (!res.ok) {
           // If server returns error, try to parse it, but return empty array to keep page functional
@@ -415,11 +415,11 @@ export default function AnalyticsPage() {
   const deleteCallSubmissionMutation = useMutation({
     mutationFn: async (id: string) => {
       try {
-        const token = authToken || localStorage.getItem('analytics_auth_token') || '';
-        const res = await fetch(`/api/analytics/call-funnel-submission/${id}`, {
-          method: 'DELETE',
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+      const res = await fetch(`/api/analytics/call-funnel-submission/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
         
         if (res.status === 401) {
           handleLogout();
@@ -517,7 +517,7 @@ export default function AnalyticsPage() {
             className="h-10 md:h-12"
             data-testid="img-akseler-logo"
           />
-            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4 text-muted-foreground hidden sm:block" />
               <Select value={dateFilter} onValueChange={(v) => {
@@ -622,52 +622,52 @@ export default function AnalyticsPage() {
         )}
 
         {/* Call Funnel Section */}
-        <Card className="border-2 border-[#1d8263]">
-          <CardHeader className="bg-[#1d8263]/5 pb-3">
-            <CardTitle className="text-base md:text-lg flex items-center gap-2">
-              <span className="w-3 h-3 bg-[#1d8263] rounded-full"></span>
-              Call Funnel
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-4">
+          <Card className="border-2 border-[#1d8263]">
+            <CardHeader className="bg-[#1d8263]/5 pb-3">
+              <CardTitle className="text-base md:text-lg flex items-center gap-2">
+                <span className="w-3 h-3 bg-[#1d8263] rounded-full"></span>
+                Call Funnel
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-4">
             {/* Analytics */}
             <div className="space-y-3 mb-6">
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">1. Landing</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.callPageVisitors || 0}</div>
-                    <div className="text-xs text-muted-foreground">100%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">1. Landing</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.callPageVisitors || 0}</div>
+                      <div className="text-xs text-muted-foreground">100%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">2. Video peržiūros</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.videoViews || 0}</div>
-                    <div className="text-xs text-muted-foreground">{callFunnel?.videoToLandingRate || 0}%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">2. Video peržiūros</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.videoViews || 0}</div>
+                      <div className="text-xs text-muted-foreground">{callFunnel?.videoToLandingRate || 0}%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">3. Survey</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.surveyPageVisitors || 0}</div>
-                    <div className="text-xs text-muted-foreground">{callFunnel?.surveyToVideoRate || 0}%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">3. Survey</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.surveyPageVisitors || 0}</div>
+                      <div className="text-xs text-muted-foreground">{callFunnel?.surveyToVideoRate || 0}%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">4. Email</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.emailSubmissions || 0}</div>
-                    <div className="text-xs text-muted-foreground">{callFunnel?.emailToSurveyRate || 0}%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">4. Email</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.emailSubmissions || 0}</div>
+                      <div className="text-xs text-muted-foreground">{callFunnel?.emailToSurveyRate || 0}%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
               <div className="p-3 bg-card rounded-md border">
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold text-sm">5. Bookings</h3>
@@ -677,13 +677,13 @@ export default function AnalyticsPage() {
                   </div>
                 </div>
               </div>
-              <div className="p-3 bg-[#1d8263]/10 rounded-md border border-[#1d8263]/30">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">Konversija</h3>
-                  <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.overallConversionRate || 0}%</div>
+                <div className="p-3 bg-[#1d8263]/10 rounded-md border border-[#1d8263]/30">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">Konversija</h3>
+                    <div className="text-2xl font-bold text-[#1d8263]">{callFunnel?.overallConversionRate || 0}%</div>
+                  </div>
                 </div>
               </div>
-            </div>
 
             {/* Border separator */}
             <div className="border-t-2 border-[#1d8263]/30 my-6"></div>
@@ -826,66 +826,66 @@ export default function AnalyticsPage() {
                 )}
               </div>
             </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
 
         {/* Webinar Funnel Section */}
-        <Card className="border-2">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base md:text-lg flex items-center gap-2">
-              <span className="w-3 h-3 bg-foreground/50 rounded-full"></span>
-              Webinar Funnel
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="pt-4">
+          <Card className="border-2">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base md:text-lg flex items-center gap-2">
+                <span className="w-3 h-3 bg-foreground/50 rounded-full"></span>
+                Webinar Funnel
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-4">
             {/* Analytics */}
             <div className="space-y-3 mb-6">
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">1. Landing</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{summary?.uniqueVisitors || 0}</div>
-                    <div className="text-xs text-muted-foreground">100%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">1. Landing</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{summary?.uniqueVisitors || 0}</div>
+                      <div className="text-xs text-muted-foreground">100%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">2. Webinar</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{summary?.webinarViewSessions || 0}</div>
-                    <div className="text-xs text-muted-foreground">{summary?.webinarConversionRate || 0}%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">2. Webinar</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{summary?.webinarViewSessions || 0}</div>
+                      <div className="text-xs text-muted-foreground">{summary?.webinarConversionRate || 0}%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">3. Form</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{summary?.quizStarts || 0}</div>
-                    <div className="text-xs text-muted-foreground">{summary?.quizStartRate || 0}%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">3. Form</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{summary?.quizStarts || 0}</div>
+                      <div className="text-xs text-muted-foreground">{summary?.quizStartRate || 0}%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">4. Filled Form</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{summary?.quizCompletions || 0}</div>
-                    <div className="text-xs text-muted-foreground">{summary?.quizCompletionRate || 0}%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">4. Filled Form</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{summary?.quizCompletions || 0}</div>
+                      <div className="text-xs text-muted-foreground">{summary?.quizCompletionRate || 0}%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="p-3 bg-card rounded-md border">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-semibold text-sm">5. Registration</h3>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-[#1d8263]">{summary?.registrations || 0}</div>
-                    <div className="text-xs text-muted-foreground">{summary?.registrationRate || 0}%</div>
+                <div className="p-3 bg-card rounded-md border">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold text-sm">5. Registration</h3>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#1d8263]">{summary?.registrations || 0}</div>
+                      <div className="text-xs text-muted-foreground">{summary?.registrationRate || 0}%</div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+        </div>
 
             {/* Border separator */}
             <div className="border-t-2 border-border my-6"></div>
@@ -894,68 +894,68 @@ export default function AnalyticsPage() {
             <div className="flex flex-col">
               <h3 className="text-base md:text-lg font-semibold mb-4">Leads ({filteredRegistrations.length})</h3>
               <div className="space-y-2 max-h-[180px] overflow-y-auto overflow-x-hidden">
-                {filteredRegistrations.length > 0 ? (
-                  filteredRegistrations.map((reg) => (
-                    <div 
-                      key={reg.id} 
-                      className="text-xs p-2 rounded-md border hover-elevate flex items-center gap-2 flex-wrap"
-                      data-testid={`registration-${reg.id}`}
-                    >
-                      {reg.qualified ? (
-                        <CheckCircle2 className="h-4 w-4 text-[#1d8263] flex-shrink-0" />
+              {filteredRegistrations.length > 0 ? (
+                filteredRegistrations.map((reg) => (
+                  <div 
+                    key={reg.id} 
+                    className="text-xs p-2 rounded-md border hover-elevate flex items-center gap-2 flex-wrap"
+                    data-testid={`registration-${reg.id}`}
+                  >
+                    {reg.qualified ? (
+                      <CheckCircle2 className="h-4 w-4 text-[#1d8263] flex-shrink-0" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-destructive flex-shrink-0" />
+                    )}
+                    <span className="font-semibold truncate max-w-[100px] sm:max-w-none">{reg.name}</span>
+                    <span className="text-muted-foreground hidden sm:inline">|</span>
+                    <span className="whitespace-nowrap hidden sm:inline">{reg.phone}</span>
+                    <span className="text-muted-foreground hidden sm:inline">|</span>
+                    <span className="truncate max-w-[120px] sm:max-w-none">{reg.email}</span>
+                    <span className="text-muted-foreground hidden md:inline">|</span>
+                    <span className="hidden md:flex items-center gap-1 whitespace-nowrap">
+                      <span className="text-muted-foreground">Pasl:</span>
+                      {reg.servicesOver1000 ? (
+                        <CheckCircle2 className="h-3 w-3 text-[#1d8263] flex-shrink-0" />
                       ) : (
-                        <XCircle className="h-4 w-4 text-destructive flex-shrink-0" />
+                        <XCircle className="h-3 w-3 text-destructive flex-shrink-0" />
                       )}
-                      <span className="font-semibold truncate max-w-[100px] sm:max-w-none">{reg.name}</span>
-                      <span className="text-muted-foreground hidden sm:inline">|</span>
-                      <span className="whitespace-nowrap hidden sm:inline">{reg.phone}</span>
-                      <span className="text-muted-foreground hidden sm:inline">|</span>
-                      <span className="truncate max-w-[120px] sm:max-w-none">{reg.email}</span>
-                      <span className="text-muted-foreground hidden md:inline">|</span>
-                      <span className="hidden md:flex items-center gap-1 whitespace-nowrap">
-                        <span className="text-muted-foreground">Pasl:</span>
-                        {reg.servicesOver1000 ? (
-                          <CheckCircle2 className="h-3 w-3 text-[#1d8263] flex-shrink-0" />
-                        ) : (
-                          <XCircle className="h-3 w-3 text-destructive flex-shrink-0" />
-                        )}
-                      </span>
-                      <span className="hidden md:flex items-center gap-1 whitespace-nowrap">
-                        <span className="text-muted-foreground">Biudž:</span>
-                        {reg.budgetOver1000 ? (
-                          <CheckCircle2 className="h-3 w-3 text-[#1d8263] flex-shrink-0" />
-                        ) : (
-                          <XCircle className="h-3 w-3 text-destructive flex-shrink-0" />
-                        )}
-                      </span>
-                      <span className="hidden lg:flex items-center gap-1 whitespace-nowrap">
-                        <span className="text-muted-foreground">FB:</span>
-                        {reg.usesFacebookAds ? (
-                          <CheckCircle2 className="h-3 w-3 text-[#1d8263] flex-shrink-0" />
-                        ) : (
-                          <XCircle className="h-3 w-3 text-destructive flex-shrink-0" />
-                        )}
-                      </span>
-                      <span className="text-muted-foreground ml-auto">
-                        {new Date(reg.createdAt).toLocaleString('lt-LT', { 
-                          month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' 
-                        })}
-                      </span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
-                        onClick={() => deleteRegistrationMutation.mutate(reg.id)}
-                        disabled={deleteRegistrationMutation.isPending}
-                        data-testid={`button-delete-registration-${reg.id}`}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-center text-muted-foreground py-8 text-sm">Dar nėra registracijų</p>
-                )}
+                    </span>
+                    <span className="hidden md:flex items-center gap-1 whitespace-nowrap">
+                      <span className="text-muted-foreground">Biudž:</span>
+                      {reg.budgetOver1000 ? (
+                        <CheckCircle2 className="h-3 w-3 text-[#1d8263] flex-shrink-0" />
+                      ) : (
+                        <XCircle className="h-3 w-3 text-destructive flex-shrink-0" />
+                      )}
+                    </span>
+                    <span className="hidden lg:flex items-center gap-1 whitespace-nowrap">
+                      <span className="text-muted-foreground">FB:</span>
+                      {reg.usesFacebookAds ? (
+                        <CheckCircle2 className="h-3 w-3 text-[#1d8263] flex-shrink-0" />
+                      ) : (
+                        <XCircle className="h-3 w-3 text-destructive flex-shrink-0" />
+                      )}
+                    </span>
+                    <span className="text-muted-foreground ml-auto">
+                      {new Date(reg.createdAt).toLocaleString('lt-LT', { 
+                        month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' 
+                      })}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6 text-destructive hover:text-destructive hover:bg-destructive/10 flex-shrink-0"
+                      onClick={() => deleteRegistrationMutation.mutate(reg.id)}
+                      disabled={deleteRegistrationMutation.isPending}
+                      data-testid={`button-delete-registration-${reg.id}`}
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-muted-foreground py-8 text-sm">Dar nėra registracijų</p>
+              )}
               </div>
             </div>
           </CardContent>

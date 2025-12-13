@@ -162,12 +162,12 @@ function StepCard({
       transition={{ duration: 0.8, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/12 relative"
     >
-      <div className="relative bg-gradient-to-b from-[#F3FBF6] to-white px-4 md:px-6 pt-5 md:pt-6 pb-4 md:pb-5">
+      <div className="relative px-4 md:px-6 pt-5 md:pt-6 pb-4 md:pb-5">
         <div className="relative z-10">{visual}</div>
       </div>
       <div className="px-5 md:px-7 pb-5 md:pb-7 pt-4 md:pt-5">
         <h3 className="text-[17px] md:text-[29px] font-extrabold text-slate-900 leading-tight">{title}</h3>
-        <p className="mt-2 text-xs md:text-sm text-slate-500 leading-relaxed">{description}</p>
+        <p className="mt-2 text-[13px] md:text-[15px] text-slate-500 leading-relaxed">{description}</p>
       </div>
     </motion.div>
   );
@@ -282,7 +282,7 @@ function Step2Visual() {
       <div className="w-full max-w-[360px]">
         <div className="relative rounded-2xl bg-white border border-slate-200 shadow-sm p-4 overflow-hidden h-[210px]">
           {/* Sources */}
-          <div className="absolute left-4 top-4 flex flex-col gap-8">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-6">
             {/* Facebook Box */}
             <motion.div
               animate={{
@@ -328,15 +328,15 @@ function Step2Visual() {
             </motion.div>
           </div>
 
-          {/* AI Message */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[140px] rounded-2xl bg-white border border-[#1d8263]/20 shadow-sm p-3 z-10">
+          {/* SMS Message */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[110px] rounded-2xl bg-white border border-[#1d8263]/20 shadow-sm p-3 z-10">
             <div className="flex items-center justify-between">
               <div className="text-[10px] font-bold uppercase tracking-wider text-[#1d8263]">
-                AI
+                SMS
               </div>
               <Bot className="w-4 h-4 text-[#1d8263]" />
             </div>
-            <div className="mt-2 rounded-xl border border-[#1d8263]/15 bg-[#1d8263]/8 p-2 text-[8px] text-slate-700 min-h-[55px] flex items-center">
+            <div className="mt-2 rounded-xl border border-[#1d8263]/15 bg-[#1d8263]/8 p-2 text-[8px] text-slate-700 min-h-[75px] flex items-center">
               <AnimatePresence mode="wait">
                 {showMsg ? (
                   <motion.div
@@ -374,21 +374,21 @@ function Step2Visual() {
 
               {/* Background Paths */}
               <path
-                d="M 125 50 C 160 50, 160 95, 190 95"
+                d="M 126 80 C 150 80, 150 95, 190 95"
                 fill="none"
                 stroke="#e2e8f0"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
               <path
-                d="M 125 140 C 160 140, 160 95, 190 95"
+                d="M 126 130 C 150 130, 150 95, 190 95"
                 fill="none"
                 stroke="#e2e8f0"
                 strokeWidth="2"
                 strokeLinecap="round"
               />
               <path
-                d="M 190 95 L 230 95"
+                d="M 190 95 L 234 95"
                 fill="none"
                 stroke="#e2e8f0"
                 strokeWidth="2"
@@ -398,7 +398,7 @@ function Step2Visual() {
               {/* Animated Electricity/Flow Effect */}
               {/* FB Flow */}
               <motion.path
-                d="M 125 50 C 160 50, 160 95, 190 95"
+                d="M 126 80 C 150 80, 150 95, 190 95"
                 fill="none"
                 stroke="#1d8263"
                 strokeWidth="2"
@@ -414,7 +414,7 @@ function Step2Visual() {
 
               {/* Web Flow */}
               <motion.path
-                d="M 125 140 C 160 140, 160 95, 190 95"
+                d="M 126 130 C 150 130, 150 95, 190 95"
                 fill="none"
                 stroke="#1d8263"
                 strokeWidth="2"
@@ -430,7 +430,7 @@ function Step2Visual() {
 
               {/* Common SMS Flow (Triggered by either) */}
               <motion.path
-                d="M 190 95 L 230 95"
+                d="M 190 95 L 234 95"
                 fill="none"
                 stroke="#1d8263"
                 strokeWidth="2"
@@ -637,69 +637,69 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
   }, [emblaApi]);
 
   return (
-    <section ref={sectionRef} className="space-y-8">
+    <section ref={sectionRef} className="space-y-8" style={{ backgroundColor: '#FFFFFF' }}>
       <SectionHeading
         badge="Rezultatai"
         title="Skaičiai kalba patys už save"
       />
 
       {/* Desktop grid */}
-      <div className="hidden md:grid md:grid-cols-3 gap-4">
+      <div className="hidden md:grid md:grid-cols-3 gap-4" style={{ backgroundColor: '#FFFFFF' }}>
         {results.map((r) => (
           <div
             key={r.company}
-            className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-8 pt-6 pb-10 flex flex-col min-h-[320px]"
+            className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 px-8 pt-8 pb-12 flex flex-col min-h-[400px]"
           >
             <div className="flex flex-col items-center gap-2 text-center shrink-0">
               <img
                 src={r.logo}
                 alt={r.company}
-                className="h-8 w-auto object-contain opacity-90"
+                className="h-10 w-auto object-contain opacity-90"
               />
-              <div className="text-[11px] text-slate-400 font-medium">
+              <div className="text-[12px] text-slate-400 font-medium whitespace-nowrap">
                 {r.revenue}
               </div>
             </div>
-            <div className="mt-4 h-px bg-slate-200/60 shrink-0" />
+            <div className="mt-5 h-px bg-slate-200/60 shrink-0" />
             <div className="flex-1 flex flex-col items-center justify-center text-center">
               <div className="text-5xl font-extrabold text-[#1d8263]">
                 {r.stat}
               </div>
-              <div className="mt-4 text-base font-bold text-slate-900">
+              <div className="mt-4 text-[15px] font-bold text-slate-900 whitespace-nowrap">
                 {r.desc}
               </div>
-              <div className="mt-1 text-sm text-slate-500">{r.sub}</div>
+              <div className="mt-1 text-[13px] text-slate-500 whitespace-nowrap">{r.sub}</div>
             </div>
           </div>
         ))}
       </div>
 
       {/* Mobile swipe */}
-      <div className="md:hidden">
-        <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-3">
+      <div className="md:hidden -mx-4 py-2" style={{ backgroundColor: '#FFFFFF' }}>
+        <div className="overflow-hidden" ref={emblaRef} style={{ backgroundColor: '#FFFFFF' }}>
+          <div className="flex gap-3 px-6" style={{ backgroundColor: '#FFFFFF' }}>
             {results.map((r, idx) => (
-              <div key={r.company} className="flex-[0_0_92%] min-w-0">
-                <div className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-6 pt-5 pb-8 flex flex-col min-h-[280px]">
+              <div key={r.company} className="flex-[0_0_82%] min-w-0 last:pr-6" style={{ backgroundColor: '#FFFFFF' }}>
+                <div className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 px-6 pt-6 pb-10 flex flex-col min-h-[350px]">
                   <div className="flex flex-col items-center gap-2 text-center shrink-0">
                     <img
                       src={r.logo}
                       alt={r.company}
-                      className="h-7 w-auto object-contain opacity-90"
+                      className="h-8 w-auto object-contain opacity-90"
                     />
-                    <div className="text-[10px] text-slate-400 font-medium">
+                    <div className="text-[10px] text-slate-400 font-medium whitespace-nowrap">
                       {r.revenue}
                     </div>
                   </div>
-                  <div className="mt-3 h-px bg-slate-200/60 shrink-0" />
+                  <div className="mt-4 h-px bg-slate-200/60 shrink-0" />
                   <div className="flex-1 flex flex-col items-center justify-center text-center">
-                    <div className="text-4xl font-extrabold text-[#1d8263]">
+                    <div className="text-[11vw] sm:text-5xl font-extrabold text-[#1d8263]">
                       {r.stat}
                     </div>
-                    <div className="mt-3 text-sm font-bold text-slate-900">
+                    <div className="mt-4 text-[3.5vw] sm:text-[15px] font-bold text-slate-900 whitespace-nowrap">
                       {r.desc}
                     </div>
-                    <div className="mt-1 text-xs text-slate-500">{r.sub}</div>
+                    <div className="mt-1 text-[3vw] sm:text-[13px] text-slate-500 whitespace-nowrap">{r.sub}</div>
                   </div>
                 </div>
               </div>
@@ -756,24 +756,20 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <motion.button
-              className="bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl shadow-2xl transition-all active:scale-[0.98]"
-              animate={{
-                scale: [1, 1.06, 1],
-                boxShadow: [
-                  "0 0 0 0 rgba(255,255,255,0)",
-                  "0 0 30px 8px rgba(255,255,255,0.15)",
-                  "0 0 0 0 rgba(255,255,255,0)"
-                ],
-              }}
-              transition={{
-                duration: 2.5,
-                repeat: Infinity,
-                ease: "easeInOut",
+            <button
+              className="bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-colors active:scale-[0.98] animate-pulse-subtle"
+              style={{
+                animation: 'pulse-subtle 3s ease-in-out infinite',
               }}
             >
-              <span className="opacity-100">Žiūrėti pristatymą</span>
-            </motion.button>
+              Žiūrėti pristatymą
+            </button>
+            <style>{`
+              @keyframes pulse-subtle {
+                0%, 100% { transform: scale(1); opacity: 0.9; }
+                50% { transform: scale(1.04); opacity: 1; }
+              }
+            `}</style>
           </div>
           
           {/* Subtle glow effect */}
@@ -819,7 +815,7 @@ function HowItWorksSection() {
         <StepCard
           step="3"
           title="3. AI su rimtais klientais planuoja pokalbius arba vizitus"
-          description="Jei klientas rimtai nusiteikęs, AI pasiūlo jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje – ir suplanuoja kalendoriuje."
+          description="Jei klientas rimtai nusiteikęs, AI pasiūlo jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje ir suplanuoja kalendoriuje."
           visual={<Step3Visual />}
           index={2}
         />
@@ -1155,8 +1151,8 @@ export default function TestLandingPage() {
           <div className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)]">
             {[
               {
-                title: "Didesnis pardavimų rodiklis",
-                text: "Kai klientas palieka užklausą, sistema susisiekia iškart. Daugiau žmonių atsako ir ateina į pokalbį.",
+                title: "Daugiau pardavimų",
+                text: "Daugiau užklausų tampa pardavimais dėl greitos ir kokybiškos komunikacijos su kiekvienu kontaktu.",
                 icon: TrendingUp,
               },
               {
@@ -1165,8 +1161,8 @@ export default function TestLandingPage() {
                 icon: Timer,
               },
               {
-                title: "Mokate tik už rezultatus",
-                text: "Mokate už suplanuotus strateginius pokalbius arba vizitus – kai realiai atsiranda įvykis jūsų kalendoriuje.",
+                title: "Sutaupytos išlaidos",
+                text: "Mokate tik už suplanuotus pokalbius arba vizitus, kai įvykis realiai atsiranda jūsų kalendoriuje.",
                 icon: Wallet,
               },
             ].map((c, idx, arr) => (
@@ -1305,7 +1301,7 @@ export default function TestLandingPage() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="fixed inset-x-0 bottom-0 z-50"
           >
-            <div className="pointer-events-none h-20 bg-gradient-to-t from-white/75 via-white/35 to-transparent backdrop-blur-sm" />
+            <div className="pointer-events-none h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />
             <div className="absolute inset-x-0 bottom-3 flex justify-center px-4 pointer-events-none">
               <div className="w-full max-w-[720px] pointer-events-auto">
                 <Link href="/survey">

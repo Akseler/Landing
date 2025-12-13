@@ -112,7 +112,7 @@ app.use((req, res, next) => {
       }
       // Only exit on critical errors
       if (error.code !== 'ENOTSUP') {
-        process.exit(1);
+      process.exit(1);
       }
     });
 

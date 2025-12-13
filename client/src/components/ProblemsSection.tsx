@@ -226,13 +226,13 @@ export default function ProblemsSection() {
                       
                       <div className="flex items-center justify-center h-44 w-full mb-2">
                         {benefit.visual}
-                      </div>
-                      
+        </div>
+
                       <p className="text-[14px] text-foreground/70 leading-relaxed mt-auto" data-testid={`text-problem-${index + 1}-description`}>
                         {benefit.description}
                       </p>
-                    </CardContent>
-                  </Card>
+            </CardContent>
+          </Card>
                 </div>
               ))}
             </div>
@@ -271,8 +271,8 @@ export default function ProblemsSection() {
                 <p className="text-[14px] md:text-[15px] text-foreground/70 leading-relaxed mt-auto" data-testid={`text-problem-${index + 1}-description`}>
                   {benefit.description}
                 </p>
-              </CardContent>
-            </Card>
+            </CardContent>
+          </Card>
           ))}
         </div>
       </div>
