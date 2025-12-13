@@ -72,9 +72,9 @@ function AnimatedSectionHeading({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 30 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="text-center space-y-3"
     >
       <div className="flex justify-center">
@@ -156,19 +156,16 @@ function StepCard({
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.6, delay: index * 0.15, ease: "easeOut" }}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.8, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/12 relative"
     >
       <div className="relative bg-gradient-to-b from-[#F3FBF6] to-white px-5 pt-5 pb-4">
-        <div className="absolute right-[-10px] bottom-[-30px] text-[160px] font-black text-slate-300/70 leading-none select-none pointer-events-none z-0">
-          {step}
-        </div>
         <div className="relative z-10">{visual}</div>
       </div>
-      <div className="px-6 pb-6 pt-4 relative z-10">
-        <h3 className="text-xl font-extrabold text-slate-900">{title}</h3>
+      <div className="px-6 pb-6 pt-4">
+        <h3 className="text-xl md:text-3xl font-extrabold text-slate-900">{title}</h3>
         <p className="mt-2 text-sm text-slate-500 leading-relaxed">{description}</p>
       </div>
     </motion.div>
@@ -769,6 +766,97 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
   );
 }
 
+function HowItWorksSection({ handlePlayClick }: { handlePlayClick: () => void }) {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.section
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="space-y-8"
+    >
+      <SectionHeading
+        badge="4 žingsnių formulė"
+        title="Kaip veikia AI pardavimų sistema"
+      />
+
+      <div className="bg-white rounded-3xl p-3 shadow-md border border-slate-100">
+        <div 
+          className="aspect-video w-full rounded-2xl overflow-hidden relative group cursor-pointer bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
+          onClick={handlePlayClick}
+        >
+          {/* Subtle geometric pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-32 h-32 border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute top-1/4 right-0 w-24 h-24 border-2 border-white rounded-full translate-x-1/2 -translate-y-1/2" />
+            <div className="absolute bottom-0 left-1/3 w-20 h-20 border-2 border-white rounded-full translate-x-1/2 translate-y-1/2" />
+          </div>
+          
+          {/* Subtle grid pattern */}
+          <div className="absolute inset-0 opacity-5" style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
+            backgroundSize: '40px 40px'
+          }} />
+          
+          {/* Button text instead of play button */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <motion.button
+              className="bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white font-extrabold px-8 py-4 rounded-xl shadow-2xl transition-all active:scale-[0.98]"
+              animate={{
+                scale: [1, 1.03, 1],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: [0.4, 0, 0.6, 1],
+              }}
+            >
+              <span className="opacity-100">Žiūrėti pristatymą</span>
+            </motion.button>
+          </div>
+          
+          {/* Subtle glow effect */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-5">
+        <StepCard
+          step="1"
+          title="1. Sutvarkome užklausų srautą"
+          description="Atliksime detalų jūsų turinio ir svetainės auditą ir, jei reikės, sukursime naują strategiją pastoviam užklausų srautui."
+          visual={<Step1Visual />}
+          index={0}
+        />
+        <StepCard
+          step="2"
+          title="2. Ištreniruojame jūsų AI Agentą"
+          description="Jis momentaliai susisieks su naujomis užklausomis, pasirūpins klientų kvalifikacija ir informacijos surinkimu."
+          visual={<Step2Visual />}
+          index={1}
+        />
+        <StepCard
+          step="3"
+          title="3. Gaunate suplanuotus pokalbius arba vizitus"
+          description="Jei klientas rimtai nusiteikęs, pasiūlys jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje – ir suplanuos įvykį kalendoriuje."
+          visual={<Step3Visual />}
+          index={2}
+        />
+        <StepCard
+          step="4"
+          title='4. Nepasiruošę lieka "šildomi"'
+          description='Jei klientas dar nepasiruošęs, sistema jį „šildo" informatyviu turiniu ir po kurio laiko vėl inicijuoja pokalbį.'
+          visual={<Step4Visual />}
+          index={3}
+        />
+      </div>
+    </motion.section>
+  );
+}
+
 export default function TestLandingPage() {
   const heroRef = useRef<HTMLElement | null>(null);
   const finalCtaRef = useRef<HTMLElement | null>(null);
@@ -954,83 +1042,7 @@ export default function TestLandingPage() {
         </section>
 
         {/* VIDEO + HOW IT WORKS (4 steps) */}
-        <section className="space-y-8">
-          <AnimatedSectionHeading
-            badge="4 žingsnių formulė"
-            title="Kaip veikia AI pardavimų sistema"
-          />
-
-          <div className="bg-white rounded-3xl p-3 shadow-md border border-slate-100">
-            <div 
-              className="aspect-video w-full rounded-2xl overflow-hidden relative group cursor-pointer bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
-              onClick={handlePlayClick}
-            >
-              {/* Subtle geometric pattern */}
-              <div className="absolute inset-0 opacity-10">
-                <div className="absolute top-0 left-0 w-32 h-32 border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2" />
-                <div className="absolute top-1/4 right-0 w-24 h-24 border-2 border-white rounded-full translate-x-1/2 -translate-y-1/2" />
-                <div className="absolute bottom-0 left-1/3 w-20 h-20 border-2 border-white rounded-full translate-x-1/2 translate-y-1/2" />
-              </div>
-              
-              {/* Subtle grid pattern */}
-              <div className="absolute inset-0 opacity-5" style={{
-                backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-                backgroundSize: '40px 40px'
-              }} />
-              
-              {/* Button text instead of play button */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.button
-                  className="bg-white/80 hover:bg-white/90 text-[#1d8263] font-extrabold px-8 py-4 rounded-xl shadow-2xl transition-all active:scale-[0.98]"
-                  animate={{
-                    scale: [1, 1.05, 1],
-                  }}
-                  transition={{
-                    duration: 2.5,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                >
-                  <span className="opacity-100">Žiūrėti pristatymą</span>
-                </motion.button>
-              </div>
-              
-              {/* Subtle glow effect */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
-            </div>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-5">
-            <StepCard
-              step="1"
-              title="Sutvarkome užklausų srautą"
-              description="Atliksime detalų jūsų turinio ir svetainės auditą ir, jei reikės, sukursime naują strategiją pastoviam užklausų srautui."
-              visual={<Step1Visual />}
-              index={0}
-            />
-            <StepCard
-              step="2"
-              title="Ištreniruojame jūsų AI Agentą"
-              description="Jis momentaliai susisieks su naujomis užklausomis, pasirūpins klientų kvalifikacija ir informacijos surinkimu."
-              visual={<Step2Visual />}
-              index={1}
-            />
-            <StepCard
-              step="3"
-              title="Gaunate pokalbius arba vizitus"
-              description="Jei klientas rimtai nusiteikęs, pasiūlys jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje – ir suplanuos įvykį kalendoriuje."
-              visual={<Step3Visual />}
-              index={2}
-            />
-            <StepCard
-              step="4"
-              title='Nepasiruošę "šildomi"'
-              description='Jei klientas dar nepasiruošęs, sistema jį „šildo" informatyviu turiniu ir po kurio laiko vėl inicijuoja pokalbį.'
-              visual={<Step4Visual />}
-              index={3}
-            />
-          </div>
-        </section>
+        <HowItWorksSection handlePlayClick={handlePlayClick} />
 
         {/* RESULTS (same as old, restyled for /test) */}
         <TestResults sectionRef={resultsSectionRef} />
