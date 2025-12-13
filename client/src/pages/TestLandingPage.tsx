@@ -964,7 +964,7 @@ export default function TestLandingPage() {
       <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-16 pb-28 space-y-28">
         {/* HERO */}
         <section ref={heroRef} className="space-y-9 text-center">
-          <div className="space-y-3 pt-6 pb-2">
+          <div className="space-y-3 pt-12 pb-2">
             <div className="flex justify-center">
               <Badge variant="outline" className={badgeGreen}>
                 Paslaugos teikėjai
