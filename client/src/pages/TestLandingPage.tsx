@@ -5,6 +5,7 @@ import MarketsScrolling from "@/components/MarketsScrolling";
 import { trackPageView } from "@/lib/analytics";
 import { Badge } from "@/components/ui/badge";
 import {
+  Bot,
   Calendar,
   CheckCircle2,
   Globe,
@@ -161,12 +162,12 @@ function StepCard({
       transition={{ duration: 0.8, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/12 relative"
     >
-      <div className="relative bg-gradient-to-b from-[#F3FBF6] to-white px-6 pt-6 pb-5">
+      <div className="relative bg-gradient-to-b from-[#F3FBF6] to-white px-4 md:px-6 pt-5 md:pt-6 pb-4 md:pb-5">
         <div className="relative z-10">{visual}</div>
       </div>
-      <div className="px-7 pb-7 pt-5">
-        <h3 className="text-[19px] md:text-[29px] font-extrabold text-slate-900">{title}</h3>
-        <p className="mt-2 text-sm text-slate-500 leading-relaxed">{description}</p>
+      <div className="px-5 md:px-7 pb-5 md:pb-7 pt-4 md:pt-5">
+        <h3 className="text-[17px] md:text-[29px] font-extrabold text-slate-900 leading-tight">{title}</h3>
+        <p className="mt-2 text-xs md:text-sm text-slate-500 leading-relaxed">{description}</p>
       </div>
     </motion.div>
   );
@@ -277,9 +278,9 @@ function Step2Visual() {
   const showMsg = stage === 1 || stage === 3 || stage === 4;
 
   return (
-    <div className="h-[210px] flex items-center justify-center">
+    <div className="h-[230px] flex items-center justify-center">
       <div className="w-full max-w-[360px]">
-        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-sm p-4 overflow-hidden h-[190px]">
+        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-sm p-4 overflow-hidden h-[210px]">
           {/* Sources */}
           <div className="absolute left-4 top-4 flex flex-col gap-8">
             {/* Facebook Box */}
@@ -327,15 +328,15 @@ function Step2Visual() {
             </motion.div>
           </div>
 
-          {/* SMS */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[130px] rounded-2xl bg-white border border-[#1d8263]/20 shadow-sm p-3 z-10">
+          {/* AI Message */}
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[140px] rounded-2xl bg-white border border-[#1d8263]/20 shadow-sm p-3 z-10">
             <div className="flex items-center justify-between">
               <div className="text-[10px] font-bold uppercase tracking-wider text-[#1d8263]">
-                SMS
+                AI
               </div>
-              <Smartphone className="w-4 h-4 text-[#1d8263]" />
+              <Bot className="w-4 h-4 text-[#1d8263]" />
             </div>
-            <div className="mt-2 rounded-xl border border-[#1d8263]/15 bg-[#1d8263]/8 p-2 text-[9px] text-slate-700 min-h-[40px] flex items-center">
+            <div className="mt-2 rounded-xl border border-[#1d8263]/15 bg-[#1d8263]/8 p-2 text-[8px] text-slate-700 min-h-[55px] flex items-center">
               <AnimatePresence mode="wait">
                 {showMsg ? (
                   <motion.div
@@ -345,7 +346,7 @@ function Step2Visual() {
                     exit={{ opacity: 0 }}
                     className="font-medium leading-tight"
                   >
-                    Sveiki! Gavome Jūsų užklausą.
+                    Sveiki, gavome Jūsų užklausą. Domitės dirbtiniu intelektu?
                   </motion.div>
                 ) : (
                   <motion.div
@@ -454,129 +455,86 @@ function Step2Visual() {
 }
 
 function Step3Visual() {
-  const steps = useMemo(
-    () => [
-      { label: "Informacija surinkta" },
-      { label: "Klientas rimtai nusiteikęs" },
-      { label: "Pasiūlytas laikas" },
-      { label: "Pokalbis arba vizitas suplanuotas" },
-    ],
-    []
-  );
-
-  const [s, setS] = useState(0);
+  const [stage, setStage] = useState(0);
+  const eventDays = [3, 8, 12];
+  
   useEffect(() => {
-    const t = setInterval(() => setS((v) => (v + 1) % steps.length), 2000);
-    return () => clearInterval(t);
-  }, [steps.length]);
+    const interval = setInterval(() => {
+      setStage((v) => (v + 1) % 7);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const filledDays = Math.min(stage, 3);
 
   return (
-    <div className="h-[210px] flex items-center justify-center overflow-hidden">
-      <div className="w-full max-w-[360px] overflow-hidden">
-        <AnimatePresence mode="wait">
-          {s < 3 ? (
-            <motion.div
-              key={steps[s].label}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              className="h-[190px] flex items-center justify-center"
-            >
-              <div className="w-full max-w-[320px] rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
-                <div className="flex items-center justify-between">
-                  <div className="text-[11px] font-bold text-slate-700">
-                    {s === 0 ? "Info surinkta" : s === 1 ? "Kvalifikacija" : "Pasiūlytas laikas"}
-                  </div>
-                  <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">
-                    {s + 1}
-                  </div>
-                </div>
-
-                {s === 0 ? (
-                  <div className="mt-3 space-y-2">
-                    {["Poreikis", "Biudžetas", "Kontaktai"].map((t) => (
-                      <div
-                        key={t}
-                        className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[11px]"
-                      >
-                        <span className="font-semibold text-slate-700">{t}</span>
-                        <CheckCircle2 className="w-4 h-4 text-[#1d8263]" />
-                      </div>
-                    ))}
-                  </div>
-                ) : s === 1 ? (
-                  <div className="mt-3 rounded-xl border border-[#1d8263]/20 bg-[#1d8263]/6 px-3 py-3">
-                    <div className="text-[12px] font-bold text-[#1d8263]">
-                      Klientas rimtai nusiteikęs
-                    </div>
-                    <div className="mt-1 text-[11px] text-slate-600">
-                      Atitinka kriterijus, galima planuoti pokalbį / vizitą
-                    </div>
-                  </div>
-                ) : (
-                  <div className="mt-3 space-y-2">
-                    {["Rytoj 11:00", "Ket 14:00", "Pen 10:00"].map((t) => (
-                      <div
-                        key={t}
-                        className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] text-slate-700"
-                      >
-                        <MessageSquare className="w-4 h-4 text-slate-400" />
-                        <span className="font-semibold">{t}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="calendar"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              className="h-[190px] rounded-2xl bg-white border border-slate-200 shadow-sm p-4 flex flex-col"
-            >
-              <div className="flex items-center justify-between shrink-0">
-                <div className="text-[11px] font-bold text-slate-700">
-                  Mini kalendorius
-                </div>
-                <div className="w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">
-                  4
-                </div>
-              </div>
-
-              <div className="mt-3 grid grid-cols-7 gap-1.5 shrink-0">
-                {Array.from({ length: 14 }).map((_, i) => {
-                  const isEvent = i === 9;
-                  return (
-                    <div
-                      key={i}
-                      className={`h-4 rounded-md ${
-                        isEvent ? "bg-[#1d8263]" : "bg-slate-100"
-                      }`}
-                    />
-                  );
-                })}
-              </div>
-
-              <div className="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-2.5 min-h-0 flex-1 flex flex-col justify-center">
-                <div className="text-[11px] font-bold text-slate-800 truncate">
-                  Jonas • Rytoj 11:00 • Pokalbis
-                </div>
-                <div className="mt-0.5 text-[10px] text-slate-600 truncate opacity-80">
-                  Kontaktai + kriterijai patvirtinti
-                </div>
-              </div>
-
-              <div className="mt-2 flex items-center gap-2 text-[10px] text-slate-700 font-semibold shrink-0">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#1d8263]" />
-                {steps[s].label}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <div className="h-[210px] flex items-center justify-center">
+      <div className="w-full max-w-[360px]">
+        <div className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
+          <div className="flex items-center justify-between">
+            <div className="text-[11px] font-bold text-slate-700">
+              Kalendorius
+            </div>
+            <div className="text-[11px] font-bold text-[#1d8263]">
+              {filledDays} suplanuoti
+            </div>
+          </div>
+          
+          <div className="mt-3 grid grid-cols-7 gap-1.5">
+            {Array.from({ length: 14 }).map((_, i) => {
+              const eventIndex = eventDays.indexOf(i);
+              const isEventDay = eventIndex !== -1;
+              const isFilled = isEventDay && eventIndex < filledDays;
+              return (
+                <motion.div
+                  key={i}
+                  className="h-4 rounded-md"
+                  animate={{ 
+                    backgroundColor: isFilled ? "#1d8263" : "#f1f5f9",
+                    scale: isFilled ? [1, 1.2, 1] : 1
+                  }}
+                  transition={{ duration: 0.3 }}
+                />
+              );
+            })}
+          </div>
+          
+          <div className="mt-3">
+            <div className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 h-[30px] text-[10px] text-slate-700">
+              <motion.div
+                className="flex items-center gap-2 w-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: filledDays >= 1 ? 1 : 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1d8263] shrink-0" />
+                <span className="font-semibold">Jonas • pir 11:00</span>
+              </motion.div>
+            </div>
+            <div className="mt-2 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 h-[30px] text-[10px] text-slate-700">
+              <motion.div
+                className="flex items-center gap-2 w-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: filledDays >= 2 ? 1 : 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1d8263] shrink-0" />
+                <span className="font-semibold">Aistė • tre 14:00</span>
+              </motion.div>
+            </div>
+            <div className="mt-2 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 h-[30px] text-[10px] text-slate-700">
+              <motion.div
+                className="flex items-center gap-2 w-full"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: filledDays >= 3 ? 1 : 0 }}
+                transition={{ duration: 0.25 }}
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#1d8263] shrink-0" />
+                <span className="font-semibold">Tomas • pen 10:00</span>
+              </motion.div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -690,9 +648,9 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
         {results.map((r) => (
           <div
             key={r.company}
-            className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-10 py-14"
+            className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-8 pt-6 pb-10 flex flex-col min-h-[320px]"
           >
-            <div className="flex flex-col items-center gap-2 text-center">
+            <div className="flex flex-col items-center gap-2 text-center shrink-0">
               <img
                 src={r.logo}
                 alt={r.company}
@@ -702,12 +660,12 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
                 {r.revenue}
               </div>
             </div>
-            <div className="my-5 h-px bg-slate-100" />
-            <div className="text-center">
+            <div className="mt-4 h-px bg-slate-200/60 shrink-0" />
+            <div className="flex-1 flex flex-col items-center justify-center text-center">
               <div className="text-5xl font-extrabold text-[#1d8263]">
                 {r.stat}
               </div>
-              <div className="mt-3 text-base font-bold text-slate-900">
+              <div className="mt-4 text-base font-bold text-slate-900">
                 {r.desc}
               </div>
               <div className="mt-1 text-sm text-slate-500">{r.sub}</div>
@@ -719,29 +677,29 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
       {/* Mobile swipe */}
       <div className="md:hidden">
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             {results.map((r, idx) => (
-              <div key={r.company} className="flex-[0_0_88%] min-w-0">
-                <div className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-10 py-14">
-                  <div className="flex flex-col items-center gap-2 text-center">
+              <div key={r.company} className="flex-[0_0_92%] min-w-0">
+                <div className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-6 pt-5 pb-8 flex flex-col min-h-[280px]">
+                  <div className="flex flex-col items-center gap-2 text-center shrink-0">
                     <img
                       src={r.logo}
                       alt={r.company}
-                      className="h-8 w-auto object-contain opacity-90"
+                      className="h-7 w-auto object-contain opacity-90"
                     />
-                    <div className="text-[11px] text-slate-400 font-medium">
+                    <div className="text-[10px] text-slate-400 font-medium">
                       {r.revenue}
                     </div>
                   </div>
-                  <div className="my-5 h-px bg-slate-100" />
-                  <div className="text-center">
-                    <div className="text-5xl font-extrabold text-[#1d8263]">
+                  <div className="mt-3 h-px bg-slate-200/60 shrink-0" />
+                  <div className="flex-1 flex flex-col items-center justify-center text-center">
+                    <div className="text-4xl font-extrabold text-[#1d8263]">
                       {r.stat}
                     </div>
-                    <div className="mt-3 text-base font-bold text-slate-900">
+                    <div className="mt-3 text-sm font-bold text-slate-900">
                       {r.desc}
                     </div>
-                    <div className="mt-1 text-sm text-slate-500">{r.sub}</div>
+                    <div className="mt-1 text-xs text-slate-500">{r.sub}</div>
                   </div>
                 </div>
               </div>
@@ -766,7 +724,7 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
   );
 }
 
-function HowItWorksSection({ handlePlayClick }: { handlePlayClick: () => void }) {
+function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
@@ -778,11 +736,6 @@ function HowItWorksSection({ handlePlayClick }: { handlePlayClick: () => void })
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="space-y-8"
     >
-      <SectionHeading
-        badge="4 žingsnių formulė"
-        title="Kaip veikia AI pardavimų sistema"
-      />
-
       <div className="bg-white rounded-3xl p-3 shadow-md border border-slate-100">
         <div 
           className="aspect-video w-full rounded-2xl overflow-hidden relative group cursor-pointer bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
@@ -822,6 +775,26 @@ function HowItWorksSection({ handlePlayClick }: { handlePlayClick: () => void })
           <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
         </div>
       </div>
+    </motion.section>
+  );
+}
+
+function HowItWorksSection() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.section
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+      className="space-y-8"
+    >
+      <SectionHeading
+        badge="4 žingsnių formulė"
+        title="Kaip veikia AI pardavimų sistema"
+      />
 
       <div className="grid md:grid-cols-2 gap-5">
         <StepCard
@@ -833,22 +806,22 @@ function HowItWorksSection({ handlePlayClick }: { handlePlayClick: () => void })
         />
         <StepCard
           step="2"
-          title="2. Ištreniruojame jūsų AI Agentą"
-          description="Jis momentaliai susisieks su naujomis užklausomis, pasirūpins klientų kvalifikacija ir informacijos surinkimu."
+          title="2. AI susisiekia su užklausomis"
+          description="AI agentas momentaliai susisiekia su naujomis užklausomis, užmezga žmogišką pokalbį ir išsiaiškina kliento situaciją bei poreikius."
           visual={<Step2Visual />}
           index={1}
         />
         <StepCard
           step="3"
-          title="3. Gaunate suplanuotus pokalbius arba vizitus"
-          description="Jei klientas rimtai nusiteikęs, pasiūlys jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje – ir suplanuos įvykį kalendoriuje."
+          title="3. AI su rimtais klientais planuoja pokalbius arba vizitus"
+          description="Jei klientas rimtai nusiteikęs, AI pasiūlo jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje – ir suplanuoja kalendoriuje."
           visual={<Step3Visual />}
           index={2}
         />
         <StepCard
           step="4"
           title='4. Nepasiruošę lieka "šildomi"'
-          description='Jei klientas dar nepasiruošęs, sistema jį „šildo" informatyviu turiniu ir po kurio laiko vėl inicijuoja pokalbį.'
+          description='Jei klientas dar nepasiruošęs, sistema jį „šildo" informatyviu turiniu ir po kurio laiko vėl inicijuoja pokalbį ir veda link pardavimo.'
           visual={<Step4Visual />}
           index={3}
         />
@@ -987,46 +960,46 @@ export default function TestLandingPage() {
     <div className="min-h-screen bg-white flex flex-col font-sans">
       <Header />
 
-      <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-24 pb-28 space-y-16">
+      <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-16 pb-28 space-y-16">
         {/* HERO */}
         <section ref={heroRef} className="space-y-9 text-center">
-          <div className="space-y-3 px-2 py-6">
+          <div className="space-y-3 px-2 pt-6 pb-2">
             <div className="flex justify-center">
               <Badge variant="outline" className={badgeGreen}>
                 Paslaugos teikėjai
               </Badge>
             </div>
-            <h1 className="text-[24px] sm:text-3xl md:text-[40px] font-extrabold leading-[1.18] tracking-tight text-slate-900 max-w-[560px] mx-auto">
-              Gaukite AI pardavimų sistemą,<br className="md:hidden" />{" "}
-              kuri mūsų klientams atneša<br className="md:hidden" />{" "}
+            <h1 className="text-[20px] sm:text-[24px] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900 max-w-[560px] mx-auto">
+              Gaukite AI pardavimų sistemą,<br />
+              kuri mūsų klientams atneša<br />
               10x grąžą iš reklamos biudžeto
             </h1>
-            <p className="text-base text-slate-600 max-w-[500px] mx-auto leading-relaxed">
+            <p className="text-sm md:text-base text-slate-600 max-w-[500px] mx-auto leading-relaxed">
               Jokių mėnesinių įsipareigojimų, mokate tik už suplanuotus pokalbius arba vizitus.
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.2)] space-y-4 relative overflow-hidden mt-3">
+          <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.2)] space-y-4 relative overflow-hidden mt-0">
             <h2 className="text-lg font-extrabold text-white relative z-10">
               Kaip parduodate savo paslaugas?
             </h2>
 
             <div className="grid grid-cols-2 gap-4 relative z-10">
-              <Link href="/survey" className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-4 md:p-5 flex flex-col items-center justify-center gap-2 md:gap-3 text-center active:scale-[0.98]">
+              <Link href="/survey" className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-5 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 text-center active:scale-[0.98]">
                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner">
                   <Phone className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
-                <span className="font-bold text-xs md:text-sm text-white transition-colors whitespace-nowrap">
-                  Nuotoliniu būdu
+                <span className="font-bold text-sm md:text-base text-white transition-colors leading-tight">
+                  Nuotoliniu<br />būdu
                 </span>
               </Link>
 
-              <Link href="/survey" className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-4 md:p-5 flex flex-col items-center justify-center gap-2 md:gap-3 text-center active:scale-[0.98]">
+              <Link href="/survey" className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-5 md:p-6 flex flex-col items-center justify-center gap-2 md:gap-3 text-center active:scale-[0.98]">
                 <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner">
                   <MapPin className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
-                <span className="font-bold text-xs md:text-sm text-white transition-colors whitespace-nowrap">
-                  Gyvai vietoje
+                <span className="font-bold text-sm md:text-base text-white transition-colors leading-tight">
+                  Gyvai<br />vietoje
                 </span>
               </Link>
             </div>
@@ -1041,8 +1014,11 @@ export default function TestLandingPage() {
           </div>
         </section>
 
-        {/* VIDEO + HOW IT WORKS (4 steps) */}
-        <HowItWorksSection handlePlayClick={handlePlayClick} />
+        {/* VSL */}
+        <VSLSection handlePlayClick={handlePlayClick} />
+
+        {/* HOW IT WORKS (4 steps) */}
+        <HowItWorksSection />
 
         {/* RESULTS (same as old, restyled for /test) */}
         <TestResults sectionRef={resultsSectionRef} />
@@ -1056,7 +1032,7 @@ export default function TestLandingPage() {
 
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-white rounded-3xl overflow-hidden border border-slate-100 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)]">
-              <div className="bg-gradient-to-b from-[#EAF7F1] to-white px-5 pt-5 pb-4">
+              <div className="bg-gradient-to-b from-[#FEE2E2] to-white px-5 pt-5 pb-4">
                 <div className="h-[190px] relative overflow-hidden rounded-2xl bg-white border border-slate-200 shadow-sm">
                   {Array.from({ length: 9 }).map((_, i) => {
                     const left = (i * 17) % 85;
@@ -1232,7 +1208,7 @@ export default function TestLandingPage() {
             <div className="mx-auto w-fit px-4 py-2 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold uppercase tracking-widest">
               Paskutinis žingsnis
             </div>
-            <h2 className="text-2xl md:text-5xl font-extrabold tracking-tight max-w-[600px] mx-auto">
+            <h2 className="text-[20px] sm:text-2xl md:text-5xl font-extrabold tracking-tight max-w-[600px] mx-auto leading-tight">
               Kad gautūmėt pastovų ir<br className="md:hidden" />{" "}
               kokybišką klientų srautą,<br className="md:hidden" />{" "}
               jums reikia plano
