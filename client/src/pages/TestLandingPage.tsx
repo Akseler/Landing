@@ -120,10 +120,10 @@ function RotatingTrust() {
         <AnimatePresence mode="wait">
           <motion.div
             key={items[idx].name}
-            initial={{ opacity: 0, y: 6 }}
+            initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.35 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
             className="absolute inset-0 flex items-center justify-center"
           >
             <img
@@ -757,14 +757,19 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.button
-              className="bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 text-white font-extrabold px-8 py-4 rounded-xl shadow-2xl transition-all active:scale-[0.98]"
+              className="bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl shadow-2xl transition-all active:scale-[0.98]"
               animate={{
-                scale: [1, 1.03, 1],
+                scale: [1, 1.06, 1],
+                boxShadow: [
+                  "0 0 0 0 rgba(255,255,255,0)",
+                  "0 0 30px 8px rgba(255,255,255,0.15)",
+                  "0 0 0 0 rgba(255,255,255,0)"
+                ],
               }}
               transition={{
-                duration: 3,
+                duration: 2.5,
                 repeat: Infinity,
-                ease: [0.4, 0, 0.6, 1],
+                ease: "easeInOut",
               }}
             >
               <span className="opacity-100">Žiūrėti pristatymą</span>
@@ -963,18 +968,18 @@ export default function TestLandingPage() {
       <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-16 pb-28 space-y-16">
         {/* HERO */}
         <section ref={heroRef} className="space-y-9 text-center">
-          <div className="space-y-3 px-2 pt-6 pb-2">
+          <div className="space-y-3 pt-6 pb-2">
             <div className="flex justify-center">
               <Badge variant="outline" className={badgeGreen}>
                 Paslaugos teikėjai
               </Badge>
             </div>
-            <h1 className="text-[20px] sm:text-[24px] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900 max-w-[560px] mx-auto">
+            <h1 className="text-[6vw] sm:text-[5vw] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900">
               Gaukite AI pardavimų sistemą,<br />
               kuri mūsų klientams atneša<br />
               10x grąžą iš reklamos biudžeto
             </h1>
-            <p className="text-sm md:text-base text-slate-600 max-w-[500px] mx-auto leading-relaxed">
+            <p className="text-sm md:text-base text-slate-600 leading-relaxed">
               Jokių mėnesinių įsipareigojimų, mokate tik už suplanuotus pokalbius arba vizitus.
             </p>
           </div>
@@ -1208,9 +1213,9 @@ export default function TestLandingPage() {
             <div className="mx-auto w-fit px-4 py-2 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold uppercase tracking-widest">
               Paskutinis žingsnis
             </div>
-            <h2 className="text-[20px] sm:text-2xl md:text-5xl font-extrabold tracking-tight max-w-[600px] mx-auto leading-tight">
-              Kad gautūmėt pastovų ir<br className="md:hidden" />{" "}
-              kokybišką klientų srautą,<br className="md:hidden" />{" "}
+            <h2 className="text-[5.5vw] sm:text-[4.5vw] md:text-[36px] font-extrabold tracking-tight leading-[1.2]">
+              Kad gautūmėt pastovų ir<br />
+              kokybišką klientų srautą,<br />
               jums reikia plano
             </h2>
             <div className="space-y-4">
