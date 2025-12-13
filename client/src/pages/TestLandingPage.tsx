@@ -161,11 +161,11 @@ function StepCard({
       transition={{ duration: 0.8, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/12 relative"
     >
-      <div className="relative bg-gradient-to-b from-[#F3FBF6] to-white px-5 pt-5 pb-4">
+      <div className="relative bg-gradient-to-b from-[#F3FBF6] to-white px-6 pt-6 pb-5">
         <div className="relative z-10">{visual}</div>
       </div>
-      <div className="px-6 pb-6 pt-4">
-        <h3 className="text-xl md:text-3xl font-extrabold text-slate-900">{title}</h3>
+      <div className="px-7 pb-7 pt-5">
+        <h3 className="text-[19px] md:text-[29px] font-extrabold text-slate-900">{title}</h3>
         <p className="mt-2 text-sm text-slate-500 leading-relaxed">{description}</p>
       </div>
     </motion.div>
@@ -690,7 +690,7 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
         {results.map((r) => (
           <div
             key={r.company}
-            className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] p-6"
+            className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-10 py-14"
           >
             <div className="flex flex-col items-center gap-2 text-center">
               <img
@@ -722,7 +722,7 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
           <div className="flex gap-4">
             {results.map((r, idx) => (
               <div key={r.company} className="flex-[0_0_88%] min-w-0">
-                <div className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] p-6">
+                <div className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)] px-10 py-14">
                   <div className="flex flex-col items-center gap-2 text-center">
                     <img
                       src={r.logo}
@@ -1006,29 +1006,29 @@ export default function TestLandingPage() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-6 md:p-8 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.2)] space-y-4 relative overflow-hidden mt-3">
+          <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.2)] space-y-4 relative overflow-hidden mt-3">
             <h2 className="text-lg font-extrabold text-white relative z-10">
               Kaip parduodate savo paslaugas?
             </h2>
 
             <div className="grid grid-cols-2 gap-4 relative z-10">
-              <button className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-5 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98]">
-                <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner">
-                  <Phone className="w-7 h-7 text-white" />
+              <Link href="/survey" className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-4 md:p-5 flex flex-col items-center justify-center gap-2 md:gap-3 text-center active:scale-[0.98]">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner">
+                  <Phone className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
-                <span className="font-bold text-sm text-white transition-colors">
+                <span className="font-bold text-xs md:text-sm text-white transition-colors whitespace-nowrap">
                   Nuotoliniu būdu
                 </span>
-              </button>
+              </Link>
 
-              <button className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-5 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98]">
-                <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner">
-                  <MapPin className="w-7 h-7 text-white" />
+              <Link href="/survey" className="group relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 transition-all duration-200 p-4 md:p-5 flex flex-col items-center justify-center gap-2 md:gap-3 text-center active:scale-[0.98]">
+                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full bg-white/10 border border-white/20 flex items-center justify-center mb-1 group-hover:scale-110 transition-transform shadow-inner">
+                  <MapPin className="w-5 h-5 md:w-7 md:h-7 text-white" />
                 </div>
-                <span className="font-bold text-sm text-white transition-colors">
+                <span className="font-bold text-xs md:text-sm text-white transition-colors whitespace-nowrap">
                   Gyvai vietoje
                 </span>
-              </button>
+              </Link>
             </div>
 
             <div className="relative z-10">
