@@ -27,7 +27,7 @@ import energija24Logo from "@assets/energija transparent.png";
 import specdarbaiLogo from "@assets/3_1763670424934.png";
 
 const badgeGreen =
-  "px-4 py-1.5 text-[10px] font-bold border-2 border-[#1d8263]/25 bg-[#1d8263]/5 text-[#1d8263] uppercase tracking-widest rounded-full";
+  "px-5 py-2 text-[11px] font-bold border-2 border-[#1d8263]/25 bg-[#1d8263]/5 text-[#1d8263] uppercase tracking-widest rounded-full";
 
 function SectionHeading({
   badge,
@@ -45,7 +45,7 @@ function SectionHeading({
           {badge}
         </Badge>
       </div>
-      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+      <h2 className="text-xl md:text-3xl font-extrabold tracking-tight text-slate-900">
         {title}
       </h2>
       {subtitle ? (
@@ -82,7 +82,7 @@ function AnimatedSectionHeading({
           {badge}
         </Badge>
       </div>
-      <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
+      <h2 className="text-xl md:text-3xl font-extrabold tracking-tight text-slate-900">
         {title}
       </h2>
       {subtitle ? (
@@ -162,7 +162,7 @@ function StepCard({
       className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/12 relative"
     >
       <div className="relative bg-gradient-to-b from-[#F3FBF6] to-white px-5 pt-5 pb-4">
-        <div className="absolute right-[-10px] bottom-[-30px] text-[160px] font-black text-slate-200/40 leading-none select-none pointer-events-none z-0">
+        <div className="absolute right-[-10px] bottom-[-30px] text-[160px] font-black text-slate-300/70 leading-none select-none pointer-events-none z-0">
           {step}
         </div>
         <div className="relative z-10">{visual}</div>
@@ -902,7 +902,7 @@ export default function TestLandingPage() {
       <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-24 pb-28 space-y-16">
         {/* HERO */}
         <section ref={heroRef} className="space-y-9 text-center">
-          <div className="space-y-5 px-2 py-6">
+          <div className="space-y-3 px-2 py-6">
             <div className="flex justify-center">
               <Badge variant="outline" className={badgeGreen}>
                 Paslaugos teikėjai
@@ -918,7 +918,7 @@ export default function TestLandingPage() {
             </p>
           </div>
 
-          <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-6 md:p-8 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.2)] space-y-6 relative overflow-hidden">
+          <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-6 md:p-8 shadow-[0_20px_40px_-12px_rgba(0,0,0,0.2)] space-y-4 relative overflow-hidden mt-3">
             <h2 className="text-lg font-extrabold text-white relative z-10">
               Kaip parduodate savo paslaugas?
             </h2>
@@ -1214,22 +1214,24 @@ export default function TestLandingPage() {
         <section
           ref={finalCtaRef}
           className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-10 md:p-12 text-center text-white shadow-xl shadow-[#1d8263]/20 space-y-7 relative overflow-hidden"
-          style={{ paddingTop: '80px', paddingBottom: '80px' }}
+          style={{ paddingTop: '60px', paddingBottom: '60px' }}
         >
           <div className="relative z-10 space-y-8">
             <div className="mx-auto w-fit px-4 py-2 rounded-full bg-white/10 border border-white/15 text-[11px] font-bold uppercase tracking-widest">
               Paskutinis žingsnis
             </div>
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight max-w-[600px] mx-auto">
-              Kad gautūmėt pastovų ir kokybišką klientų srauta, jums reikia plano
+            <h2 className="text-2xl md:text-5xl font-extrabold tracking-tight max-w-[600px] mx-auto">
+              Kad gautūmėt pastovų ir<br className="md:hidden" />{" "}
+              kokybišką klientų srautą,<br className="md:hidden" />{" "}
+              jums reikia plano
             </h2>
             <div className="space-y-4">
               <Link href="/survey">
-                <a className="block w-full bg-white text-[#1d8263] font-extrabold py-4 rounded-xl shadow-2xl hover:bg-slate-50 transition-colors active:scale-[0.98] text-lg">
-                  Registruotis strateginiui pokalbiui
+                <a className="block w-full bg-white text-[#1d8263] font-extrabold py-4 rounded-xl shadow-2xl hover:bg-slate-50 transition-colors active:scale-[0.98] text-base md:text-lg whitespace-nowrap">
+                  Registruotis pokalbiui
                 </a>
               </Link>
-              <div className="flex items-center justify-center gap-2 text-sm text-white/80">
+              <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-white/80 whitespace-nowrap">
                 <motion.div
                   className="w-2 h-2 rounded-full bg-white"
                   animate={{ opacity: [1, 0.3, 1] }}
