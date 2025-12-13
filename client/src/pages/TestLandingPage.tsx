@@ -160,7 +160,7 @@ function StepCard({
       initial={{ opacity: 0, y: 30 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
       transition={{ duration: 0.8, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-gradient-to-b from-[#F3FBF6] to-white rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/12 relative"
+      className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/20 relative"
     >
       <div className="relative px-4 md:px-6 pt-5 md:pt-6 pb-4 md:pb-5">
         <div className="relative z-10">{visual}</div>
@@ -814,7 +814,7 @@ function HowItWorksSection() {
         />
         <StepCard
           step="3"
-          title="3. AI su rimtais klientais planuoja pokalbius arba vizitus"
+          title="3. Gaunate kvalifikuotus ir suplanuotus klientus"
           description="Jei klientas rimtai nusiteikęs, AI pasiūlo jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje ir suplanuoja kalendoriuje."
           visual={<Step3Visual />}
           index={2}
@@ -961,7 +961,7 @@ export default function TestLandingPage() {
     <div className="min-h-screen bg-white flex flex-col font-sans">
       <Header />
 
-      <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-16 pb-28 space-y-16">
+      <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-16 pb-28 space-y-28">
         {/* HERO */}
         <section ref={heroRef} className="space-y-9 text-center">
           <div className="space-y-3 pt-6 pb-2">
