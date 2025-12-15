@@ -25,7 +25,7 @@ export default function MarketsScrolling({
 
   return (
     <section
-      className={`overflow-hidden ${
+      className={`overflow-hidden bg-[#E0F2E8] ${
         compact ? "pt-6 md:pt-8 pb-8 md:pb-10" : "pt-16 md:pt-20 pb-20 md:pb-24"
       }`}
     >
@@ -49,8 +49,8 @@ export default function MarketsScrolling({
       ) : null}
       <div className="relative w-full max-w-5xl mx-auto">
         {/* Gradient overlays for smooth edges */}
-        <div className="absolute inset-y-0 left-0 w-32 md:w-48 lg:w-64 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-32 md:w-48 lg:w-64 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 left-0 w-32 md:w-48 lg:w-64 bg-gradient-to-r from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
+        <div className="absolute inset-y-0 right-0 w-32 md:w-48 lg:w-64 bg-gradient-to-l from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
         
         <div className="space-y-4 w-full">
           {/* First row - scrolling left */}
@@ -59,7 +59,7 @@ export default function MarketsScrolling({
               {[...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1].map((industry, index) => (
                 <div
                   key={`row1-${index}`}
-                  className="px-6 py-3 text-sm font-medium border-2 border-border whitespace-nowrap flex-shrink-0 bg-[#1d8263]/10 rounded-md"
+                  className="px-6 py-3 text-sm font-medium border-2 border-[#1d8263]/30 whitespace-nowrap flex-shrink-0 bg-white text-[#1d8263] rounded-md"
                 >
                   {industry}
                 </div>
@@ -72,7 +72,7 @@ export default function MarketsScrolling({
               {[...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2].map((industry, index) => (
                 <div
                   key={`row2-${index}`}
-                  className="px-6 py-3 text-sm font-medium border-2 border-border whitespace-nowrap flex-shrink-0 bg-[#1d8263]/10 rounded-md"
+                  className="px-6 py-3 text-sm font-medium border-2 border-[#1d8263]/30 whitespace-nowrap flex-shrink-0 bg-white text-[#1d8263] rounded-md"
                 >
                   {industry}
                 </div>

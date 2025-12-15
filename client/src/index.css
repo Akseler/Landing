@@ -237,6 +237,23 @@
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+/* Hero CTA buttons - subtle modern float */
+.hero-button {
+  animation: hero-float 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.45);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 22px 55px -24px rgba(0, 0, 0, 0.55);
+  }
+}
+
 /* Gradient CTA button */
 .btn-gradient {
   background: linear-gradient(135deg, #1d8263 0%, #2da87a 50%, #1d8263 100%);
