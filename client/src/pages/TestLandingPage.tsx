@@ -759,7 +759,7 @@ function HowItWorksSection() {
         />
         <StepCard
           step="2"
-          title="2. AI susisiekia ir bendrauja su jūsų užklausomis"
+          title="2. AI susisiekia su užklausomis"
           description="AI agentas iškarto parašo SMS žiniutę, užmezga žmogišką pokalbį, išsiaiškina kliento situaciją bei poreikius."
           visual={<Step2Visual />}
           index={1}
