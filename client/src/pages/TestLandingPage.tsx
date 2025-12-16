@@ -682,25 +682,19 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const hasAutoPlayed = useRef(false);
 
-  // Auto-play on mobile when "Žiūrėti pristatymą" button is centered in viewport
-  // Use touch/click event as user gesture to enable fullscreen
+  // Auto-play on mobile when "Žiūrėti video pristatymą" button is centered in viewport
+  // Use touchend as user gesture to enable fullscreen (touchend happens after scroll)
   useEffect(() => {
     if (hasAutoPlayed.current) return;
     
     // Only on mobile (screen width < 768px)
     if (window.innerWidth >= 768) return;
     
-    let touchStartTime = 0;
-    let hasUserInteracted = false;
+    let scrollTimeout: NodeJS.Timeout;
+    let touchStartY = 0;
     
-    // Track user interaction (touch or click) to enable fullscreen
-    const handleUserInteraction = () => {
-      hasUserInteracted = true;
-      touchStartTime = Date.now();
-    };
-    
-    const checkAndPlay = () => {
-      if (!buttonRef.current || !hasUserInteracted) return;
+    const checkIfCentered = () => {
+      if (!buttonRef.current) return false;
       
       const buttonRect = buttonRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
@@ -714,36 +708,60 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       // Check if button is visible
       const isVisible = buttonRect.top < viewportHeight && buttonRect.bottom > 0;
       
-      // Only auto-play if user has interacted within last 2 seconds (user gesture context)
-      const timeSinceInteraction = Date.now() - touchStartTime;
-      const isRecentInteraction = timeSinceInteraction < 2000;
+      return isCentered && isVisible;
+    };
+    
+    const tryAutoPlay = () => {
+      if (hasAutoPlayed.current) return;
       
-      if (isCentered && isVisible && !hasAutoPlayed.current && isRecentInteraction) {
+      if (checkIfCentered()) {
         hasAutoPlayed.current = true;
-        // Small delay to ensure smooth transition
-        setTimeout(() => {
-          handlePlayClick();
-        }, 300);
+        // Call handlePlayClick within user gesture context (touchend)
+        handlePlayClick();
       }
     };
 
-    // Listen for user interactions (touch or click)
-    window.addEventListener('touchstart', handleUserInteraction, { passive: true });
-    window.addEventListener('click', handleUserInteraction, { passive: true });
+    // Track touch start to detect scrolling
+    const handleTouchStart = (e: TouchEvent) => {
+      touchStartY = e.touches[0].clientY;
+    };
     
-    // Check on scroll if user has interacted
-    const handleScroll = () => {
-      if (hasUserInteracted) {
-        checkAndPlay();
+    // Use touchend as user gesture - this happens after scroll ends
+    // Call handlePlayClick directly within touchend event (user gesture context)
+    const handleTouchEnd = () => {
+      clearTimeout(scrollTimeout);
+      // Check immediately if button is centered and play
+      if (checkIfCentered() && !hasAutoPlayed.current) {
+        hasAutoPlayed.current = true;
+        handlePlayClick();
+      } else {
+        // If not centered yet, check after a short delay
+        scrollTimeout = setTimeout(() => {
+          tryAutoPlay();
+        }, 200);
       }
     };
     
+    // Also check on scroll end (when user stops scrolling)
+    const handleScroll = () => {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        // Check if user scrolled (touch moved)
+        if (Math.abs(touchStartY) > 0) {
+          tryAutoPlay();
+        }
+      }, 300);
+    };
+    
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
+    window.addEventListener('touchend', handleTouchEnd, { passive: true });
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
-      window.removeEventListener('touchstart', handleUserInteraction);
-      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('touchstart', handleTouchStart);
+      window.removeEventListener('touchend', handleTouchEnd);
       window.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
     };
   }, [handlePlayClick]);
 
@@ -782,7 +800,7 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
                 animation: 'pulse-subtle 3s ease-in-out infinite',
               }}
             >
-              Žiūrėti pristatymą
+              Žiūrėti video pristatymą
             </button>
             <style>{`
               @keyframes pulse-subtle {
