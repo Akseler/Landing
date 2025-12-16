@@ -165,16 +165,13 @@ function StepCard({
       transition={{ duration: 0.8, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/20 relative"
     >
-      <div className="md:block">
-        <div className="px-5 md:px-7 pt-5 md:pt-10 pb-5 md:pb-10">
+      <div className="md:flex md:items-stretch md:gap-6">
+        <div className="px-5 md:px-7 pt-5 md:pt-6 pb-4 md:pb-6 md:w-1/2">
           <h3 className="text-[17px] md:text-[22px] font-extrabold text-slate-900 leading-tight">{title}</h3>
           <p className="mt-2 text-[13px] md:text-[14px] text-slate-600 leading-relaxed">{description}</p>
         </div>
-        {/* Mobile-only visuals */}
-        <div className="md:hidden relative px-4 pt-0 pb-5">
-          <div className="relative z-10 w-full flex items-center justify-center">
-            {visual}
-          </div>
+        <div className="relative px-4 md:px-6 pt-0 pb-5 md:pb-6 md:w-1/2 md:flex md:items-center">
+          <div className="relative z-10 w-full">{visual}</div>
         </div>
       </div>
     </motion.div>
@@ -183,7 +180,7 @@ function StepCard({
 
 function Step1Visual() {
   return (
-    <div className="h-[210px] md:h-[230px] flex items-center justify-center">
+    <div className="h-[210px] flex items-center justify-center">
       <div className="relative w-full max-w-[340px] h-[180px]">
         <motion.div
           className="absolute left-5 top-6 w-[160px] h-[150px] rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden"
@@ -425,7 +422,7 @@ function Step3Visual() {
   const filledDays = Math.min(stage, 3);
 
   return (
-    <div className="h-[210px] md:h-[230px] flex items-center justify-center">
+    <div className="h-[210px] flex items-center justify-center">
       <div className="w-full max-w-[360px]">
         <div className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
           <div className="flex items-center justify-between">
@@ -516,7 +513,7 @@ function Step4Visual() {
   const Icon = items[i].icon;
 
   return (
-    <div className="h-[210px] md:h-[230px] flex items-center justify-center">
+    <div className="h-[210px] flex items-center justify-center">
       <div className="w-full max-w-[340px] rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
         <div className="flex items-center justify-between">
           <div className="text-[11px] font-bold text-slate-700">Šildymo seka</div>
