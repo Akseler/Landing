@@ -56,8 +56,8 @@ export default function MarketsScrolling({
           </>
         ) : (
           <>
-            <div className="absolute inset-y-0 left-0 w-24 md:w-32 bg-gradient-to-r from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
-            <div className="absolute inset-y-0 right-0 w-24 md:w-32 bg-gradient-to-l from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 left-0 w-24 md:w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-24 md:w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
           </>
         )}
         

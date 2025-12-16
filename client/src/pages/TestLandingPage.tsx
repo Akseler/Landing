@@ -165,12 +165,14 @@ function StepCard({
       transition={{ duration: 0.8, delay: index * 0.12, ease: [0.16, 1, 0.3, 1] }}
       className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/20 relative"
     >
-      <div className="px-5 md:px-7 pt-5 md:pt-6 pb-4 md:pb-4">
-        <h3 className="text-[17px] md:text-[29px] font-extrabold text-slate-900 leading-tight">{title}</h3>
-        <p className="mt-2 text-[13px] md:text-[15px] text-slate-500 leading-relaxed">{description}</p>
-      </div>
-      <div className="relative px-4 md:px-6 pt-0 pb-5 md:pb-6">
-        <div className="relative z-10">{visual}</div>
+      <div className="md:flex md:items-stretch md:gap-6">
+        <div className="px-5 md:px-7 pt-5 md:pt-6 pb-4 md:pb-6 md:w-1/2">
+          <h3 className="text-[17px] md:text-[22px] font-extrabold text-slate-900 leading-tight">{title}</h3>
+          <p className="mt-2 text-[13px] md:text-[14px] text-slate-600 leading-relaxed">{description}</p>
+        </div>
+        <div className="relative px-4 md:px-6 pt-0 pb-5 md:pb-6 md:w-1/2 md:flex md:items-center">
+          <div className="relative z-10 w-full">{visual}</div>
+        </div>
       </div>
     </motion.div>
   );
@@ -596,11 +598,11 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
       />
 
       {/* Desktop grid */}
-      <div className="hidden md:grid md:grid-cols-3 gap-3 max-w-[620px] mx-auto" style={{ backgroundColor: '#FFFFFF' }}>
+      <div className="hidden md:grid md:grid-cols-3 gap-4 max-w-[820px] mx-auto" style={{ backgroundColor: '#FFFFFF' }}>
         {results.map((r) => (
           <div
             key={r.company}
-            className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl border border-[#1d8263]/20 px-6 pt-6 pb-9 flex flex-col min-h-[340px] shadow-lg"
+            className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl border border-[#1d8263]/20 px-6 pt-6 pb-8 flex flex-col min-h-[300px] shadow-lg"
           >
             <div className="flex flex-col items-center gap-2 text-center shrink-0">
               <img
@@ -614,13 +616,13 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
             </div>
             <div className="mt-4 h-px bg-white/30 shrink-0" />
             <div className="flex-1 flex flex-col items-center justify-center text-center">
-              <div className="text-3xl font-extrabold text-white">
+              <div className="text-[34px] leading-none font-extrabold text-white">
                 {r.stat}
               </div>
-              <div className="mt-3 text-[13px] font-bold text-white whitespace-nowrap">
+              <div className="mt-3 text-[12px] font-bold text-white whitespace-nowrap">
                 {r.desc}
               </div>
-              <div className="mt-1 text-[11px] text-white/90 whitespace-nowrap">{r.sub}</div>
+              <div className="mt-1 text-[10px] text-white/90 whitespace-nowrap">{r.sub}</div>
             </div>
           </div>
         ))}
@@ -753,7 +755,7 @@ function HowItWorksSection() {
         title="Kaip veikia AI pardavimų sistema"
       />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 max-w-4xl mx-auto">
+      <div className="grid grid-cols-1 gap-5 max-w-4xl mx-auto">
         <StepCard
           step="1"
           title="1. Sutvarkome užklausų srautą"
@@ -928,10 +930,15 @@ export default function TestLandingPage() {
               </Badge>
             </div>
             <h1 className="text-[6vw] sm:text-[5vw] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900">
-              Gaukite pastovų ir kvalifikuotą klientų srautą
-              <br className="hidden md:block" />
-              <span className="md:hidden"><br /></span>
-              su AI Pardavimų sistema
+              <span className="md:hidden">
+                Gaukite pastovų ir kvalifikuotą<br />
+                klientų srautą per 14 dienų<br />
+                su AI Pardavimų sistema
+              </span>
+              <span className="hidden md:inline">
+                Gaukite pastovų ir kvalifikuotą klientų<br />
+                srautą su AI Pardavimų sistema
+              </span>
             </h1>
             <p className="text-sm md:text-lg text-slate-600 leading-relaxed">
               Jokių mėnesinių įsipareigojimų, mokate tik<br />
