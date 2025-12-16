@@ -232,6 +232,12 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
     return format(date, 'MMMM d, EEEE', { locale: lt });
   };
 
+  // Short numeric date for confirmation (e.g. 2025-12-16)
+  const formatDateShort = (dateStr: string) => {
+    const date = parseISO(dateStr);
+    return format(date, 'yyyy-MM-dd', { locale: lt });
+  };
+
   // Render step indicator
   const renderStepIndicator = () => {
     const steps = [
@@ -541,7 +547,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
           <div className="min-w-0">
             <div className="text-[11px] font-semibold text-slate-600">Data ir laikas</div>
             <div className="text-base font-extrabold text-slate-900 truncate">
-              {selectedDate && formatDateDisplay(selectedDate)}, {selectedSlot && formatTime(selectedSlot.datetime)}
+              {selectedDate && formatDateShort(selectedDate)} {selectedSlot && formatTime(selectedSlot.datetime)}
             </div>
           </div>
         </div>
