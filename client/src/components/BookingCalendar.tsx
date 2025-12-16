@@ -587,39 +587,51 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
 
   // Render success step
   const renderSuccessStep = () => (
-    <div className="text-center py-8">
-      <div className="w-24 h-24 bg-gradient-to-br from-[#1d8263] to-[#166b52] rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-[#1d8263]/30">
-        <CheckCircle2 className="w-12 h-12 text-white" />
+    <div className="text-center py-6 md:py-8">
+      <div className="w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[#1d8263] to-[#166b52] rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-lg shadow-[#1d8263]/30">
+        <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12 text-white" />
       </div>
       
-      <h3 className="text-3xl font-bold mb-4 text-slate-900">Rezervacija sėkminga!</h3>
-      <p className="text-slate-600 mb-8 text-lg">
-        Patvirtinimo laiškas išsiųstas į <strong className="text-slate-900">{contactInfo.email}</strong>
+      <h3 className="text-2xl md:text-3xl font-extrabold mb-3 text-slate-900 whitespace-nowrap">
+        Rezervacija gauta
+      </h3>
+      <p className="text-slate-600 mb-6 md:mb-8 text-base md:text-lg">
+        Patvirtinimo laiškas išsiųstas į{" "}
+        <strong className="text-slate-900">{contactInfo.email}</strong>
       </p>
       
-      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-8 max-w-sm mx-auto">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-[#1d8263]/10 flex items-center justify-center">
+      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-5 md:p-6 max-w-sm mx-auto">
+        <div className="flex items-center justify-center gap-2 text-slate-900 font-extrabold whitespace-nowrap">
+          <div className="w-9 h-9 rounded-xl bg-[#1d8263]/10 flex items-center justify-center">
             <Calendar className="w-5 h-5 text-[#1d8263]" />
           </div>
-          <span className="font-bold text-lg text-slate-900">
-            {selectedDate && formatDateDisplay(selectedDate)}
-          </span>
-        </div>
-        <div className="h-px bg-slate-200 mb-4" />
-        <div className="flex items-center justify-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1d8263] to-[#166b52] flex items-center justify-center">
-            <Clock className="w-5 h-5 text-white" />
-          </div>
-          <span className="font-bold text-2xl text-[#1d8263]">
+          <span className="text-base md:text-lg">
+            {selectedDate && formatDateShort(selectedDate)}{" "}
             {selectedSlot && formatTime(selectedSlot.datetime)}
           </span>
         </div>
+
+        <div className="h-px bg-slate-200 my-4" />
+
+        <div className="text-left space-y-3">
+          <div className="flex items-start gap-3">
+            <div className="w-7 h-7 rounded-lg bg-[#1d8263] text-white flex items-center justify-center font-extrabold text-sm shrink-0">
+              1
+            </div>
+            <div className="text-sm md:text-[15px] text-slate-700 font-semibold leading-snug">
+              Patvirtinkite el. paštu atsiųstą pakvietimą į mūsų pokalbį
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <div className="w-7 h-7 rounded-lg bg-[#1d8263] text-white flex items-center justify-center font-extrabold text-sm shrink-0">
+              2
+            </div>
+            <div className="text-sm md:text-[15px] text-slate-700 font-semibold leading-snug">
+              Su jumis SMS žinute susisieks mūsų komanda
+            </div>
+          </div>
+        </div>
       </div>
-      
-      <p className="text-sm text-slate-500 mt-8">
-        Jei turite klausimų, susisiekite: <a href="mailto:info@akseler.lt" className="text-[#1d8263] font-semibold underline hover:text-[#166b52]">info@akseler.lt</a>
-      </p>
     </div>
   );
 
