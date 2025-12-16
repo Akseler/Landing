@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -6,7 +7,7 @@ import { Slider } from "@/components/ui/slider";
 import { useLocation } from "wouter";
 import SimpleHeader from "@/components/SimpleHeader";
 import Footer from "@/components/Footer";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Mail, Percent, TrendingUp, Users, CheckCircle2 } from "lucide-react";
 import { trackPageView, trackQuizResponse, trackEvent, initScrollTracking, initSessionDurationTracking, getSessionId } from "@/lib/analytics";
 import { useToast } from "@/hooks/use-toast";
 
@@ -186,19 +187,8 @@ export default function SurveyPage() {
     setLocation('/booking');
   };
 
-  const getTotalSteps = () => {
-    if (branch === 'A') {
-      // If came with type, step 1 is skipped, so total is 5 (service, value, source, current, desired)
-      return initialType ? 5 : 6; // branch, service, value, source, current, desired
-    }
-    if (branch === 'B') {
-      // If came with type, step 1 is skipped, so total is 5 (service, value, crm, rate, people)
-      return initialType ? 5 : 6; // branch, service, value, crm, rate, people
-    }
-    return 1; // branch selection only
-  };
-
-  const totalSteps = getTotalSteps();
+  // Always show 6 steps total
+  const totalSteps = 6;
   // If came with type, step 1 is skipped, so adjust progress calculation
   const adjustedStep = initialType && step > 1 ? step - 1 : step;
   const progress = (adjustedStep / totalSteps) * 100;
@@ -228,43 +218,84 @@ export default function SurveyPage() {
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
-                    Ko trūksta jūsų paslaugų verslui?
+                    Ko labiausiai trūksta jūsų paslaugų verslui?
                   </h2>
                 </div>
                 
-                <div className="max-w-md mx-auto space-y-3">
+                <div className="max-w-md mx-auto space-y-4">
                   <button
                     onClick={() => handleBranchSelect('A')}
-                    className={`w-full p-6 rounded-xl border-2 text-left transition-all ${
+                    className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 group ${
                       branch === 'A'
-                        ? "border-[#1d8263] bg-[#1d8263]/10"
-                        : "border-border hover:border-[#1d8263]/50"
+                        ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-lg shadow-[#1d8263]/20 scale-[1.02]"
+                        : "border-slate-200 hover:border-[#1d8263]/50 hover:bg-slate-50 hover:scale-[1.01]"
                     }`}
                   >
-                    <span className="font-medium text-lg">Užklausų</span>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        branch === 'A'
+                          ? "bg-[#1d8263] text-white shadow-lg"
+                          : "bg-slate-100 text-slate-600 group-hover:bg-[#1d8263]/10 group-hover:text-[#1d8263]"
+                      }`}>
+                        <Users className="w-7 h-7" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <span className={`font-bold text-xl block transition-colors ${
+                          branch === 'A' ? "text-[#1d8263]" : "text-slate-900"
+                        }`}>
+                          Užklausų
+                        </span>
+                        <span className="text-sm text-slate-500 mt-1 block">
+                          Reikia pastovaus užklausų srauto
+                        </span>
+                      </div>
+                    </div>
                   </button>
                   <button
                     onClick={() => handleBranchSelect('B')}
-                    className={`w-full p-6 rounded-xl border-2 text-left transition-all ${
+                    className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 group ${
                       branch === 'B'
-                        ? "border-[#1d8263] bg-[#1d8263]/10"
-                        : "border-border hover:border-[#1d8263]/50"
+                        ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-lg shadow-[#1d8263]/20 scale-[1.02]"
+                        : "border-slate-200 hover:border-[#1d8263]/50 hover:bg-slate-50 hover:scale-[1.01]"
                     }`}
                   >
-                    <span className="font-medium text-lg">Pardavimų</span>
+                    <div className="flex items-center gap-4">
+                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                        branch === 'B'
+                          ? "bg-[#1d8263] text-white shadow-lg"
+                          : "bg-slate-100 text-slate-600 group-hover:bg-[#1d8263]/10 group-hover:text-[#1d8263]"
+                      }`}>
+                        <Percent className="w-7 h-7" />
+                      </div>
+                      <div className="flex-1 text-left">
+                        <span className={`font-bold text-xl block transition-colors ${
+                          branch === 'B' ? "text-[#1d8263]" : "text-slate-900"
+                        }`}>
+                          Pardavimų
+                        </span>
+                        <span className="text-sm text-slate-500 mt-1 block">
+                          Reikia didesnio pardavimų rodiklio
+                        </span>
+                      </div>
+                    </div>
                   </button>
                 </div>
 
                 {branch && (
-                  <div className="max-w-md mx-auto flex justify-center mt-8">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="max-w-md mx-auto flex justify-center mt-8"
+                  >
                     <Button
                       onClick={() => setStep(2)}
-                      className="bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white px-8 py-2.5 text-sm font-semibold"
+                      className="bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white px-10 py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                     >
                       Toliau
-                      <ArrowRight className="w-4 h-4 ml-2" />
+                      <ArrowRight className="w-5 h-5 ml-2" />
                     </Button>
-                  </div>
+                  </motion.div>
                 )}
               </div>
             )}
@@ -288,21 +319,29 @@ export default function SurveyPage() {
                       setFormData(prev => ({ ...prev, service: e.target.value }));
                       setValidationErrors({});
                     }}
-                    placeholder="Pvz. kreditas verslui"
-                    className={`text-center text-lg h-14 ${validationErrors.service ? "border-destructive" : ""}`}
+                    placeholder="Pvz. paskola verslui"
+                    className={`text-lg h-16 rounded-xl border-2 focus:border-[#1d8263] focus:ring-2 focus:ring-[#1d8263]/20 transition-all ${
+                      validationErrors.service ? "border-destructive" : "border-slate-200"
+                    }`}
                   />
                   {validationErrors.service && (
-                    <p className="text-sm text-destructive text-center">{validationErrors.service}</p>
+                    <motion.p 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-destructive text-center"
+                    >
+                      {validationErrors.service}
+                    </motion.p>
                   )}
                 </div>
 
                 <div className="max-w-sm mx-auto flex justify-center mt-8">
                   <Button
                     onClick={handleServiceNext}
-                    className="bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white px-8 py-2.5 text-sm font-semibold"
+                    className="bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white px-10 py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
@@ -313,33 +352,43 @@ export default function SurveyPage() {
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
-                    Kokia vidutinė vieno kliento vertė (€)?
+                    Kokia vidutinė vieno kliento vertė?
                   </h2>
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center">
-                    <span className="text-4xl font-bold text-[#1d8263]">
-                      {formData.value >= 20000 ? "20,000+" : formData.value.toLocaleString()} €
-                    </span>
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-[#1d8263]/10 to-[#1d8263]/5 border-2 border-[#1d8263]/20">
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-4xl font-extrabold text-[#1d8263]">
+                        {formData.value >= 20000 ? "20,000+" : formData.value.toLocaleString()} €
+                      </span>
+                    </div>
                   </div>
-                  <Slider
-                    value={[formData.value]}
-                    onValueChange={(value) => {
-                      setFormData(prev => ({ ...prev, value: value[0] }));
-                      setValidationErrors({});
-                    }}
-                    min={0}
-                    max={20000}
-                    step={100}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-sm text-foreground/60">
+                  <div className="px-2">
+                    <Slider
+                      value={[formData.value]}
+                      onValueChange={(value) => {
+                        setFormData(prev => ({ ...prev, value: value[0] }));
+                        setValidationErrors({});
+                      }}
+                      min={0}
+                      max={20000}
+                      step={100}
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="flex justify-between text-sm text-slate-500 font-medium">
                     <span>0 €</span>
                     <span>20,000+ €</span>
                   </div>
                   {validationErrors.value && (
-                    <p className="text-sm text-destructive text-center">{validationErrors.value}</p>
+                    <motion.p 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-destructive text-center"
+                    >
+                      {validationErrors.value}
+                    </motion.p>
                   )}
                 </div>
 
@@ -347,17 +396,17 @@ export default function SurveyPage() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(2)}
-                    className="flex-1 border-2 border-[#1d8263] text-[#1d8263] hover:bg-[#1d8263]/10 py-2.5 text-sm font-semibold"
+                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    <ArrowLeft className="w-5 h-5 mr-2" />
                     Atgal
                   </Button>
                   <Button
                     onClick={handleValueNext}
-                    className="flex-1 bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white py-2.5 text-sm font-semibold"
+                    className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
@@ -386,27 +435,42 @@ export default function SurveyPage() {
                         setFormData(prev => ({ ...prev, leadSource: option.value }));
                         setValidationErrors({});
                       }}
-                      className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                      className={`w-full p-5 rounded-xl border-2 text-left transition-all duration-300 group ${
                         formData.leadSource === option.value
-                          ? "border-[#1d8263] bg-[#1d8263]/10"
-                          : "border-border hover:border-[#1d8263]/50"
+                          ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-md shadow-[#1d8263]/20 scale-[1.02]"
+                          : "border-slate-200 hover:border-[#1d8263]/50 hover:bg-slate-50 hover:scale-[1.01]"
                       }`}
                     >
-                      <span className="font-medium">{option.label}</span>
+                      <div className="flex items-center justify-between">
+                        <span className={`font-semibold text-base ${
+                          formData.leadSource === option.value ? "text-[#1d8263]" : "text-slate-900"
+                        }`}>
+                          {option.label}
+                        </span>
+                        {formData.leadSource === option.value && (
+                          <CheckCircle2 className="w-5 h-5 text-[#1d8263]" />
+                        )}
+                      </div>
                     </button>
                   ))}
                   {validationErrors.leadSource && (
-                    <p className="text-sm text-destructive text-center">{validationErrors.leadSource}</p>
+                    <motion.p 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-destructive text-center"
+                    >
+                      {validationErrors.leadSource}
+                    </motion.p>
                   )}
                 </div>
 
                 <div className="max-w-md mx-auto flex justify-center mt-8">
                   <Button
                     onClick={handleLeadSourceNext}
-                    className="bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white px-8 py-2.5 text-sm font-semibold"
+                    className="bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white px-10 py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
@@ -422,10 +486,13 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center">
-                    <span className="text-4xl font-bold text-[#1d8263]">
-                      {formData.currentLeads && formData.currentLeads >= 1000 ? "1,000+" : formData.currentLeads || 0}
-                    </span>
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-[#1d8263]/10 to-[#1d8263]/5 border-2 border-[#1d8263]/20">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Users className="w-6 h-6 text-[#1d8263]" />
+                      <span className="text-5xl font-extrabold text-[#1d8263]">
+                        {formData.currentLeads && formData.currentLeads >= 1000 ? "1,000+" : formData.currentLeads || 0}
+                      </span>
+                    </div>
                   </div>
                   <Slider
                     value={[formData.currentLeads || 0]}
@@ -451,17 +518,17 @@ export default function SurveyPage() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(4)}
-                    className="flex-1 border-2 border-[#1d8263] text-[#1d8263] hover:bg-[#1d8263]/10 py-2.5 text-sm font-semibold"
+                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    <ArrowLeft className="w-5 h-5 mr-2" />
                     Atgal
                   </Button>
                   <Button
                     onClick={handleCurrentLeadsNext}
-                    className="flex-1 bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white py-2.5 text-sm font-semibold"
+                    className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
@@ -477,10 +544,13 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center">
-                    <span className="text-4xl font-bold text-[#1d8263]">
-                      {formData.desiredLeads && formData.desiredLeads >= 1000 ? "1,000+" : formData.desiredLeads || 0}
-                    </span>
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-[#1d8263]/10 to-[#1d8263]/5 border-2 border-[#1d8263]/20">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Users className="w-6 h-6 text-[#1d8263]" />
+                      <span className="text-5xl font-extrabold text-[#1d8263]">
+                        {formData.desiredLeads && formData.desiredLeads >= 1000 ? "1,000+" : formData.desiredLeads || 0}
+                      </span>
+                    </div>
                   </div>
                   <Slider
                     value={[formData.desiredLeads || 0]}
@@ -506,17 +576,17 @@ export default function SurveyPage() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(5)}
-                    className="flex-1 border-2 border-[#1d8263] text-[#1d8263] hover:bg-[#1d8263]/10 py-2.5 text-sm font-semibold"
+                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    <ArrowLeft className="w-5 h-5 mr-2" />
                     Atgal
                   </Button>
                   <Button
                     onClick={handleDesiredLeadsNext}
-                    className="flex-1 bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white py-2.5 text-sm font-semibold"
+                    className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
@@ -542,27 +612,42 @@ export default function SurveyPage() {
                         setFormData(prev => ({ ...prev, usesCRM: option.value }));
                         setValidationErrors({});
                       }}
-                      className={`w-full p-4 rounded-xl border-2 text-left transition-all ${
+                      className={`w-full p-5 rounded-xl border-2 text-left transition-all duration-300 group ${
                         formData.usesCRM === option.value
-                          ? "border-[#1d8263] bg-[#1d8263]/10"
-                          : "border-border hover:border-[#1d8263]/50"
+                          ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-md shadow-[#1d8263]/20 scale-[1.02]"
+                          : "border-slate-200 hover:border-[#1d8263]/50 hover:bg-slate-50 hover:scale-[1.01]"
                       }`}
                     >
-                      <span className="font-medium">{option.label}</span>
+                      <div className="flex items-center justify-between">
+                        <span className={`font-semibold text-base ${
+                          formData.usesCRM === option.value ? "text-[#1d8263]" : "text-slate-900"
+                        }`}>
+                          {option.label}
+                        </span>
+                        {formData.usesCRM === option.value && (
+                          <CheckCircle2 className="w-5 h-5 text-[#1d8263]" />
+                        )}
+                      </div>
                     </button>
                   ))}
                   {validationErrors.usesCRM && (
-                    <p className="text-sm text-destructive text-center">{validationErrors.usesCRM}</p>
+                    <motion.p 
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-sm text-destructive text-center"
+                    >
+                      {validationErrors.usesCRM}
+                    </motion.p>
                   )}
                 </div>
 
                 <div className="max-w-md mx-auto flex justify-center mt-8">
                   <Button
                     onClick={handleCRMNext}
-                    className="bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white px-8 py-2.5 text-sm font-semibold"
+                    className="bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white px-10 py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
@@ -578,8 +663,11 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center">
-                    <span className="text-4xl font-bold text-[#1d8263]">{formData.conversionRate || 0}</span>
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-[#1d8263]/10 to-[#1d8263]/5 border-2 border-[#1d8263]/20">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <TrendingUp className="w-6 h-6 text-[#1d8263]" />
+                      <span className="text-5xl font-extrabold text-[#1d8263]">{formData.conversionRate || 0}</span>
+                    </div>
                   </div>
                   <Slider
                     value={[formData.conversionRate || 0]}
@@ -605,17 +693,17 @@ export default function SurveyPage() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(4)}
-                    className="flex-1 border-2 border-[#1d8263] text-[#1d8263] hover:bg-[#1d8263]/10 py-2.5 text-sm font-semibold"
+                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    <ArrowLeft className="w-5 h-5 mr-2" />
                     Atgal
                   </Button>
                   <Button
                     onClick={handleConversionRateNext}
-                    className="flex-1 bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white py-2.5 text-sm font-semibold"
+                    className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>
@@ -631,10 +719,13 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center">
-                    <span className="text-4xl font-bold text-[#1d8263]">
-                      {formData.salesPeople && formData.salesPeople >= 20 ? "20+" : formData.salesPeople || 0}
-                    </span>
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-[#1d8263]/10 to-[#1d8263]/5 border-2 border-[#1d8263]/20">
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <Users className="w-6 h-6 text-[#1d8263]" />
+                      <span className="text-5xl font-extrabold text-[#1d8263]">
+                        {formData.salesPeople && formData.salesPeople >= 20 ? "20+" : formData.salesPeople || 0}
+                      </span>
+                    </div>
                   </div>
                   <Slider
                     value={[formData.salesPeople || 0]}
@@ -660,17 +751,17 @@ export default function SurveyPage() {
                   <Button
                     variant="outline"
                     onClick={() => setStep(5)}
-                    className="flex-1 border-2 border-[#1d8263] text-[#1d8263] hover:bg-[#1d8263]/10 py-2.5 text-sm font-semibold"
+                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
-                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    <ArrowLeft className="w-5 h-5 mr-2" />
                     Atgal
                   </Button>
                   <Button
                     onClick={handleSalesPeopleNext}
-                    className="flex-1 bg-[#1d8263] hover:bg-[#166b52] border-2 border-[#1d8263] text-white py-2.5 text-sm font-semibold"
+                    className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
                   >
                     Toliau
-                    <ArrowRight className="w-4 h-4 ml-2" />
+                    <ArrowRight className="w-5 h-5 ml-2" />
                   </Button>
                 </div>
               </div>

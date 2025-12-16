@@ -17,7 +17,7 @@ export default function CallDonePage() {
   const [surveyData, setSurveyData] = useState<SurveyResults | null>(null);
 
   useEffect(() => {
-    document.title = "Akseler";
+    document.title = "Rezervacija";
     trackPageView('/booking');
     initScrollTracking();
     initSessionDurationTracking();

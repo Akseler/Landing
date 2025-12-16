@@ -18,6 +18,7 @@ import {
   Sprout,
   Timer,
   TrendingUp,
+  Users,
   Wallet,
   X,
 } from "lucide-react";
@@ -380,18 +381,18 @@ function Step2Visual() {
                 transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
                 className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10 m-0"
               >
-                <div className="w-[240px] rounded-xl bg-white border-2 border-[#1d8263]/20 shadow-lg p-3">
-                  <div className="flex items-center justify-between mb-2">
+                <div className="w-[280px] rounded-xl bg-white border-2 border-[#1d8263]/20 shadow-lg p-4">
+                  <div className="flex items-center justify-between mb-2.5">
                     <div className="flex items-center gap-2">
-                      <Bot className="w-4 h-4 text-[#1d8263]" />
-                      <div className="text-[10px] font-bold text-[#1d8263] uppercase tracking-wider">
+                      <Bot className="w-5 h-5 text-[#1d8263]" />
+                      <div className="text-[11px] font-bold text-[#1d8263] uppercase tracking-wider">
                         SMS
                       </div>
                     </div>
-                    <div className="text-[8px] text-slate-400">Dabar</div>
+                    <div className="text-[9px] text-slate-400">Dabar</div>
                   </div>
-                  <div className="rounded-lg border border-[#1d8263]/15 bg-[#1d8263]/8 p-2.5">
-                    <p className="text-[9px] leading-tight text-slate-700 font-medium">
+                  <div className="rounded-lg border border-[#1d8263]/15 bg-[#1d8263]/8 p-3">
+                    <p className="text-[10px] leading-relaxed text-slate-700 font-medium">
                       Sveiki, Jonai, čia iš Akseler. Gavome Jūsų užklausą, kas paskatino domėtis AI sprendimais?
                     </p>
                   </div>
@@ -677,51 +678,72 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
 
 function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
   const ref = useRef<HTMLElement | null>(null);
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const hasAutoPlayed = useRef(false);
 
-  // Auto-play on mobile when section is centered in viewport
+  // Auto-play on mobile when "Žiūrėti pristatymą" button is centered in viewport
+  // Use touch/click event as user gesture to enable fullscreen
   useEffect(() => {
     if (hasAutoPlayed.current) return;
     
+    // Only on mobile (screen width < 768px)
+    if (window.innerWidth >= 768) return;
+    
+    let touchStartTime = 0;
+    let hasUserInteracted = false;
+    
+    // Track user interaction (touch or click) to enable fullscreen
+    const handleUserInteraction = () => {
+      hasUserInteracted = true;
+      touchStartTime = Date.now();
+    };
+    
     const checkAndPlay = () => {
-      // Only on mobile (screen width < 768px)
-      if (window.innerWidth >= 768) return;
+      if (!buttonRef.current || !hasUserInteracted) return;
       
-      if (!ref.current) return;
-      
-      const rect = ref.current.getBoundingClientRect();
+      const buttonRect = buttonRef.current.getBoundingClientRect();
       const viewportHeight = window.innerHeight;
-      const viewportWidth = window.innerWidth;
       
-      // Check if section is centered in viewport (within 40% of center)
+      // Check if button is centered in viewport (within 30% of center)
       const centerY = viewportHeight / 2;
-      const sectionCenterY = rect.top + rect.height / 2;
-      const distanceFromCenter = Math.abs(sectionCenterY - centerY);
-      const isCentered = distanceFromCenter < viewportHeight * 0.4;
+      const buttonCenterY = buttonRect.top + buttonRect.height / 2;
+      const distanceFromCenter = Math.abs(buttonCenterY - centerY);
+      const isCentered = distanceFromCenter < viewportHeight * 0.3;
       
-      // Check if section is visible (at least 50% visible)
-      const isVisible = rect.top < viewportHeight * 0.8 && rect.bottom > viewportHeight * 0.2;
+      // Check if button is visible
+      const isVisible = buttonRect.top < viewportHeight && buttonRect.bottom > 0;
       
-      if (isCentered && isVisible && !hasAutoPlayed.current) {
+      // Only auto-play if user has interacted within last 2 seconds (user gesture context)
+      const timeSinceInteraction = Date.now() - touchStartTime;
+      const isRecentInteraction = timeSinceInteraction < 2000;
+      
+      if (isCentered && isVisible && !hasAutoPlayed.current && isRecentInteraction) {
         hasAutoPlayed.current = true;
         // Small delay to ensure smooth transition
         setTimeout(() => {
           handlePlayClick();
-        }, 500);
+        }, 300);
       }
     };
 
-    // Check on scroll and resize
-    window.addEventListener('scroll', checkAndPlay, { passive: true });
-    window.addEventListener('resize', checkAndPlay, { passive: true });
+    // Listen for user interactions (touch or click)
+    window.addEventListener('touchstart', handleUserInteraction, { passive: true });
+    window.addEventListener('click', handleUserInteraction, { passive: true });
     
-    // Initial check
-    setTimeout(checkAndPlay, 1000);
+    // Check on scroll if user has interacted
+    const handleScroll = () => {
+      if (hasUserInteracted) {
+        checkAndPlay();
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
-      window.removeEventListener('scroll', checkAndPlay);
-      window.removeEventListener('resize', checkAndPlay);
+      window.removeEventListener('touchstart', handleUserInteraction);
+      window.removeEventListener('click', handleUserInteraction);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [handlePlayClick]);
 
@@ -754,6 +776,7 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
+              ref={buttonRef}
               className="bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-colors active:scale-[0.98] animate-pulse-subtle"
               style={{
                 animation: 'pulse-subtle 3s ease-in-out infinite',
@@ -804,7 +827,7 @@ function HowItWorksSection() {
         />
         <StepCard
           step="2"
-          title="2. AI susisiekia su užklausomis"
+          title="2. AI susisiekia ir bendrauja su jūsų užklausomis"
           description="AI agentas iškarto parašo SMS žiniutę, užmezga žmogišką pokalbį, išsiaiškina kliento situaciją bei poreikius."
           visual={<Step2Visual />}
           index={1}
@@ -842,6 +865,7 @@ export default function TestLandingPage() {
   const playerReadyRef = useRef(false);
 
   useEffect(() => {
+    document.title = "Akseler";
     trackPageView("/");
   }, []);
 
@@ -990,7 +1014,7 @@ export default function TestLandingPage() {
                   className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1"
                 >
                   <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                    <Mail className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
                   </div>
                   <span className="font-bold text-base md:text-lg text-white leading-tight">
                     Užklausų
@@ -1311,7 +1335,7 @@ export default function TestLandingPage() {
             <div className="pointer-events-none h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />
             <div className="absolute inset-x-0 bottom-3 flex justify-center px-4 pointer-events-none">
               <div className="w-full max-w-[720px] pointer-events-auto">
-                <Link href="/survey?type=uzklausos">
+                <Link href="/survey">
                   <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
                     Registruotis strateginiui pokalbiui
                   </a>
