@@ -25,8 +25,8 @@ export default function MarketsScrolling({
 
   return (
     <section
-      className={`overflow-hidden bg-[#E0F2E8] ${
-        compact ? "pt-6 md:pt-8 pb-8 md:pb-10" : "pt-16 md:pt-20 pb-20 md:pb-24"
+      className={`overflow-hidden ${
+        compact ? "bg-transparent pt-6 md:pt-8 pb-8 md:pb-10" : "bg-[#E0F2E8] pt-16 md:pt-20 pb-20 md:pb-24"
       }`}
     >
       {!hideTitle ? (
@@ -49,8 +49,17 @@ export default function MarketsScrolling({
       ) : null}
       <div className="relative w-full max-w-5xl mx-auto">
         {/* Gradient overlays for smooth edges */}
-        <div className="absolute inset-y-0 left-0 w-32 md:w-48 lg:w-64 bg-gradient-to-r from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
-        <div className="absolute inset-y-0 right-0 w-32 md:w-48 lg:w-64 bg-gradient-to-l from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
+        {!compact ? (
+          <>
+            <div className="absolute inset-y-0 left-0 w-32 md:w-48 lg:w-64 bg-gradient-to-r from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-32 md:w-48 lg:w-64 bg-gradient-to-l from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
+          </>
+        ) : (
+          <>
+            <div className="absolute inset-y-0 left-0 w-32 md:w-48 lg:w-64 bg-gradient-to-r from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-32 md:w-48 lg:w-64 bg-gradient-to-l from-[#E0F2E8] to-transparent z-10 pointer-events-none"></div>
+          </>
+        )}
         
         <div className="space-y-4 w-full">
           {/* First row - scrolling left */}

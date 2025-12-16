@@ -97,7 +97,7 @@ function AnimatedSectionHeading({
   );
 }
 
-function RotatingTrust() {
+function RotatingTrust({ whiteText = false }: { whiteText?: boolean }) {
   const items = useMemo(
     () => [
       { name: "Veesla", logo: veeslaLogo },
@@ -106,35 +106,35 @@ function RotatingTrust() {
     ],
     []
   );
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setInterval(() => setIdx((v) => (v + 1) % items.length), 2200);
+    return () => clearInterval(t);
+  }, [items.length]);
 
   return (
     <div className="pt-2 flex flex-col items-center justify-center gap-3">
-      <div className="text-sm font-semibold text-slate-600">
+      <div className={`text-sm font-semibold ${whiteText ? "text-white" : "text-slate-600"}`}>
         Mumis pasitiki rinkos lyderiai
       </div>
-      <div className="relative w-full max-w-[280px] overflow-hidden">
-        {/* Gradient overlays for smooth edges */}
-        <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
-        <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
-        <div 
-          className="flex gap-6 w-max"
-          style={{
-            animation: 'scroll-left 20s linear infinite'
-          }}
-        >
-          {[...items, ...items, ...items, ...items].map((item, index) => (
-            <div
-              key={`${item.name}-${index}`}
-              className="flex-shrink-0 flex items-center justify-center"
-            >
-              <img
-                src={item.logo}
-                alt={item.name}
-                className="h-8 w-auto object-contain opacity-70 grayscale"
-              />
-            </div>
-          ))}
-        </div>
+      <div className="h-10 w-[200px] relative">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={items[idx].name}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
+            <img
+              src={items[idx].logo}
+              alt={items[idx].name}
+              className={`h-8 w-auto object-contain ${whiteText ? "brightness-0 invert opacity-90" : "opacity-70 grayscale"}`}
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
     </div>
   );
@@ -810,13 +810,13 @@ function HowItWorksSection() {
         <StepCard
           step="2"
           title="2. AI susisiekia su užklausomis"
-          description="AI agentas momentaliai susisiekia su naujomis užklausomis, užmezga žmogišką pokalbį ir išsiaiškina kliento situaciją bei poreikius."
+          description="AI agentas momentaliai užmezga žmogišką pokalbį, išsiaiškina kliento situaciją bei poreikius."
           visual={<Step2Visual />}
           index={1}
         />
         <StepCard
           step="3"
-          title="3. Gaunate kvalifikuotus ir suplanuotus klientus"
+          title="3. AI su kvalifikuotais planuoja pokalbius arba vizitus"
           description="Jei klientas rimtai nusiteikęs, AI pasiūlo jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje ir suplanuoja kalendoriuje."
           visual={<Step3Visual />}
           index={2}
@@ -966,15 +966,16 @@ export default function TestLandingPage() {
       <main className="flex-1 w-full max-w-[720px] mx-auto px-4 pt-16 pb-28 space-y-28">
         {/* HERO */}
         <section ref={heroRef} className="space-y-9 text-center">
-          <div className="space-y-3 pt-12 pb-2">
+          <div className="space-y-3 pt-8 pb-2">
             <div className="flex justify-center">
               <Badge variant="outline" className={badgeGreen}>
                 paslaugų teikėjams
               </Badge>
             </div>
             <h1 className="text-[6vw] sm:text-[5vw] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900">
-              Gaukite 10x grąžą iš reklamos<br />
-              su AI pardavimų sistema
+              Gaukite pastovų ir kvalifikuotą<br />
+              klientų srautą per 14 dienų<br />
+              su AI Pardavimų sistema
             </h1>
             <p className="text-sm md:text-base text-slate-600 leading-relaxed">
               Jokių mėnesinių įsipareigojimų, mokate tik<br />
@@ -982,40 +983,42 @@ export default function TestLandingPage() {
             </p>
           </div>
 
-          <div className="space-y-6 mt-4">
-            <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-slate-900 text-center whitespace-nowrap">
-              Ko trūksta jūsų paslaugų verslui?
-            </h2>
-            <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
-              {/* Užklausų */}
-              <Link
-                href="/survey"
-                className="group hero-button relative rounded-2xl bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] border border-[#1d8263]/25 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] shadow-lg hover:shadow-xl hover:shadow-[#1d8263]/30 transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                  <Mail className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                </div>
-                <span className="font-bold text-base md:text-lg text-white leading-tight">
-                  Užklausų
-                </span>
-              </Link>
+          <div className="mt-4">
+            <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-6">
+              <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap">
+                Ko trūksta jūsų paslaugų verslui?
+              </h2>
+              <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
+                {/* Užklausų */}
+                <Link
+                  href="/survey"
+                  className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+                    <Mail className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                  </div>
+                  <span className="font-bold text-base md:text-lg text-white leading-tight">
+                    Užklausų
+                  </span>
+                </Link>
 
-              {/* Pardavimų */}
-              <Link
-                href="/survey"
-                className="group hero-button relative rounded-2xl bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] border border-[#1d8263]/25 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] shadow-lg hover:shadow-xl hover:shadow-[#1d8263]/30 transition-all duration-300 hover:-translate-y-1"
-              >
-                <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                  <Percent className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                </div>
-                <span className="font-bold text-base md:text-lg text-white leading-tight">
-                  Pardavimų
-                </span>
-              </Link>
-            </div>
+                {/* Pardavimų */}
+                <Link
+                  href="/survey"
+                  className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1"
+                >
+                  <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+                    <Percent className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                  </div>
+                  <span className="font-bold text-base md:text-lg text-white leading-tight">
+                    Pardavimų
+                  </span>
+                </Link>
+              </div>
 
-            <div>
-              <RotatingTrust />
+              <div>
+                <RotatingTrust whiteText />
+              </div>
             </div>
           </div>
         </section>
@@ -1070,26 +1073,26 @@ export default function TestLandingPage() {
               <div className="px-6 pb-6 pt-4">
                 <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-start gap-2.5">
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
+                    <X className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                     Atsakoma po kelių valandų ar dienų
                   </li>
                   <li className="flex items-start gap-2.5">
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
+                    <X className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                     Sudegintos valandos bendraujant su nekvalifikuotais klientais
                   </li>
                   <li className="flex items-start gap-2.5">
-                    <span className="mt-2 w-1.5 h-1.5 rounded-full bg-slate-300 shrink-0" />
+                    <X className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
                     Pamiršti priminimai ir išmėtyti kontaktai tarp skirtingų platformų
                   </li>
                 </ul>
               </div>
             </div>
 
-            <div className="bg-gradient-to-b from-[#E0F2E8] to-[#E0F2E8] rounded-3xl overflow-hidden border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)]">
+            <div className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-3xl overflow-hidden border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.18)]">
               <div className="px-6 pt-6 pb-4">
-                <h3 className="text-xl font-extrabold text-slate-900 mb-4">Su AI sistema</h3>
+                <h3 className="text-xl font-extrabold text-slate-900 mb-4">Su Dirbtiniu Intelektu</h3>
               </div>
-              <div className="bg-[#E0F2E8] px-5 pt-0 pb-4">
+              <div className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] px-5 pt-0 pb-4">
                 <div className="h-[190px] flex items-center justify-center">
                   <div className="rounded-2xl bg-white border border-[#1d8263]/20 shadow-sm p-3 w-full">
                     <div className="flex items-center justify-between">
@@ -1157,15 +1160,7 @@ export default function TestLandingPage() {
               </>
             }
           />
-          <div
-            className="rounded-3xl border border-[#1d8263]/12 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)]"
-            style={{
-              backgroundColor: "#F3FBF6",
-              backgroundImage:
-                "linear-gradient(90deg, rgba(226,232,240,0.35) 1px, transparent 1px), linear-gradient(180deg, rgba(226,232,240,0.35) 1px, transparent 1px)",
-              backgroundSize: "32px 32px",
-            }}
-          >
+          <div className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-3xl border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)]">
             {[
               {
                 title: "Daugiau pardavimų",
@@ -1198,7 +1193,7 @@ export default function TestLandingPage() {
                   {c.text}
                 </div>
                 {idx < arr.length - 1 ? (
-                  <div className="mt-6 h-px bg-slate-100" />
+                  <div className="mt-6 h-px bg-[#1d8263]/15" />
                 ) : null}
               </div>
             ))}
@@ -1211,7 +1206,7 @@ export default function TestLandingPage() {
             badge="Kam tai skirta"
             title="Pritaikoma įvairiose rinkose"
           />
-          <div className="bg-[#E0F2E8] rounded-3xl border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] p-2">
+          <div className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-3xl border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] p-2">
             <MarketsScrolling hideTitle compact />
           </div>
         </section>
