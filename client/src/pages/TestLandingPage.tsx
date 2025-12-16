@@ -678,92 +678,7 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
 
 function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
   const ref = useRef<HTMLElement | null>(null);
-  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const hasAutoPlayed = useRef(false);
-
-  // Auto-play on mobile when "Žiūrėti video pristatymą" button is centered in viewport
-  // Use touchend as user gesture to enable fullscreen (touchend happens after scroll)
-  useEffect(() => {
-    if (hasAutoPlayed.current) return;
-    
-    // Only on mobile (screen width < 768px)
-    if (window.innerWidth >= 768) return;
-    
-    let scrollTimeout: NodeJS.Timeout;
-    let touchStartY = 0;
-    
-    const checkIfCentered = () => {
-      if (!buttonRef.current) return false;
-      
-      const buttonRect = buttonRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      
-      // Check if button is centered in viewport (within 30% of center)
-      const centerY = viewportHeight / 2;
-      const buttonCenterY = buttonRect.top + buttonRect.height / 2;
-      const distanceFromCenter = Math.abs(buttonCenterY - centerY);
-      const isCentered = distanceFromCenter < viewportHeight * 0.3;
-      
-      // Check if button is visible
-      const isVisible = buttonRect.top < viewportHeight && buttonRect.bottom > 0;
-      
-      return isCentered && isVisible;
-    };
-    
-    const tryAutoPlay = () => {
-      if (hasAutoPlayed.current) return;
-      
-      if (checkIfCentered()) {
-        hasAutoPlayed.current = true;
-        // Call handlePlayClick within user gesture context (touchend)
-        handlePlayClick();
-      }
-    };
-
-    // Track touch start to detect scrolling
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-    };
-    
-    // Use touchend as user gesture - this happens after scroll ends
-    // Call handlePlayClick directly within touchend event (user gesture context)
-    const handleTouchEnd = () => {
-      clearTimeout(scrollTimeout);
-      // Check immediately if button is centered and play
-      if (checkIfCentered() && !hasAutoPlayed.current) {
-        hasAutoPlayed.current = true;
-        handlePlayClick();
-      } else {
-        // If not centered yet, check after a short delay
-        scrollTimeout = setTimeout(() => {
-          tryAutoPlay();
-        }, 200);
-      }
-    };
-    
-    // Also check on scroll end (when user stops scrolling)
-    const handleScroll = () => {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        // Check if user scrolled (touch moved)
-        if (Math.abs(touchStartY) > 0) {
-          tryAutoPlay();
-        }
-      }, 300);
-    };
-    
-    window.addEventListener('touchstart', handleTouchStart, { passive: true });
-    window.addEventListener('touchend', handleTouchEnd, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    
-    return () => {
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchend', handleTouchEnd);
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimeout);
-    };
-  }, [handlePlayClick]);
 
   return (
     <motion.section
@@ -794,7 +709,6 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
-              ref={buttonRef}
               className="bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-colors active:scale-[0.98] animate-pulse-subtle"
               style={{
                 animation: 'pulse-subtle 3s ease-in-out infinite',
