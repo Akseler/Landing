@@ -240,10 +240,10 @@ export default function SurveyPage() {
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 border border-[#1d8263]/15 ${
                         branch === 'A'
                           ? "bg-[#1d8263] text-white shadow-lg"
-                          : "bg-[#E0F2E8]/60 text-[#1d8263] border border-[#1d8263]/15 group-hover:bg-[#E0F2E8]/75"
+                          : "bg-[#E0F2E8]/60 text-[#1d8263] group-hover:bg-[#E0F2E8]/75"
                       }`}>
                         <Users className="w-7 h-7" />
                       </div>
@@ -268,10 +268,10 @@ export default function SurveyPage() {
                     }`}
                   >
                     <div className="flex items-center gap-4">
-                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 ${
+                      <div className={`w-14 h-14 rounded-xl flex items-center justify-center transition-all duration-300 border border-[#1d8263]/15 ${
                         branch === 'B'
                           ? "bg-[#1d8263] text-white shadow-lg"
-                          : "bg-[#E0F2E8]/60 text-[#1d8263] border border-[#1d8263]/15 group-hover:bg-[#E0F2E8]/75"
+                          : "bg-[#E0F2E8]/60 text-[#1d8263] group-hover:bg-[#E0F2E8]/75"
                       }`}>
                         <Percent className="w-7 h-7" />
                       </div>
@@ -328,7 +328,7 @@ export default function SurveyPage() {
                       setValidationErrors({});
                     }}
                     placeholder="Pvz. paskola verslui"
-                    className={`text-lg h-16 rounded-xl border-2 bg-[#E0F2E8]/35 border-[#1d8263]/20 focus:border-[#1d8263] focus:ring-2 focus:ring-[#1d8263]/20 transition-all ${
+                    className={`text-lg h-16 rounded-xl border-2 bg-[#E0F2E8]/35 focus:border-[#1d8263] focus:ring-2 focus:ring-[#1d8263]/20 transition-all ${
                       validationErrors.service ? "border-destructive" : "border-[#1d8263]/20"
                     }`}
                   />
@@ -446,7 +446,7 @@ export default function SurveyPage() {
                       className={`w-full p-5 rounded-xl border-2 text-left transition-all duration-300 group ${
                         formData.leadSource === option.value
                           ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-md shadow-[#1d8263]/20 scale-[1.02]"
-                          : "border-[#1d8263]/20 bg-[#E0F2E8]/25 hover:border-[#1d8263]/50 hover:bg-[#E0F2E8]/35 hover:scale-[1.01]"
+                        : "border-[#1d8263]/20 bg-[#E0F2E8]/25 hover:border-[#1d8263]/50 hover:bg-[#E0F2E8]/35 hover:scale-[1.01]"
                       }`}
                     >
                       <div className="flex items-center justify-between">
@@ -623,7 +623,7 @@ export default function SurveyPage() {
                       className={`w-full p-5 rounded-xl border-2 text-left transition-all duration-300 group ${
                         formData.usesCRM === option.value
                           ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-md shadow-[#1d8263]/20 scale-[1.02]"
-                          : "border-[#1d8263]/20 bg-[#E0F2E8]/25 hover:border-[#1d8263]/50 hover:bg-[#E0F2E8]/35 hover:scale-[1.01]"
+                        : "border-[#1d8263]/20 bg-[#E0F2E8]/25 hover:border-[#1d8263]/50 hover:bg-[#E0F2E8]/35 hover:scale-[1.01]"
                       }`}
                     >
                       <div className="flex items-center justify-between">
