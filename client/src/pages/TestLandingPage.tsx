@@ -596,31 +596,31 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
       />
 
       {/* Desktop grid */}
-      <div className="hidden md:grid md:grid-cols-3 gap-3 max-w-[680px] mx-auto" style={{ backgroundColor: '#FFFFFF' }}>
+      <div className="hidden md:grid md:grid-cols-3 gap-3 max-w-[620px] mx-auto" style={{ backgroundColor: '#FFFFFF' }}>
         {results.map((r) => (
           <div
             key={r.company}
-            className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl border border-[#1d8263]/20 px-7 pt-7 pb-10 flex flex-col min-h-[380px] shadow-lg"
+            className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl border border-[#1d8263]/20 px-6 pt-6 pb-9 flex flex-col min-h-[340px] shadow-lg"
           >
             <div className="flex flex-col items-center gap-2 text-center shrink-0">
               <img
                 src={r.logo}
                 alt={r.company}
-                className="h-9 w-auto object-contain brightness-0 invert"
+                className="h-8 w-auto object-contain brightness-0 invert"
               />
-              <div className="text-[12px] text-white/80 font-medium whitespace-nowrap">
+              <div className="text-[11px] text-white/80 font-medium whitespace-nowrap">
                 {r.revenue}
               </div>
             </div>
-            <div className="mt-5 h-px bg-white/30 shrink-0" />
+            <div className="mt-4 h-px bg-white/30 shrink-0" />
             <div className="flex-1 flex flex-col items-center justify-center text-center">
-              <div className="text-4xl font-extrabold text-white">
+              <div className="text-3xl font-extrabold text-white">
                 {r.stat}
               </div>
-              <div className="mt-4 text-[14px] font-bold text-white whitespace-nowrap">
+              <div className="mt-3 text-[13px] font-bold text-white whitespace-nowrap">
                 {r.desc}
               </div>
-              <div className="mt-1 text-[12px] text-white/90 whitespace-nowrap">{r.sub}</div>
+              <div className="mt-1 text-[11px] text-white/90 whitespace-nowrap">{r.sub}</div>
             </div>
           </div>
         ))}
@@ -753,7 +753,7 @@ function HowItWorksSection() {
         title="Kaip veikia AI pardavimų sistema"
       />
 
-      <div className="grid grid-cols-1 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8 max-w-4xl mx-auto">
         <StepCard
           step="1"
           title="1. Sutvarkome užklausų srautą"
@@ -931,9 +931,9 @@ export default function TestLandingPage() {
               Gaukite pastovų ir kvalifikuotą klientų srautą
               <br className="hidden md:block" />
               <span className="md:hidden"><br /></span>
-              per 14 dienų su AI Pardavimų sistema
+              su AI Pardavimų sistema
             </h1>
-            <p className="text-sm md:text-base text-slate-600 leading-relaxed">
+            <p className="text-sm md:text-lg text-slate-600 leading-relaxed">
               Jokių mėnesinių įsipareigojimų, mokate tik<br />
               už sugeneruotus rezultatus.
             </p>
@@ -1162,7 +1162,7 @@ export default function TestLandingPage() {
             badge="Kam tai skirta"
             title="Pritaikoma įvairiose rinkose"
           />
-          <div className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-3xl border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] overflow-hidden">
+          <div className="rounded-3xl overflow-hidden">
             <MarketsScrolling hideTitle compact />
           </div>
         </section>

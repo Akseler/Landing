@@ -68,7 +68,7 @@ export default function MarketsScrolling({
               {[...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1, ...marketsRow1].map((industry, index) => (
                 <div
                   key={`row1-${index}`}
-                  className="px-6 py-3 text-sm font-medium border-2 border-[#1d8263]/30 whitespace-nowrap flex-shrink-0 bg-white text-[#1d8263] rounded-md"
+                  className="px-6 py-3 text-sm font-medium border-2 border-[#1d8263]/10 whitespace-nowrap flex-shrink-0 bg-[#E0F2E8] text-slate-900 rounded-md"
                 >
                   {industry}
                 </div>
@@ -81,7 +81,7 @@ export default function MarketsScrolling({
               {[...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2, ...marketsRow2].map((industry, index) => (
                 <div
                   key={`row2-${index}`}
-                  className="px-6 py-3 text-sm font-medium border-2 border-[#1d8263]/30 whitespace-nowrap flex-shrink-0 bg-white text-[#1d8263] rounded-md"
+                  className="px-6 py-3 text-sm font-medium border-2 border-[#1d8263]/10 whitespace-nowrap flex-shrink-0 bg-[#E0F2E8] text-slate-900 rounded-md"
                 >
                   {industry}
                 </div>
