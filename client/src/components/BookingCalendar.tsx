@@ -244,48 +244,57 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
     const currentIndex = steps.findIndex(s => s.key === step);
     
     return (
-      <div className="flex items-center justify-center gap-2 mb-8">
-        {steps.map((s, index) => {
-          const Icon = s.icon;
-          const isActive = s.key === step;
-          const isCompleted = index < currentIndex;
-          
-          return (
-            <div key={s.key} className="flex items-center">
-              <div
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                  isActive
-                    ? 'bg-[#1d8263] text-white'
-                    : isCompleted
-                    ? 'bg-[#1d8263]/20 text-[#1d8263]'
-                    : 'bg-muted text-muted-foreground'
-                }`}
-              >
-                {isCompleted ? <Check className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
-              </div>
-              {index < steps.length - 1 && (
+      <div className="mb-6">
+        <div className="grid grid-cols-4 gap-2">
+          {steps.map((s, index) => {
+            const Icon = s.icon;
+            const isActive = s.key === step;
+            const isCompleted = index < currentIndex;
+
+            return (
+              <div key={s.key} className="flex flex-col items-center min-w-0">
                 <div
-                  className={`w-8 h-0.5 mx-1 ${
-                    isCompleted ? 'bg-[#1d8263]' : 'bg-muted'
+                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all border shadow-sm ${
+                    isActive
+                      ? 'bg-[#1d8263] text-white border-[#1d8263]'
+                      : isCompleted
+                      ? 'bg-white text-[#1d8263] border-[#1d8263]/30'
+                      : 'bg-white/80 text-slate-400 border-slate-200'
                   }`}
-                />
-              )}
-            </div>
-          );
-        })}
+                >
+                  {isCompleted ? <Check className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
+                </div>
+                <div
+                  className={`mt-1 text-[10px] font-semibold text-center leading-tight truncate w-full ${
+                    isActive ? 'text-[#1d8263]' : 'text-slate-500'
+                  }`}
+                  title={s.label}
+                >
+                  {s.label}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div className="mt-3 h-1 w-full rounded-full bg-white/60 border border-[#1d8263]/15 overflow-hidden">
+          <div
+            className="h-full bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-full transition-all duration-300"
+            style={{ width: `${Math.max(1, ((currentIndex + 1) / steps.length) * 100)}%` }}
+          />
+        </div>
       </div>
     );
   };
 
   // Render contact form step
   const renderContactStep = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-center mb-6">Jūsų kontaktinė informacija</h3>
+    <div className="space-y-5">
+      <h3 className="text-2xl font-bold text-center mb-6 text-slate-900">Jūsų kontaktai</h3>
       
-      <div className="space-y-4">
+      <div className="space-y-5">
         <div>
-          <Label htmlFor="name" className="flex items-center gap-2 mb-2">
-            <User className="w-4 h-4" />
+          <Label htmlFor="name" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <User className="w-4 h-4 text-[#1d8263]" />
             Vardas *
           </Label>
           <Input
@@ -293,16 +302,16 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.name}
             onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
             placeholder="Jonas Jonaitis"
-            className={validationErrors.name ? 'border-destructive' : ''}
+            className={`h-12 bg-white border-2 ${validationErrors.name ? 'border-red-500' : 'border-slate-200 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.name && (
-            <p className="text-destructive text-sm mt-1">{validationErrors.name}</p>
+            <p className="text-red-500 text-sm mt-1.5">{validationErrors.name}</p>
           )}
         </div>
         
         <div>
-          <Label htmlFor="company" className="flex items-center gap-2 mb-2">
-            <Building2 className="w-4 h-4" />
+          <Label htmlFor="company" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <Building2 className="w-4 h-4 text-[#1d8263]" />
             Įmonė *
           </Label>
           <Input
@@ -310,16 +319,16 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.company}
             onChange={(e) => setContactInfo({ ...contactInfo, company: e.target.value })}
             placeholder="UAB Įmonė"
-            className={validationErrors.company ? 'border-destructive' : ''}
+            className={`h-12 bg-white border-2 ${validationErrors.company ? 'border-red-500' : 'border-slate-200 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.company && (
-            <p className="text-destructive text-sm mt-1">{validationErrors.company}</p>
+            <p className="text-red-500 text-sm mt-1.5">{validationErrors.company}</p>
           )}
         </div>
         
         <div>
-          <Label htmlFor="phone" className="flex items-center gap-2 mb-2">
-            <Phone className="w-4 h-4" />
+          <Label htmlFor="phone" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <Phone className="w-4 h-4 text-[#1d8263]" />
             Telefonas *
           </Label>
           <Input
@@ -328,16 +337,16 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.phone}
             onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
             placeholder="+370 600 00000"
-            className={validationErrors.phone ? 'border-destructive' : ''}
+            className={`h-12 bg-white border-2 ${validationErrors.phone ? 'border-red-500' : 'border-slate-200 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.phone && (
-            <p className="text-destructive text-sm mt-1">{validationErrors.phone}</p>
+            <p className="text-red-500 text-sm mt-1.5">{validationErrors.phone}</p>
           )}
         </div>
         
         <div>
-          <Label htmlFor="email" className="flex items-center gap-2 mb-2">
-            <Mail className="w-4 h-4" />
+          <Label htmlFor="email" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <Mail className="w-4 h-4 text-[#1d8263]" />
             El. paštas *
           </Label>
           <Input
@@ -346,29 +355,29 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.email}
             onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
             placeholder="jonas@imone.lt"
-            className={validationErrors.email ? 'border-destructive' : ''}
+            className={`h-12 bg-white border-2 ${validationErrors.email ? 'border-red-500' : 'border-slate-200 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.email && (
-            <p className="text-destructive text-sm mt-1">{validationErrors.email}</p>
+            <p className="text-red-500 text-sm mt-1.5">{validationErrors.email}</p>
           )}
         </div>
       </div>
       
       <Button
         onClick={goToNextStep}
-        className="w-full mt-6 bg-[#1d8263] hover:bg-[#1d8263]/90"
+        className="w-full mt-8 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] text-white font-bold py-6 rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl transition-all duration-300"
         size="lg"
       >
         Toliau
-        <ArrowRight className="w-4 h-4 ml-2" />
+        <ArrowRight className="w-5 h-5 ml-2" />
       </Button>
     </div>
   );
 
   // Render date selection step
   const renderDateStep = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-center mb-6">Pasirinkite datą</h3>
+    <div className="space-y-5">
+      <h3 className="text-xl md:text-2xl font-bold text-center mb-5 text-slate-900">Pasirinkite datą</h3>
       
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
@@ -376,32 +385,38 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         </div>
       ) : error ? (
         <div className="text-center py-8">
-          <p className="text-destructive mb-4">{error}</p>
-          <Button onClick={fetchAvailability} variant="outline">
+          <p className="text-red-500 mb-4">{error}</p>
+          <Button onClick={fetchAvailability} variant="outline" className="border-2 border-slate-300">
             Bandyti dar kartą
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
           {availability.map((day) => (
             <button
               key={day.date}
               onClick={() => day.hasAvailableSlots && setSelectedDate(day.date)}
               disabled={!day.hasAvailableSlots}
-              className={`p-4 rounded-lg border-2 text-center transition-all ${
+              className={`p-3.5 rounded-xl border-2 text-center transition-all ${
                 selectedDate === day.date
-                  ? 'border-[#1d8263] bg-[#1d8263]/10'
+                  ? 'border-[#1d8263] bg-white shadow-md shadow-[#1d8263]/15'
                   : day.hasAvailableSlots
-                  ? 'border-border hover:border-[#1d8263]/50 cursor-pointer'
-                  : 'border-border/50 bg-muted/50 cursor-not-allowed opacity-50'
+                  ? 'border-slate-200 bg-white hover:border-[#1d8263]/50 hover:shadow-sm cursor-pointer'
+                  : 'border-slate-200 bg-slate-50 cursor-not-allowed opacity-50'
               }`}
             >
-              <div className="text-xs text-[#1d8263] font-medium mb-1">{day.dayName}</div>
-              <div className="font-semibold">
+              <div className={`text-xs font-semibold mb-1 ${
+                selectedDate === day.date ? 'text-[#1d8263]' : day.hasAvailableSlots ? 'text-slate-500' : 'text-slate-400'
+              }`}>
+                {day.dayName}
+              </div>
+              <div className={`font-bold text-sm ${
+                selectedDate === day.date ? 'text-[#1d8263]' : 'text-slate-900'
+              }`}>
                 {format(parseISO(day.date), 'MMMM d', { locale: lt })}
               </div>
               {!day.hasAvailableSlots && (
-                <div className="text-xs text-muted-foreground mt-1">Užimta</div>
+                <div className="text-xs text-slate-400 mt-1">Užimta</div>
               )}
             </button>
           ))}
@@ -409,17 +424,17 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       )}
       
       <div className="flex gap-3 mt-6">
-        <Button onClick={goToPreviousStep} variant="outline" className="flex-1">
-          <ArrowLeft className="w-4 h-4 mr-2" />
+        <Button onClick={goToPreviousStep} variant="outline" className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 py-6 rounded-xl font-semibold">
+          <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
         <Button
           onClick={goToNextStep}
-          className="flex-1 bg-[#1d8263] hover:bg-[#1d8263]/90"
+          className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] text-white font-bold py-6 rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
           disabled={!selectedDate}
         >
           Toliau
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
     </div>
@@ -427,46 +442,58 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
 
   // Render time selection step
   const renderTimeStep = () => (
-    <div className="space-y-4">
-      <h3 className="text-xl font-semibold text-center mb-2">Pasirinkite laiką</h3>
-      <p className="text-center text-muted-foreground mb-6">
+    <div className="space-y-5">
+      <h3 className="text-xl md:text-2xl font-bold text-center mb-1 text-slate-900">Pasirinkite laiką</h3>
+      <p className="text-center text-slate-600 mb-5 font-medium text-sm md:text-base">
         {selectedDate && formatDateDisplay(selectedDate)}
       </p>
       
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
         {selectedDaySlots.map((slot) => (
           <button
             key={slot.datetime}
             onClick={() => slot.available && setSelectedSlot(slot)}
             disabled={!slot.available}
-            className={`p-3 rounded-lg border-2 text-center transition-all ${
+            className={`p-3.5 rounded-xl border-2 text-center transition-all ${
               selectedSlot?.datetime === slot.datetime
-                ? 'border-[#1d8263] bg-[#1d8263]/10'
+                ? 'border-[#1d8263] bg-white shadow-md shadow-[#1d8263]/15'
                 : slot.available
-                ? 'border-border hover:border-[#1d8263]/50 cursor-pointer'
-                : 'border-border/50 bg-muted/50 cursor-not-allowed opacity-50 line-through'
+                ? 'border-slate-200 bg-white hover:border-[#1d8263]/50 hover:shadow-sm cursor-pointer'
+                : 'border-slate-200 bg-slate-50 cursor-not-allowed opacity-50 line-through'
             }`}
           >
-            <Clock className={`w-4 h-4 mx-auto mb-1 ${
-              slot.available ? 'text-[#1d8263]' : 'text-muted-foreground'
+            <Clock className={`w-4 h-4 mx-auto mb-1.5 ${
+              selectedSlot?.datetime === slot.datetime
+                ? 'text-[#1d8263]'
+                : slot.available
+                ? 'text-slate-400'
+                : 'text-slate-300'
             }`} />
-            <div className="font-semibold">{formatTime(slot.datetime)}</div>
+            <div className={`font-bold text-sm ${
+              selectedSlot?.datetime === slot.datetime
+                ? 'text-[#1d8263]'
+                : slot.available
+                ? 'text-slate-900'
+                : 'text-slate-400'
+            }`}>
+              {formatTime(slot.datetime)}
+            </div>
           </button>
         ))}
       </div>
       
       <div className="flex gap-3 mt-6">
-        <Button onClick={goToPreviousStep} variant="outline" className="flex-1">
-          <ArrowLeft className="w-4 h-4 mr-2" />
+        <Button onClick={goToPreviousStep} variant="outline" className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 py-6 rounded-xl font-semibold">
+          <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
         <Button
           onClick={goToNextStep}
-          className="flex-1 bg-[#1d8263] hover:bg-[#1d8263]/90"
+          className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] text-white font-bold py-6 rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
           disabled={!selectedSlot}
         >
           Toliau
-          <ArrowRight className="w-4 h-4 ml-2" />
+          <ArrowRight className="w-5 h-5 ml-2" />
         </Button>
       </div>
     </div>
@@ -475,78 +502,77 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render confirmation step
   const renderConfirmStep = () => (
     <div className="space-y-6">
-      <h3 className="text-xl font-semibold text-center mb-6">Patvirtinkite rezervaciją</h3>
+      <h3 className="text-xl md:text-2xl font-bold text-center mb-5 text-slate-900">Patvirtinkite rezervaciją</h3>
       
-      <div className="bg-muted/30 rounded-xl p-6 space-y-4">
-        <div className="flex items-start gap-3">
-          <User className="w-5 h-5 text-[#1d8263] mt-0.5" />
-          <div>
-            <div className="text-sm text-muted-foreground">Vardas</div>
-            <div className="font-medium">{contactInfo.name}</div>
+      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-5">
+        <div className="grid grid-cols-2 gap-3">
+          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+            <User className="w-4 h-4 text-[#1d8263] mt-0.5" />
+            <div className="min-w-0">
+              <div className="text-[11px] text-slate-500 font-semibold">Vardas</div>
+              <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.name}</div>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+            <Building2 className="w-4 h-4 text-[#1d8263] mt-0.5" />
+            <div className="min-w-0">
+              <div className="text-[11px] text-slate-500 font-semibold">Įmonė</div>
+              <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.company}</div>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+            <Phone className="w-4 h-4 text-[#1d8263] mt-0.5" />
+            <div className="min-w-0">
+              <div className="text-[11px] text-slate-500 font-semibold">Telefonas</div>
+              <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.phone}</div>
+            </div>
+          </div>
+          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
+            <Mail className="w-4 h-4 text-[#1d8263] mt-0.5" />
+            <div className="min-w-0">
+              <div className="text-[11px] text-slate-500 font-semibold">El. paštas</div>
+              <div className="text-sm font-bold text-slate-900 break-all">{contactInfo.email}</div>
+            </div>
           </div>
         </div>
-        
-        <div className="flex items-start gap-3">
-          <Building2 className="w-5 h-5 text-[#1d8263] mt-0.5" />
-          <div>
-            <div className="text-sm text-muted-foreground">Įmonė</div>
-            <div className="font-medium">{contactInfo.company}</div>
+
+        <div className="mt-4 rounded-2xl border border-[#1d8263]/20 bg-gradient-to-br from-[#E0F2E8] to-[#F0F9F4] px-4 py-3 flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-[#1d8263] flex items-center justify-center flex-shrink-0">
+            <Calendar className="w-5 h-5 text-white" />
           </div>
-        </div>
-        
-        <div className="flex items-start gap-3">
-          <Phone className="w-5 h-5 text-[#1d8263] mt-0.5" />
-          <div>
-            <div className="text-sm text-muted-foreground">Telefonas</div>
-            <div className="font-medium">{contactInfo.phone}</div>
-          </div>
-        </div>
-        
-        <div className="flex items-start gap-3">
-          <Mail className="w-5 h-5 text-[#1d8263] mt-0.5" />
-          <div>
-            <div className="text-sm text-muted-foreground">El. paštas</div>
-            <div className="font-medium">{contactInfo.email}</div>
-          </div>
-        </div>
-        
-        <div className="border-t pt-4 mt-4">
-          <div className="flex items-start gap-3">
-            <Calendar className="w-5 h-5 text-[#1d8263] mt-0.5" />
-            <div>
-              <div className="text-sm text-muted-foreground">Data ir laikas</div>
-              <div className="font-medium">
-                {selectedDate && formatDateDisplay(selectedDate)}, {selectedSlot && formatTime(selectedSlot.datetime)}
-              </div>
+          <div className="min-w-0">
+            <div className="text-[11px] font-semibold text-slate-600">Data ir laikas</div>
+            <div className="text-base font-extrabold text-slate-900 truncate">
+              {selectedDate && formatDateDisplay(selectedDate)}, {selectedSlot && formatTime(selectedSlot.datetime)}
             </div>
           </div>
         </div>
       </div>
       
       {error && (
-        <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-destructive text-sm">
+        <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 text-red-600 text-sm">
           {error}
         </div>
       )}
       
-      <div className="flex gap-3">
-        <Button onClick={goToPreviousStep} variant="outline" className="flex-1" disabled={isLoading}>
-          <ArrowLeft className="w-4 h-4 mr-2" />
+      <div className="flex gap-3 mt-8">
+        <Button onClick={goToPreviousStep} variant="outline" className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 py-6 rounded-xl font-semibold" disabled={isLoading}>
+          <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
         <Button
           onClick={handleBooking}
-          className="flex-1 bg-[#1d8263] hover:bg-[#1d8263]/90"
+          className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] text-white font-bold py-6 rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
           disabled={isLoading}
         >
           {isLoading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="w-5 h-5 mr-2 animate-spin" />
               Registruojama...
             </>
           ) : (
             <>
-              <Check className="w-4 h-4 mr-2" />
+              <Check className="w-5 h-5 mr-2" />
               Patvirtinti
             </>
           )}
@@ -558,39 +584,44 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render success step
   const renderSuccessStep = () => (
     <div className="text-center py-8">
-      <div className="w-20 h-20 bg-[#1d8263]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-        <CheckCircle2 className="w-10 h-10 text-[#1d8263]" />
+      <div className="w-24 h-24 bg-gradient-to-br from-[#1d8263] to-[#166b52] rounded-full flex items-center justify-center mx-auto mb-8 shadow-lg shadow-[#1d8263]/30">
+        <CheckCircle2 className="w-12 h-12 text-white" />
       </div>
       
-      <h3 className="text-2xl font-bold mb-3">Rezervacija sėkminga!</h3>
-      <p className="text-muted-foreground mb-6">
-        Patvirtinimo laiškas išsiųstas į <strong>{contactInfo.email}</strong>
+      <h3 className="text-3xl font-bold mb-4 text-slate-900">Rezervacija sėkminga!</h3>
+      <p className="text-slate-600 mb-8 text-lg">
+        Patvirtinimo laiškas išsiųstas į <strong className="text-slate-900">{contactInfo.email}</strong>
       </p>
       
-      <div className="bg-[#1d8263]/10 rounded-xl p-6 max-w-sm mx-auto">
-        <div className="flex items-center justify-center gap-3 mb-2">
-          <Calendar className="w-5 h-5 text-[#1d8263]" />
-          <span className="font-semibold">
+      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-8 max-w-sm mx-auto">
+        <div className="flex items-center justify-center gap-3 mb-4">
+          <div className="w-10 h-10 rounded-xl bg-[#1d8263]/10 flex items-center justify-center">
+            <Calendar className="w-5 h-5 text-[#1d8263]" />
+          </div>
+          <span className="font-bold text-lg text-slate-900">
             {selectedDate && formatDateDisplay(selectedDate)}
           </span>
         </div>
+        <div className="h-px bg-slate-200 mb-4" />
         <div className="flex items-center justify-center gap-3">
-          <Clock className="w-5 h-5 text-[#1d8263]" />
-          <span className="font-semibold text-xl">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#1d8263] to-[#166b52] flex items-center justify-center">
+            <Clock className="w-5 h-5 text-white" />
+          </div>
+          <span className="font-bold text-2xl text-[#1d8263]">
             {selectedSlot && formatTime(selectedSlot.datetime)}
           </span>
         </div>
       </div>
       
-      <p className="text-sm text-muted-foreground mt-6">
-        Jei turite klausimų, susisiekite: <a href="mailto:info@akseler.lt" className="text-[#1d8263] underline">info@akseler.lt</a>
+      <p className="text-sm text-slate-500 mt-8">
+        Jei turite klausimų, susisiekite: <a href="mailto:info@akseler.lt" className="text-[#1d8263] font-semibold underline hover:text-[#166b52]">info@akseler.lt</a>
       </p>
     </div>
   );
 
   return (
     <div className="w-full max-w-xl mx-auto">
-      <div className="bg-card border border-border rounded-2xl p-6 md:p-8 shadow-lg">
+      <div className="bg-white/85 backdrop-blur border-2 border-[#1d8263]/20 rounded-2xl p-5 md:p-7 shadow-lg">
         {step !== 'success' && renderStepIndicator()}
         
         {step === 'contact' && renderContactStep()}
