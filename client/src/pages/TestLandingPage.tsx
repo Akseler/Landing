@@ -596,17 +596,17 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
       />
 
       {/* Desktop grid */}
-      <div className="hidden md:grid md:grid-cols-3 gap-4" style={{ backgroundColor: '#FFFFFF' }}>
+      <div className="hidden md:grid md:grid-cols-3 gap-3 max-w-[680px] mx-auto" style={{ backgroundColor: '#FFFFFF' }}>
         {results.map((r) => (
           <div
             key={r.company}
-            className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl border border-[#1d8263]/20 px-8 pt-8 pb-12 flex flex-col min-h-[400px] shadow-lg"
+            className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl border border-[#1d8263]/20 px-7 pt-7 pb-10 flex flex-col min-h-[380px] shadow-lg"
           >
             <div className="flex flex-col items-center gap-2 text-center shrink-0">
               <img
                 src={r.logo}
                 alt={r.company}
-                className="h-10 w-auto object-contain brightness-0 invert"
+                className="h-9 w-auto object-contain brightness-0 invert"
               />
               <div className="text-[12px] text-white/80 font-medium whitespace-nowrap">
                 {r.revenue}
@@ -614,13 +614,13 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
             </div>
             <div className="mt-5 h-px bg-white/30 shrink-0" />
             <div className="flex-1 flex flex-col items-center justify-center text-center">
-              <div className="text-5xl font-extrabold text-white">
+              <div className="text-4xl font-extrabold text-white">
                 {r.stat}
               </div>
-              <div className="mt-4 text-[15px] font-bold text-white whitespace-nowrap">
+              <div className="mt-4 text-[14px] font-bold text-white whitespace-nowrap">
                 {r.desc}
               </div>
-              <div className="mt-1 text-[13px] text-white/90 whitespace-nowrap">{r.sub}</div>
+              <div className="mt-1 text-[12px] text-white/90 whitespace-nowrap">{r.sub}</div>
             </div>
           </div>
         ))}
@@ -690,8 +690,7 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
     >
       <div className="bg-white rounded-3xl p-3 shadow-md border border-slate-100">
         <div 
-          className="aspect-video w-full rounded-2xl overflow-hidden relative group cursor-pointer bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
-          onClick={handlePlayClick}
+          className="aspect-video w-full rounded-2xl overflow-hidden relative group bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
         >
           {/* Subtle geometric pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -709,7 +708,12 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
-              className="bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-colors active:scale-[0.98] animate-pulse-subtle"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handlePlayClick();
+              }}
+              className="cursor-pointer bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-colors active:scale-[0.98] animate-pulse-subtle"
               style={{
                 animation: 'pulse-subtle 3s ease-in-out infinite',
               }}
@@ -749,7 +753,7 @@ function HowItWorksSection() {
         title="Kaip veikia AI pardavimų sistema"
       />
 
-      <div className="grid md:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 gap-5">
         <StepCard
           step="1"
           title="1. Sutvarkome užklausų srautą"
@@ -924,9 +928,10 @@ export default function TestLandingPage() {
               </Badge>
             </div>
             <h1 className="text-[6vw] sm:text-[5vw] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900">
-              Gaukite pastovų ir kvalifikuotą<br />
-              klientų srautą per 14 dienų<br />
-              su AI Pardavimų sistema
+              Gaukite pastovų ir kvalifikuotą klientų srautą
+              <br className="hidden md:block" />
+              <span className="md:hidden"><br /></span>
+              per 14 dienų su AI Pardavimų sistema
             </h1>
             <p className="text-sm md:text-base text-slate-600 leading-relaxed">
               Jokių mėnesinių įsipareigojimų, mokate tik<br />
@@ -935,7 +940,7 @@ export default function TestLandingPage() {
           </div>
 
           <div className="mt-4">
-            <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-6">
+            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-6">
               <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap">
                 Ko trūksta jūsų paslaugų verslui?
               </h2>
@@ -1129,22 +1134,22 @@ export default function TestLandingPage() {
                 icon: Sprout,
               },
             ].map((c, idx, arr) => (
-              <div key={c.title} className="p-6">
+              <div key={c.title} className="p-5 md:p-6">
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="w-9 h-9 rounded-xl bg-[#1d8263]/10 border border-[#1d8263]/15 flex items-center justify-center flex-shrink-0">
                       <c.icon className="w-5 h-5 text-[#1d8263]" />
                     </div>
-                    <div className="font-extrabold text-slate-900 truncate">
+                    <div className="font-extrabold text-slate-900 text-base md:text-lg">
                       {c.title}
                     </div>
                   </div>
                 </div>
-                <div className="mt-2 text-sm text-slate-500 leading-relaxed">
+                <div className="mt-2 text-[15px] md:text-base text-slate-600 leading-relaxed">
                   {c.text}
                 </div>
                 {idx < arr.length - 1 ? (
-                  <div className="mt-6 h-px bg-[#1d8263]/15" />
+                  <div className="mt-5 h-px bg-[#1d8263]/15" />
                 ) : null}
               </div>
             ))}
@@ -1157,7 +1162,7 @@ export default function TestLandingPage() {
             badge="Kam tai skirta"
             title="Pritaikoma įvairiose rinkose"
           />
-          <div className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-3xl border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] p-2">
+          <div className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-3xl border border-[#1d8263]/20 shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] overflow-hidden">
             <MarketsScrolling hideTitle compact />
           </div>
         </section>
