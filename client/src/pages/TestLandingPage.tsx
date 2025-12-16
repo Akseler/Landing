@@ -245,11 +245,11 @@ function Step1Visual() {
 
 function Step2Visual() {
   const [stage, setStage] = useState(0);
-  // 0: FB Blink
-  // 1: FB Dot Moving -> SMS msg
-  // 2: Web Blink
-  // 3: Web Dot Moving -> SMS msg
-  // 4: Idle
+  // 0: Form empty
+  // 1: "Vardas" filled
+  // 2: "Tel.numeris" filled
+  // 3: "El.paštas" filled
+  // 4: SMS notification appears
 
   useEffect(() => {
     let t: NodeJS.Timeout;
@@ -263,193 +263,142 @@ function Step2Visual() {
             setStage(3);
             t = setTimeout(() => {
               setStage(4);
-              t = setTimeout(run, 2000);
-            }, 1800);
-          }, 800);
-        }, 1800);
-      }, 800);
+              t = setTimeout(() => {
+                // Fade out SMS first, then reset to form
+                setStage(0);
+                t = setTimeout(run, 500);
+              }, 3000);
+            }, 1000);
+          }, 1000);
+        }, 1000);
+      }, 1000);
     };
     run();
     return () => clearTimeout(t);
   }, []);
 
-  const fbActive = stage === 0;
-  const webActive = stage === 2;
-  const fbDot = stage === 1;
-  const webDot = stage === 3;
-  const showMsg = stage === 1 || stage === 3 || stage === 4;
-
   return (
-    <div className="h-[230px] flex items-center justify-center">
+    <div className="h-[230px] flex items-center justify-center relative">
       <div className="w-full max-w-[360px]">
-        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-sm p-4 overflow-hidden h-[210px]">
-          {/* Sources */}
-          <div className="absolute left-4 top-1/2 -translate-y-1/2 flex flex-col gap-6">
-            {/* Facebook Box */}
-            <motion.div
-              animate={{
-                scale: fbActive ? 1.05 : 1,
-                borderColor: fbActive ? "#1877F2" : "#e2e8f0",
-                backgroundColor: fbActive ? "#F0F7FF" : "#F8FAFC",
-              }}
-              transition={{ duration: 0.3 }}
-              className="w-[110px] rounded-xl border px-2 py-2 z-10 relative"
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-[9px] font-bold uppercase tracking-wider text-slate-600">
-                  Facebook
-                </div>
-                <SiFacebook className="w-3 h-3 text-[#1877F2]" />
-              </div>
-              <div className="mt-2 space-y-1.5">
-                <div className="h-1.5 rounded-full bg-slate-300 w-[70%]" />
-                <div className="h-1.5 rounded-full bg-slate-200 w-[50%]" />
-              </div>
-            </motion.div>
-
-            {/* Website Box */}
-            <motion.div
-              animate={{
-                scale: webActive ? 1.05 : 1,
-                borderColor: webActive ? "#1d8263" : "#e2e8f0",
-                backgroundColor: webActive ? "#F3FBF6" : "#F8FAFC",
-              }}
-              transition={{ duration: 0.3 }}
-              className="w-[110px] rounded-xl border px-2 py-2 z-10 relative"
-            >
-              <div className="flex items-center justify-between">
-                <div className="text-[9px] font-bold uppercase tracking-wider text-slate-600">
-                  Svetainė
-                </div>
-                <Globe className="w-3 h-3 text-[#1d8263]" />
-              </div>
-              <div className="mt-2 space-y-1.5">
-                <div className="h-1.5 rounded-full bg-slate-300 w-[60%]" />
-                <div className="h-1.5 rounded-full bg-slate-200 w-[40%]" />
-              </div>
-            </motion.div>
-          </div>
-
-          {/* SMS Message */}
-          <div className="absolute right-4 top-1/2 -translate-y-1/2 w-[110px] rounded-2xl bg-white border border-[#1d8263]/20 shadow-sm p-3 z-10">
-            <div className="flex items-center justify-between">
-              <div className="text-[10px] font-bold uppercase tracking-wider text-[#1d8263]">
-                SMS
-              </div>
-              <Bot className="w-4 h-4 text-[#1d8263]" />
-            </div>
-            <div className="mt-2 rounded-xl border border-[#1d8263]/15 bg-[#1d8263]/8 p-2 text-[8px] text-slate-700 min-h-[75px] flex items-center">
-              <AnimatePresence mode="wait">
-                {showMsg ? (
+        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-sm p-4 h-[210px] overflow-hidden">
+          {/* Form */}
+          <AnimatePresence mode="wait">
+            {stage < 4 && (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: stage === 3 ? 0 : 1, scale: stage === 3 ? 0.95 : 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                className="space-y-2.5"
+              >
+                {/* Vardas */}
+                <div>
+                  <label className="text-[9px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">
+                    Vardas
+                  </label>
                   <motion.div
-                    key="msg"
-                    initial={{ opacity: 0, y: 2 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0 }}
-                    className="font-medium leading-tight"
+                    className="h-8 rounded-lg border-2 bg-white"
+                    animate={{
+                      borderColor: stage >= 1 ? "#1d8263" : "#e2e8f0",
+                      backgroundColor: stage >= 1 ? "#F3FBF6" : "#FFFFFF",
+                    }}
+                    transition={{ duration: 0.3 }}
                   >
-                    Sveiki, gavome Jūsų užklausą. Domitės dirbtiniu intelektu?
+                    {stage >= 1 && (
+                      <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="h-full flex items-center px-2.5 text-xs font-medium text-slate-700"
+                      >
+                        Jonas
+                      </motion.div>
+                    )}
                   </motion.div>
-                ) : (
+                </div>
+
+                {/* Tel.numeris */}
+                <div>
+                  <label className="text-[9px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">
+                    Tel.numeris
+                  </label>
                   <motion.div
-                    key="idle"
-                    initial={{ opacity: 0.4 }}
-                    animate={{ opacity: 0.4 }}
+                    className="h-8 rounded-lg border-2 bg-white"
+                    animate={{
+                      borderColor: stage >= 2 ? "#1d8263" : "#e2e8f0",
+                      backgroundColor: stage >= 2 ? "#F3FBF6" : "#FFFFFF",
+                    }}
+                    transition={{ duration: 0.3 }}
                   >
-                    Laukiama...
+                    {stage >= 2 && (
+                      <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="h-full flex items-center px-2.5 text-xs font-medium text-slate-700"
+                      >
+                        +370 600 12345
+                      </motion.div>
+                    )}
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          </div>
+                </div>
 
-          {/* Flow lines (Curved & Merging) */}
-          <div className="absolute inset-0 pointer-events-none">
-            <svg className="w-full h-full">
-              <defs>
-                <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                  <stop offset="0%" stopColor="#1d8263" stopOpacity="0" />
-                  <stop offset="50%" stopColor="#1d8263" stopOpacity="1" />
-                  <stop offset="100%" stopColor="#1d8263" stopOpacity="0" />
-                </linearGradient>
-              </defs>
+                {/* El.paštas */}
+                <div>
+                  <label className="text-[9px] font-semibold text-slate-600 uppercase tracking-wider mb-1 block">
+                    El.paštas
+                  </label>
+                  <motion.div
+                    className="h-8 rounded-lg border-2 bg-white"
+                    animate={{
+                      borderColor: stage >= 3 ? "#1d8263" : "#e2e8f0",
+                      backgroundColor: stage >= 3 ? "#F3FBF6" : "#FFFFFF",
+                    }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {stage >= 3 && (
+                      <motion.div
+                        initial={{ opacity: 0, x: -10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        className="h-full flex items-center px-2.5 text-xs font-medium text-slate-700"
+                      >
+                        jonas@example.com
+                      </motion.div>
+                    )}
+                  </motion.div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-              {/* Background Paths */}
-              <path
-                d="M 126 80 C 150 80, 150 95, 190 95"
-                fill="none"
-                stroke="#e2e8f0"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 126 130 C 150 130, 150 95, 190 95"
-                fill="none"
-                stroke="#e2e8f0"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-              <path
-                d="M 190 95 L 234 95"
-                fill="none"
-                stroke="#e2e8f0"
-                strokeWidth="2"
-                strokeLinecap="round"
-              />
-
-              {/* Animated Electricity/Flow Effect */}
-              {/* FB Flow */}
-              <motion.path
-                d="M 126 80 C 150 80, 150 95, 190 95"
-                fill="none"
-                stroke="#1d8263"
-                strokeWidth="2"
-                strokeLinecap="round"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={
-                  fbActive || fbDot
-                    ? { pathLength: [0, 1, 1], opacity: [0, 1, 0], pathOffset: [0, 0, 1] }
-                    : { pathLength: 0, opacity: 0 }
-                }
-                transition={{ duration: 1.5, ease: "linear", times: [0, 0.5, 1] }}
-              />
-
-              {/* Web Flow */}
-              <motion.path
-                d="M 126 130 C 150 130, 150 95, 190 95"
-                fill="none"
-                stroke="#1d8263"
-                strokeWidth="2"
-                strokeLinecap="round"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={
-                  webActive || webDot
-                    ? { pathLength: [0, 1, 1], opacity: [0, 1, 0], pathOffset: [0, 0, 1] }
-                    : { pathLength: 0, opacity: 0 }
-                }
-                transition={{ duration: 1.5, ease: "linear", times: [0, 0.5, 1] }}
-              />
-
-              {/* Common SMS Flow (Triggered by either) */}
-              <motion.path
-                d="M 190 95 L 234 95"
-                fill="none"
-                stroke="#1d8263"
-                strokeWidth="2"
-                strokeLinecap="round"
-                initial={{ pathLength: 0, opacity: 0 }}
-                animate={
-                  fbDot || webDot
-                    ? { pathLength: [0, 1, 1], opacity: [0, 1, 0], pathOffset: [0, 0, 1] }
-                    : { pathLength: 0, opacity: 0 }
-                }
-                transition={{ duration: 1.5, ease: "linear", delay: 0.2, times: [0, 0.5, 1] }}
-              />
-
-              {/* Merge Dot */}
-              <circle cx="190" cy="95" r="3" fill="#cbd5e1" />
-            </svg>
-          </div>
+          {/* SMS Notification - Centered */}
+          <AnimatePresence mode="wait">
+            {stage === 4 && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10 m-0"
+              >
+                <div className="w-[240px] rounded-xl bg-white border-2 border-[#1d8263]/20 shadow-lg p-3">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center gap-2">
+                      <Bot className="w-4 h-4 text-[#1d8263]" />
+                      <div className="text-[10px] font-bold text-[#1d8263] uppercase tracking-wider">
+                        SMS
+                      </div>
+                    </div>
+                    <div className="text-[8px] text-slate-400">Dabar</div>
+                  </div>
+                  <div className="rounded-lg border border-[#1d8263]/15 bg-[#1d8263]/8 p-2.5">
+                    <p className="text-[9px] leading-tight text-slate-700 font-medium">
+                      Sveiki, Jonai, čia iš Akseler. Gavome Jūsų užklausą, kas paskatino domėtis AI sprendimais?
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
@@ -816,7 +765,7 @@ function HowItWorksSection() {
         />
         <StepCard
           step="3"
-          title="3. AI su kvalifikuotais planuoja pokalbius arba vizitus"
+          title="3. AI su kvalifikuotais klientais planuoja pokalbius arba vizitus"
           description="Jei klientas rimtai nusiteikęs, AI pasiūlo jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje ir suplanuoja kalendoriuje."
           visual={<Step3Visual />}
           index={2}
