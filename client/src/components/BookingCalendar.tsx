@@ -377,7 +377,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render date selection step
   const renderDateStep = () => (
     <div className="space-y-5">
-      <h3 className="text-xl md:text-2xl font-bold text-center mb-5 text-slate-900">Pasirinkite datą</h3>
+      <h3 className="text-2xl font-bold text-center mb-5 text-slate-900">Pasirinkite datą</h3>
       
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
@@ -391,17 +391,17 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
           </Button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
           {availability.map((day) => (
             <button
               key={day.date}
               onClick={() => day.hasAvailableSlots && setSelectedDate(day.date)}
               disabled={!day.hasAvailableSlots}
-              className={`p-3.5 rounded-xl border-2 text-center transition-all ${
+              className={`p-4 rounded-xl border-2 text-center transition-all ${
                 selectedDate === day.date
-                  ? 'border-[#1d8263] bg-white shadow-md shadow-[#1d8263]/15'
+                  ? 'border-[#1d8263] bg-white shadow-lg shadow-[#1d8263]/20 scale-105'
                   : day.hasAvailableSlots
-                  ? 'border-slate-200 bg-white hover:border-[#1d8263]/50 hover:shadow-sm cursor-pointer'
+                  ? 'border-slate-200 bg-white hover:border-[#1d8263]/50 hover:shadow-md cursor-pointer'
                   : 'border-slate-200 bg-slate-50 cursor-not-allowed opacity-50'
               }`}
             >
@@ -443,26 +443,26 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render time selection step
   const renderTimeStep = () => (
     <div className="space-y-5">
-      <h3 className="text-xl md:text-2xl font-bold text-center mb-1 text-slate-900">Pasirinkite laiką</h3>
+      <h3 className="text-2xl font-bold text-center mb-1 text-slate-900">Pasirinkite laiką</h3>
       <p className="text-center text-slate-600 mb-5 font-medium text-sm md:text-base">
         {selectedDate && formatDateDisplay(selectedDate)}
       </p>
       
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2.5">
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
         {selectedDaySlots.map((slot) => (
           <button
             key={slot.datetime}
             onClick={() => slot.available && setSelectedSlot(slot)}
             disabled={!slot.available}
-            className={`p-3.5 rounded-xl border-2 text-center transition-all ${
+            className={`p-4 rounded-xl border-2 text-center transition-all ${
               selectedSlot?.datetime === slot.datetime
-                ? 'border-[#1d8263] bg-white shadow-md shadow-[#1d8263]/15'
+                ? 'border-[#1d8263] bg-white shadow-lg shadow-[#1d8263]/20 scale-105'
                 : slot.available
-                ? 'border-slate-200 bg-white hover:border-[#1d8263]/50 hover:shadow-sm cursor-pointer'
+                ? 'border-slate-200 bg-white hover:border-[#1d8263]/50 hover:shadow-md cursor-pointer'
                 : 'border-slate-200 bg-slate-50 cursor-not-allowed opacity-50 line-through'
             }`}
           >
-            <Clock className={`w-4 h-4 mx-auto mb-1.5 ${
+            <Clock className={`w-5 h-5 mx-auto mb-2 ${
               selectedSlot?.datetime === slot.datetime
                 ? 'text-[#1d8263]'
                 : slot.available
@@ -502,41 +502,39 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render confirmation step
   const renderConfirmStep = () => (
     <div className="space-y-6">
-      <h3 className="text-xl md:text-2xl font-bold text-center mb-5 text-slate-900">Patvirtinkite rezervaciją</h3>
+      <h3 className="text-2xl font-bold text-center mb-5 text-slate-900">Patvirtinkite rezervaciją</h3>
       
-      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-5">
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-            <User className="w-4 h-4 text-[#1d8263] mt-0.5" />
-            <div className="min-w-0">
-              <div className="text-[11px] text-slate-500 font-semibold">Vardas</div>
-              <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.name}</div>
-            </div>
+      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-5 space-y-3">
+        <div className="flex items-start gap-3">
+          <User className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <div className="min-w-0">
+            <div className="text-[11px] text-slate-500 font-semibold">Vardas</div>
+            <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.name}</div>
           </div>
-          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-            <Building2 className="w-4 h-4 text-[#1d8263] mt-0.5" />
-            <div className="min-w-0">
-              <div className="text-[11px] text-slate-500 font-semibold">Įmonė</div>
-              <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.company}</div>
-            </div>
+        </div>
+        <div className="flex items-start gap-3">
+          <Building2 className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <div className="min-w-0">
+            <div className="text-[11px] text-slate-500 font-semibold">Įmonė</div>
+            <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.company}</div>
           </div>
-          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-            <Phone className="w-4 h-4 text-[#1d8263] mt-0.5" />
-            <div className="min-w-0">
-              <div className="text-[11px] text-slate-500 font-semibold">Telefonas</div>
-              <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.phone}</div>
-            </div>
+        </div>
+        <div className="flex items-start gap-3">
+          <Phone className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <div className="min-w-0">
+            <div className="text-[11px] text-slate-500 font-semibold">Telefonas</div>
+            <div className="text-sm font-bold text-slate-900 break-words">{contactInfo.phone}</div>
           </div>
-          <div className="flex items-start gap-3 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5">
-            <Mail className="w-4 h-4 text-[#1d8263] mt-0.5" />
-            <div className="min-w-0">
-              <div className="text-[11px] text-slate-500 font-semibold">El. paštas</div>
-              <div className="text-sm font-bold text-slate-900 break-all">{contactInfo.email}</div>
-            </div>
+        </div>
+        <div className="flex items-start gap-3">
+          <Mail className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <div className="min-w-0">
+            <div className="text-[11px] text-slate-500 font-semibold">El. paštas</div>
+            <div className="text-sm font-bold text-slate-900 break-all">{contactInfo.email}</div>
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-[#1d8263]/20 bg-gradient-to-br from-[#E0F2E8] to-[#F0F9F4] px-4 py-3 flex items-center gap-3">
+        <div className="mt-2 rounded-2xl border border-[#1d8263]/20 bg-gradient-to-br from-[#E0F2E8] to-[#F0F9F4] px-4 py-3 flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-[#1d8263] flex items-center justify-center flex-shrink-0">
             <Calendar className="w-5 h-5 text-white" />
           </div>
@@ -621,7 +619,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
 
   return (
     <div className="w-full max-w-xl mx-auto">
-      <div className="bg-white/85 backdrop-blur border-2 border-[#1d8263]/20 rounded-2xl p-5 md:p-7 shadow-lg">
+      <div className="bg-gradient-to-br from-[#E0F2E8] to-[#F0F9F4] border-2 border-[#1d8263]/20 rounded-2xl p-6 md:p-8 shadow-lg">
         {step !== 'success' && renderStepIndicator()}
         
         {step === 'contact' && renderContactStep()}
