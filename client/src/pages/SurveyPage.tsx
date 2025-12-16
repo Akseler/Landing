@@ -41,6 +41,7 @@ export default function SurveyPage() {
   const [validationErrors, setValidationErrors] = useState<{ 
     [key: string]: string;
   }>({});
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   useEffect(() => {
     document.title = "Kvalifikacija";
@@ -85,7 +86,7 @@ export default function SurveyPage() {
       setValidationErrors({ service: "Prašome įvesti paslaugą" });
       return;
     }
-    trackQuizResponse(2, 'Kokią paslaugą labiausiai parduodate?', formData.service);
+    trackQuizResponse(2, 'Kokią jūsų labiausiai parduodama paslauga?', formData.service);
     setValidationErrors({});
     setStep(3);
   };
@@ -95,7 +96,7 @@ export default function SurveyPage() {
       setValidationErrors({ value: "Prašome pasirinkti sumą" });
       return;
     }
-    trackQuizResponse(3, 'Kokia vidutinė vieno kliento vertė (€)?', String(formData.value));
+    trackQuizResponse(3, 'Kokia vidutinė vieno jūsų kliento vertė?', String(formData.value));
     setValidationErrors({});
     setStep(4);
   };
@@ -184,7 +185,9 @@ export default function SurveyPage() {
     });
     
     // Go directly to booking
-    setLocation('/booking');
+    setIsTransitioning(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setTimeout(() => setLocation('/booking'), 280);
   };
 
   // Always show 6 steps total
@@ -198,7 +201,12 @@ export default function SurveyPage() {
       <SimpleHeader />
       
       <main className="pt-12 md:pt-12 pb-12 md:pb-24 px-6 lg:px-12 flex-1">
-        <div className="max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 1 }}
+          animate={{ opacity: isTransitioning ? 0 : 1 }}
+          transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+          className="max-w-2xl mx-auto"
+        >
           <div className="mb-12">
             <div className="w-full bg-muted border border-border rounded-full h-2.5">
               <div
@@ -228,7 +236,7 @@ export default function SurveyPage() {
                     className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 group ${
                       branch === 'A'
                         ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-lg shadow-[#1d8263]/20 scale-[1.02]"
-                        : "border-slate-200 hover:border-[#1d8263]/50 hover:bg-slate-50 hover:scale-[1.01]"
+                        : "border-[#1d8263]/20 bg-[#E0F2E8]/25 hover:border-[#1d8263]/50 hover:bg-[#E0F2E8]/35 hover:scale-[1.01]"
                     }`}
                   >
                     <div className="flex items-center gap-4">
@@ -256,7 +264,7 @@ export default function SurveyPage() {
                     className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 group ${
                       branch === 'B'
                         ? "border-[#1d8263] bg-gradient-to-br from-[#1d8263]/15 to-[#1d8263]/5 shadow-lg shadow-[#1d8263]/20 scale-[1.02]"
-                        : "border-slate-200 hover:border-[#1d8263]/50 hover:bg-slate-50 hover:scale-[1.01]"
+                        : "border-[#1d8263]/20 bg-[#E0F2E8]/25 hover:border-[#1d8263]/50 hover:bg-[#E0F2E8]/35 hover:scale-[1.01]"
                     }`}
                   >
                     <div className="flex items-center gap-4">
@@ -305,7 +313,7 @@ export default function SurveyPage() {
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
-                    Kokią paslaugą labiausiai parduodate?
+                    Kokią jūsų labiausiai parduodama paslauga?
                   </h2>
                 </div>
                 
@@ -320,7 +328,7 @@ export default function SurveyPage() {
                       setValidationErrors({});
                     }}
                     placeholder="Pvz. paskola verslui"
-                    className={`text-lg h-16 rounded-xl border-2 focus:border-[#1d8263] focus:ring-2 focus:ring-[#1d8263]/20 transition-all ${
+                    className={`text-lg h-16 rounded-xl border-2 bg-[#E0F2E8]/35 border-[#1d8263]/20 focus:border-[#1d8263] focus:ring-2 focus:ring-[#1d8263]/20 transition-all ${
                       validationErrors.service ? "border-destructive" : "border-slate-200"
                     }`}
                   />
@@ -352,12 +360,12 @@ export default function SurveyPage() {
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
-                    Kokia vidutinė vieno kliento vertė?
+                    Kokia vidutinė vieno jūsų kliento vertė?
                   </h2>
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-[#1d8263]/10 to-[#1d8263]/5 border-2 border-[#1d8263]/20">
+                  <div className="text-center p-6 rounded-2xl bg-gradient-to-br from-[#1d8263]/12 to-[#1d8263]/6 border-2 border-[#1d8263]/20">
                     <div className="flex items-center justify-center gap-2">
                       <span className="text-4xl font-extrabold text-[#1d8263]">
                         {formData.value >= 20000 ? "20,000+" : formData.value.toLocaleString()} €
@@ -767,7 +775,7 @@ export default function SurveyPage() {
               </div>
             )}
           </div>
-        </div>
+        </motion.div>
       </main>
 
       <Footer />

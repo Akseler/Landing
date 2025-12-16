@@ -166,11 +166,11 @@ function StepCard({
       className="bg-gradient-to-b from-[#E0F2E8] to-[#F0F9F4] rounded-2xl overflow-hidden shadow-[0_18px_40px_-22px_rgba(0,0,0,0.14)] border border-[#1d8263]/20 relative"
     >
       <div className="md:flex md:items-stretch md:gap-6">
-        <div className="px-5 md:px-7 pt-5 md:pt-6 pb-4 md:pb-6 md:w-1/2">
+        <div className="px-5 md:px-7 pt-5 md:pt-6 pb-4 md:pb-6 md:w-1/2 md:flex md:flex-col md:justify-center md:text-center">
           <h3 className="text-[17px] md:text-[22px] font-extrabold text-slate-900 leading-tight">{title}</h3>
           <p className="mt-2 text-[13px] md:text-[14px] text-slate-600 leading-relaxed">{description}</p>
         </div>
-        <div className="relative px-4 md:px-6 pt-0 pb-5 md:pb-6 md:w-1/2 md:flex md:items-center">
+        <div className="relative px-4 md:px-6 pt-0 pb-5 md:pb-6 md:w-1/2 md:flex md:items-center md:justify-center">
           <div className="relative z-10 w-full">{visual}</div>
         </div>
       </div>
@@ -383,18 +383,18 @@ function Step2Visual() {
                 transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
                 className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center z-10 m-0"
               >
-                <div className="w-[280px] rounded-xl bg-white border-2 border-[#1d8263]/20 shadow-lg p-4">
+                <div className="w-[280px] md:w-[240px] rounded-xl bg-white border-2 border-[#1d8263]/20 shadow-lg p-4 md:p-3">
                   <div className="flex items-center justify-between mb-2.5">
                     <div className="flex items-center gap-2">
-                      <Bot className="w-5 h-5 text-[#1d8263]" />
+                      <Bot className="w-5 h-5 md:w-4 md:h-4 text-[#1d8263]" />
                       <div className="text-[11px] font-bold text-[#1d8263] uppercase tracking-wider">
                         SMS
                       </div>
                     </div>
                     <div className="text-[9px] text-slate-400">Dabar</div>
                   </div>
-                  <div className="rounded-lg border border-[#1d8263]/15 bg-[#1d8263]/8 p-3">
-                    <p className="text-[10px] leading-relaxed text-slate-700 font-medium">
+                  <div className="rounded-lg border border-[#1d8263]/15 bg-[#1d8263]/8 p-3 md:p-2.5">
+                    <p className="text-[10px] md:text-[9px] leading-relaxed text-slate-700 font-medium">
                       Sveiki, Jonai, čia iš Akseler. Gavome Jūsų užklausą, kas paskatino domėtis AI sprendimais?
                     </p>
                   </div>
