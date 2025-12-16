@@ -253,7 +253,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       <div className="mb-6">
         <div className="relative">
           {/* Progress line behind bubbles */}
-          <div className="absolute left-0 right-0 top-5 h-1 rounded-full bg-white/25 border border-white/20" />
+          <div className="absolute left-0 right-0 top-5 h-1 rounded-full bg-white/60 border border-[#1d8263]/15" />
           <div
             className="absolute left-0 top-5 h-1 rounded-full bg-gradient-to-r from-[#1d8263] to-[#166b52] transition-all duration-300"
             style={{ width: `${Math.max(1, ((currentIndex + 1) / steps.length) * 100)}%` }}
@@ -270,17 +270,17 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
                   <div
                     className={`w-10 h-10 rounded-full flex items-center justify-center transition-all border shadow-sm ${
                       isActive
-                        ? 'bg-gradient-to-r from-[#1d8263] to-[#166b52] text-white border-white/25'
+                        ? 'bg-gradient-to-r from-[#1d8263] to-[#166b52] text-white border-[#1d8263]'
                         : isCompleted
-                        ? 'bg-white text-[#1d8263] border-white/30'
-                        : 'bg-white/15 text-white/70 border-white/20'
+                        ? 'bg-white text-[#1d8263] border-[#1d8263]/30'
+                        : 'bg-white/80 text-slate-400 border-slate-200'
                     }`}
                   >
                     {isCompleted ? <Check className="w-5 h-5" /> : <Icon className="w-5 h-5" />}
                   </div>
                   <div
                     className={`mt-1 text-[10px] font-semibold text-center leading-tight truncate w-full ${
-                      isActive ? 'text-white' : 'text-white/80'
+                      isActive ? 'text-[#1d8263]' : 'text-slate-500'
                     }`}
                     title={s.label}
                   >
@@ -298,12 +298,12 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render contact form step
   const renderContactStep = () => (
     <div className="space-y-5">
-      <h3 className="text-2xl font-bold text-center mb-6 text-white">Jūsų kontaktai</h3>
+      <h3 className="text-2xl font-bold text-center mb-6 text-slate-900">Jūsų kontaktai</h3>
       
       <div className="space-y-5">
         <div>
-          <Label htmlFor="name" className="flex items-center gap-2 mb-2.5 text-white/90 font-semibold">
-            <User className="w-4 h-4 text-white" />
+          <Label htmlFor="name" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <User className="w-4 h-4 text-[#1d8263]" />
             Vardas *
           </Label>
           <Input
@@ -311,7 +311,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.name}
             onChange={(e) => setContactInfo({ ...contactInfo, name: e.target.value })}
             placeholder="Jonas Jonaitis"
-            className={`h-12 bg-white/95 border-2 ${validationErrors.name ? 'border-red-500' : 'border-white/25 focus:border-white'} rounded-xl`}
+            className={`h-12 bg-white border-2 ${validationErrors.name ? 'border-red-500' : 'border-[#1d8263]/20 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.name && (
             <p className="text-red-500 text-sm mt-1.5">{validationErrors.name}</p>
@@ -319,8 +319,8 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         </div>
         
         <div>
-          <Label htmlFor="company" className="flex items-center gap-2 mb-2.5 text-white/90 font-semibold">
-            <Building2 className="w-4 h-4 text-white" />
+          <Label htmlFor="company" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <Building2 className="w-4 h-4 text-[#1d8263]" />
             Įmonė *
           </Label>
           <Input
@@ -328,7 +328,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.company}
             onChange={(e) => setContactInfo({ ...contactInfo, company: e.target.value })}
             placeholder="UAB Įmonė"
-            className={`h-12 bg-white/95 border-2 ${validationErrors.company ? 'border-red-500' : 'border-white/25 focus:border-white'} rounded-xl`}
+            className={`h-12 bg-white border-2 ${validationErrors.company ? 'border-red-500' : 'border-[#1d8263]/20 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.company && (
             <p className="text-red-500 text-sm mt-1.5">{validationErrors.company}</p>
@@ -336,8 +336,8 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         </div>
         
         <div>
-          <Label htmlFor="phone" className="flex items-center gap-2 mb-2.5 text-white/90 font-semibold">
-            <Phone className="w-4 h-4 text-white" />
+          <Label htmlFor="phone" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <Phone className="w-4 h-4 text-[#1d8263]" />
             Telefonas *
           </Label>
           <Input
@@ -346,7 +346,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.phone}
             onChange={(e) => setContactInfo({ ...contactInfo, phone: e.target.value })}
             placeholder="+370 600 00000"
-            className={`h-12 bg-white/95 border-2 ${validationErrors.phone ? 'border-red-500' : 'border-white/25 focus:border-white'} rounded-xl`}
+            className={`h-12 bg-white border-2 ${validationErrors.phone ? 'border-red-500' : 'border-[#1d8263]/20 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.phone && (
             <p className="text-red-500 text-sm mt-1.5">{validationErrors.phone}</p>
@@ -354,8 +354,8 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         </div>
         
         <div>
-          <Label htmlFor="email" className="flex items-center gap-2 mb-2.5 text-white/90 font-semibold">
-            <Mail className="w-4 h-4 text-white" />
+          <Label htmlFor="email" className="flex items-center gap-2 mb-2.5 text-slate-700 font-semibold">
+            <Mail className="w-4 h-4 text-[#1d8263]" />
             El. paštas *
           </Label>
           <Input
@@ -364,7 +364,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             value={contactInfo.email}
             onChange={(e) => setContactInfo({ ...contactInfo, email: e.target.value })}
             placeholder="jonas@imone.lt"
-            className={`h-12 bg-white/95 border-2 ${validationErrors.email ? 'border-red-500' : 'border-white/25 focus:border-white'} rounded-xl`}
+            className={`h-12 bg-white border-2 ${validationErrors.email ? 'border-red-500' : 'border-[#1d8263]/20 focus:border-[#1d8263]'} rounded-xl`}
           />
           {validationErrors.email && (
             <p className="text-red-500 text-sm mt-1.5">{validationErrors.email}</p>
@@ -386,7 +386,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render date selection step
   const renderDateStep = () => (
     <div className="space-y-5">
-      <h3 className="text-2xl font-bold text-center mb-5 text-white">Pasirinkite datą</h3>
+      <h3 className="text-2xl font-bold text-center mb-5 text-slate-900">Pasirinkite datą</h3>
       
       {isLoading ? (
         <div className="flex items-center justify-center py-12">
@@ -408,14 +408,14 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
               disabled={!day.hasAvailableSlots}
               className={`p-4 rounded-xl border-2 text-center transition-all ${
                 selectedDate === day.date
-                  ? 'border-white bg-white shadow-lg shadow-black/15 scale-105'
+                  ? 'border-[#1d8263] bg-white shadow-lg shadow-[#1d8263]/20 scale-105'
                   : day.hasAvailableSlots
-                  ? 'border-white/25 bg-white/95 hover:border-white/60 hover:shadow-md cursor-pointer'
-                  : 'border-white/15 bg-white/30 cursor-not-allowed opacity-60'
+                  ? 'border-[#1d8263]/20 bg-white hover:border-[#1d8263]/50 hover:shadow-md cursor-pointer'
+                  : 'border-[#1d8263]/15 bg-white/70 cursor-not-allowed opacity-60'
               }`}
             >
               <div className={`text-xs font-semibold mb-1 ${
-                selectedDate === day.date ? 'text-[#1d8263]' : day.hasAvailableSlots ? 'text-slate-600' : 'text-white/60'
+                selectedDate === day.date ? 'text-[#1d8263]' : day.hasAvailableSlots ? 'text-slate-500' : 'text-slate-400'
               }`}>
                 {day.dayName}
               </div>
@@ -425,7 +425,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
                 {format(parseISO(day.date), 'MMMM d', { locale: lt })}
               </div>
               {!day.hasAvailableSlots && (
-                <div className="text-xs text-white/70 mt-1">Užimta</div>
+                <div className="text-xs text-slate-400 mt-1">Užimta</div>
               )}
             </button>
           ))}
@@ -452,8 +452,8 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render time selection step
   const renderTimeStep = () => (
     <div className="space-y-5">
-      <h3 className="text-2xl font-bold text-center mb-1 text-white">Pasirinkite laiką</h3>
-      <p className="text-center text-white/85 mb-5 font-medium text-sm md:text-base">
+      <h3 className="text-2xl font-bold text-center mb-1 text-slate-900">Pasirinkite laiką</h3>
+      <p className="text-center text-slate-600 mb-5 font-medium text-sm md:text-base">
         {selectedDate && formatDateDisplay(selectedDate)}
       </p>
       
@@ -465,25 +465,25 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
             disabled={!slot.available}
             className={`p-4 rounded-xl border-2 text-center transition-all ${
               selectedSlot?.datetime === slot.datetime
-                ? 'border-white bg-white shadow-lg shadow-black/15 scale-105'
+                ? 'border-[#1d8263] bg-white shadow-lg shadow-[#1d8263]/20 scale-105'
                 : slot.available
-                ? 'border-white/25 bg-white/95 hover:border-white/60 hover:shadow-md cursor-pointer'
-                : 'border-white/15 bg-white/30 cursor-not-allowed opacity-60 line-through'
+                ? 'border-[#1d8263]/20 bg-white hover:border-[#1d8263]/50 hover:shadow-md cursor-pointer'
+                : 'border-[#1d8263]/15 bg-white/70 cursor-not-allowed opacity-60 line-through'
             }`}
           >
             <Clock className={`w-5 h-5 mx-auto mb-2 ${
               selectedSlot?.datetime === slot.datetime
                 ? 'text-[#1d8263]'
                 : slot.available
-                ? 'text-slate-500'
-                : 'text-white/60'
+                ? 'text-slate-400'
+                : 'text-slate-300'
             }`} />
             <div className={`font-bold text-sm ${
               selectedSlot?.datetime === slot.datetime
                 ? 'text-[#1d8263]'
                 : slot.available
                 ? 'text-slate-900'
-                : 'text-white/70'
+                : 'text-slate-400'
             }`}>
               {formatTime(slot.datetime)}
             </div>
@@ -511,9 +511,9 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render confirmation step
   const renderConfirmStep = () => (
     <div className="space-y-6">
-      <h3 className="text-2xl font-bold text-center mb-5 text-white">Patvirtinkite rezervaciją</h3>
+      <h3 className="text-2xl font-bold text-center mb-5 text-slate-900">Patvirtinkite rezervaciją</h3>
       
-      <div className="bg-white/95 rounded-2xl border border-white/25 shadow-lg shadow-black/10 p-5 space-y-3">
+      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-5 space-y-3">
         <div className="flex items-start gap-3">
           <User className="w-4 h-4 text-[#1d8263] mt-0.5" />
           <div className="min-w-0">
@@ -595,15 +595,15 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12 text-white" />
       </div>
       
-      <h3 className="text-2xl md:text-3xl font-extrabold mb-3 text-white whitespace-nowrap">
+      <h3 className="text-2xl md:text-3xl font-extrabold mb-3 text-slate-900 whitespace-nowrap">
         Rezervacija gauta
       </h3>
-      <p className="text-white/85 mb-6 md:mb-8 text-base md:text-lg">
+      <p className="text-slate-600 mb-6 md:mb-8 text-base md:text-lg">
         Patvirtinimo laiškas išsiųstas į{" "}
-        <strong className="text-white">{contactInfo.email}</strong>
+        <strong className="text-slate-900">{contactInfo.email}</strong>
       </p>
       
-      <div className="bg-white/95 rounded-2xl border border-white/25 shadow-lg shadow-black/10 p-5 md:p-6 max-w-sm mx-auto">
+      <div className="bg-white rounded-2xl border-2 border-slate-200 shadow-md p-5 md:p-6 max-w-sm mx-auto">
         <div className="flex items-center justify-center gap-2 text-slate-900 font-extrabold whitespace-nowrap">
           <div className="w-9 h-9 rounded-xl bg-[#1d8263]/10 flex items-center justify-center">
             <Calendar className="w-5 h-5 text-[#1d8263]" />
@@ -640,7 +640,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
 
   return (
     <div className="w-full max-w-xl mx-auto">
-      <div className="bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] border border-white/15 rounded-2xl p-6 md:p-8 shadow-xl shadow-[#1d8263]/20">
+      <div className="bg-gradient-to-br from-[#E0F2E8] to-[#F0F9F4] border-2 border-[#1d8263]/20 rounded-2xl p-6 md:p-8 shadow-lg">
         {step !== 'success' && renderStepIndicator()}
         
         {step === 'contact' && renderContactStep()}
