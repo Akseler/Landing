@@ -470,7 +470,7 @@ function Step3Visual() {
                 transition={{ duration: 0.25 }}
               >
                 <CheckCircle2 className="w-3.5 h-3.5 text-[#1d8263] shrink-0" />
-                <span className="font-semibold">Aistė • tre 14:00</span>
+                <span className="font-semibold">Aistė • treč. 14:00</span>
               </motion.div>
             </div>
             <div className="mt-2 flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 h-[30px] text-[10px] text-slate-700">
@@ -676,8 +676,54 @@ function TestResults({ sectionRef }: { sectionRef?: React.RefObject<HTMLElement>
 }
 
 function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement | null>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const hasAutoPlayed = useRef(false);
+
+  // Auto-play on mobile when section is centered in viewport
+  useEffect(() => {
+    if (hasAutoPlayed.current) return;
+    
+    const checkAndPlay = () => {
+      // Only on mobile (screen width < 768px)
+      if (window.innerWidth >= 768) return;
+      
+      if (!ref.current) return;
+      
+      const rect = ref.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const viewportWidth = window.innerWidth;
+      
+      // Check if section is centered in viewport (within 40% of center)
+      const centerY = viewportHeight / 2;
+      const sectionCenterY = rect.top + rect.height / 2;
+      const distanceFromCenter = Math.abs(sectionCenterY - centerY);
+      const isCentered = distanceFromCenter < viewportHeight * 0.4;
+      
+      // Check if section is visible (at least 50% visible)
+      const isVisible = rect.top < viewportHeight * 0.8 && rect.bottom > viewportHeight * 0.2;
+      
+      if (isCentered && isVisible && !hasAutoPlayed.current) {
+        hasAutoPlayed.current = true;
+        // Small delay to ensure smooth transition
+        setTimeout(() => {
+          handlePlayClick();
+        }, 500);
+      }
+    };
+
+    // Check on scroll and resize
+    window.addEventListener('scroll', checkAndPlay, { passive: true });
+    window.addEventListener('resize', checkAndPlay, { passive: true });
+    
+    // Initial check
+    setTimeout(checkAndPlay, 1000);
+    
+    return () => {
+      window.removeEventListener('scroll', checkAndPlay);
+      window.removeEventListener('resize', checkAndPlay);
+    };
+  }, [handlePlayClick]);
 
   return (
     <motion.section
@@ -752,14 +798,14 @@ function HowItWorksSection() {
         <StepCard
           step="1"
           title="1. Sutvarkome užklausų srautą"
-          description="Atliksime detalų jūsų turinio ir svetainės auditą ir, jei reikės, sukursime naują strategiją pastoviam užklausų srautui."
+          description="Atliksime jūsų marketingo auditą ir jei matysime poreikį, sukursime naują strategiją pastoviam užklausų srautui."
           visual={<Step1Visual />}
           index={0}
         />
         <StepCard
           step="2"
           title="2. AI susisiekia su užklausomis"
-          description="AI agentas momentaliai užmezga žmogišką pokalbį, išsiaiškina kliento situaciją bei poreikius."
+          description="AI agentas iškarto parašo SMS žiniutę, užmezga žmogišką pokalbį, išsiaiškina kliento situaciją bei poreikius."
           visual={<Step2Visual />}
           index={1}
         />
@@ -796,7 +842,7 @@ export default function TestLandingPage() {
   const playerReadyRef = useRef(false);
 
   useEffect(() => {
-    trackPageView("/test");
+    trackPageView("/");
   }, []);
 
   // Initialize Vimeo player on mount
@@ -940,7 +986,7 @@ export default function TestLandingPage() {
               <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
                 {/* Užklausų */}
                 <Link
-                  href="/survey"
+                  href="/survey?type=uzklausos"
                   className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1"
                 >
                   <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
@@ -953,7 +999,7 @@ export default function TestLandingPage() {
 
                 {/* Pardavimų */}
                 <Link
-                  href="/survey"
+                  href="/survey?type=pardavimai"
                   className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1"
                 >
                   <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
@@ -1023,7 +1069,7 @@ export default function TestLandingPage() {
                 <ul className="space-y-2 text-sm text-slate-600">
                   <li className="flex items-start gap-2.5">
                     <X className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                    Atsakoma po kelių valandų ar dienų
+                    Su užklausomis susisiekiama po kelių valandų arba net dienų
                   </li>
                   <li className="flex items-start gap-2.5">
                     <X className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
@@ -1065,7 +1111,7 @@ export default function TestLandingPage() {
                       ))}
                     </div>
                     <div className="mt-3 space-y-2">
-                      {["Jonas • rytoj 11:00", "Aistė • ket 14:00"].map((t) => (
+                      {["Jonas • rytoj 11:00", "Aistė • ketv. 14:00"].map((t) => (
                         <div
                           key={t}
                           className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[11px] text-slate-700"
@@ -1082,7 +1128,7 @@ export default function TestLandingPage() {
                 <ul className="space-y-2 text-sm text-slate-700">
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#1d8263] shrink-0 mt-0.5" />
-                    Su užklausomis susisiekiama per minutę, 24/7
+                    Su kiekviena užklausa susisiekiama per vieną minutę, 24/7
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#1d8263] shrink-0 mt-0.5" />
@@ -1265,7 +1311,7 @@ export default function TestLandingPage() {
             <div className="pointer-events-none h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />
             <div className="absolute inset-x-0 bottom-3 flex justify-center px-4 pointer-events-none">
               <div className="w-full max-w-[720px] pointer-events-auto">
-                <Link href="/survey">
+                <Link href="/survey?type=uzklausos">
                   <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
                     Registruotis strateginiui pokalbiui
                   </a>

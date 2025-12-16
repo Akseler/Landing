@@ -34,7 +34,7 @@ function Router() {
     <>
       <ScrollToTop />
       <Switch>
-        <Route path="/" component={Home} />
+        <Route path="/" component={TestLandingPage} />
         <Route path="/call" component={CallPage} />
         <Route path="/weby" component={WebyPage} />
         <Route path="/webinar" component={WebinarPage} />
@@ -46,7 +46,7 @@ function Router() {
         <Route path="/success" component={SuccessPage} />
         <Route path="/thank-you" component={ThankYouPage} />
         <Route path="/analytics" component={AnalyticsPage} />
-        <Route path="/test" component={TestLandingPage} />
+        <Route path="/test" component={Home} />
         <Route component={NotFound} />
       </Switch>
     </>

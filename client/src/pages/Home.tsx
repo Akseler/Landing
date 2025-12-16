@@ -14,7 +14,7 @@ import { trackPageView, initScrollTracking, initSessionDurationTracking } from "
 export default function Home() {
   useEffect(() => {
     document.title = "Akseler — AI darbuotojai";
-    trackPageView('/');
+    trackPageView('/test');
     initScrollTracking();
     initSessionDurationTracking();
   }, []);
