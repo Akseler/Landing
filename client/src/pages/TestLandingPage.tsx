@@ -182,10 +182,10 @@ function StepCard({
 
 function Step1Visual() {
   return (
-    <div className="h-[210px] md:h-[240px] flex items-center justify-center">
-      <div className="relative w-full max-w-[340px] h-[180px] md:h-[210px]">
+    <div className="h-[210px] flex items-center justify-center">
+      <div className="relative w-full max-w-[340px] h-[180px]">
         <motion.div
-          className="absolute left-5 top-6 md:top-1/2 md:-translate-y-1/2 w-[160px] h-[150px] rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden"
+          className="absolute left-5 top-6 w-[160px] h-[150px] rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden"
           animate={{ rotate: [-6, -4, -6], y: [0, -2, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -212,7 +212,7 @@ function Step1Visual() {
         </motion.div>
 
         <motion.div
-          className="absolute right-5 top-6 md:top-1/2 md:-translate-y-1/2 w-[160px] h-[150px] rounded-2xl bg-white border border-[#1d8263]/18 shadow-sm overflow-hidden"
+          className="absolute right-5 top-6 w-[160px] h-[150px] rounded-2xl bg-white border border-[#1d8263]/18 shadow-sm overflow-hidden"
           animate={{ rotate: [5, 3, 5], y: [0, 2, 0] }}
           transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -237,7 +237,7 @@ function Step1Visual() {
         </motion.div>
 
         <motion.div
-          className="absolute left-1/2 -translate-x-1/2 bottom-3 md:bottom-1/2 md:translate-y-1/2 w-10 h-10 rounded-full bg-[#1d8263]/10 border border-[#1d8263]/20 flex items-center justify-center"
+          className="absolute left-1/2 -translate-x-1/2 bottom-3 w-10 h-10 rounded-full bg-[#1d8263]/10 border border-[#1d8263]/20 flex items-center justify-center"
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
         >
@@ -283,9 +283,9 @@ function Step2Visual() {
   }, []);
 
   return (
-    <div className="h-[230px] md:h-[240px] flex items-center justify-center relative">
+    <div className="h-[230px] flex items-center justify-center relative">
       <div className="w-full max-w-[360px]">
-        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-sm p-4 h-[210px] md:h-[220px] overflow-hidden">
+        <div className="relative rounded-2xl bg-white border border-slate-200 shadow-sm p-4 h-[210px] overflow-hidden">
           {/* Form */}
           <AnimatePresence mode="wait">
             {stage < 4 && (
@@ -424,7 +424,7 @@ function Step3Visual() {
   const filledDays = Math.min(stage, 3);
 
   return (
-    <div className="h-[210px] md:h-[240px] flex items-center justify-center">
+    <div className="h-[210px] flex items-center justify-center">
       <div className="w-full max-w-[360px]">
         <div className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
           <div className="flex items-center justify-between">
@@ -515,7 +515,7 @@ function Step4Visual() {
   const Icon = items[i].icon;
 
   return (
-    <div className="h-[210px] md:h-[240px] flex items-center justify-center">
+    <div className="h-[210px] flex items-center justify-center">
       <div className="w-full max-w-[340px] rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
         <div className="flex items-center justify-between">
           <div className="text-[11px] font-bold text-slate-700">Šildymo seka</div>

@@ -208,7 +208,7 @@ export default function SurveyPage() {
           className="max-w-2xl mx-auto"
         >
           <div className="mb-12">
-            <div className="w-full bg-muted border border-border rounded-full h-2.5">
+            <div className="w-full bg-[#E0F2E8]/50 border border-[#1d8263]/20 rounded-full h-2.5">
               <div
                 className="bg-[#1d8263] h-full rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
