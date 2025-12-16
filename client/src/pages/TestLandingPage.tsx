@@ -171,10 +171,9 @@ function StepCard({
           <p className="mt-2 text-[13px] md:text-[14px] text-slate-600 leading-relaxed">{description}</p>
         </div>
         <div className="relative px-4 md:px-6 pt-0 pb-5 md:py-10 md:flex-1 md:min-w-0 md:flex md:items-center md:justify-center">
-          <div className="relative z-10 w-full flex items-center justify-center">
-            <div className="w-full max-w-[360px] md:min-w-[320px] flex items-center justify-center">
-              {visual}
-            </div>
+          {/* Desktop: fixed visual zone (same height + same padding), no scaling/clipping */}
+          <div className="relative z-10 w-full flex items-center justify-center md:min-h-[230px]">
+            {visual}
           </div>
         </div>
       </div>
@@ -184,7 +183,7 @@ function StepCard({
 
 function Step1Visual() {
   return (
-    <div className="h-[210px] flex items-center justify-center">
+    <div className="h-[210px] md:h-[230px] flex items-center justify-center">
       <div className="relative w-full max-w-[340px] h-[180px]">
         <motion.div
           className="absolute left-5 top-6 w-[160px] h-[150px] rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden"
@@ -426,7 +425,7 @@ function Step3Visual() {
   const filledDays = Math.min(stage, 3);
 
   return (
-    <div className="h-[210px] flex items-center justify-center">
+    <div className="h-[210px] md:h-[230px] flex items-center justify-center">
       <div className="w-full max-w-[360px]">
         <div className="rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
           <div className="flex items-center justify-between">
@@ -517,7 +516,7 @@ function Step4Visual() {
   const Icon = items[i].icon;
 
   return (
-    <div className="h-[210px] flex items-center justify-center">
+    <div className="h-[210px] md:h-[230px] flex items-center justify-center">
       <div className="w-full max-w-[340px] rounded-2xl bg-white border border-slate-200 shadow-sm p-4">
         <div className="flex items-center justify-between">
           <div className="text-[11px] font-bold text-slate-700">Šildymo seka</div>
