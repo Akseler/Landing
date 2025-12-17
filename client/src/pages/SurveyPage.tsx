@@ -207,7 +207,10 @@ export default function SurveyPage() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-card border-2 border-border rounded-3xl p-10 md:p-16 mb-6">
+          <div
+            key={step}
+            className="bg-white dark:bg-card border-2 border-border rounded-3xl p-10 md:p-16 mb-6 overflow-hidden transform-gpu"
+          >
             
             {/* Step 1: Branch Selection (Ko trūksta) */}
             {step === 1 && (
