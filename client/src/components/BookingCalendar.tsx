@@ -441,7 +441,10 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       )}
       
       <div className="flex gap-3 mt-6">
-        <Button onClick={goToPreviousStep} className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300">
+        <Button
+          onClick={goToPreviousStep}
+          className="flex-1 bg-[#1d8263] hover:bg-[#166b52] text-white border-2 border-white/25 font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300"
+        >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
@@ -500,7 +503,10 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       </div>
       
       <div className="flex gap-3 mt-6">
-        <Button onClick={goToPreviousStep} className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300">
+        <Button
+          onClick={goToPreviousStep}
+          className="flex-1 bg-[#1d8263] hover:bg-[#166b52] text-white border-2 border-white/25 font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300"
+        >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
@@ -523,28 +529,28 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       
       <div className="bg-white/10 rounded-2xl border border-white/20 backdrop-blur shadow-lg shadow-black/15 p-5 space-y-3 text-white">
         <div className="flex items-start gap-3">
-          <User className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <User className="w-4 h-4 text-white mt-0.5" />
           <div className="min-w-0">
             <div className="text-[11px] text-white/70 font-semibold">Vardas</div>
             <div className="text-sm font-bold text-white break-words">{contactInfo.name}</div>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Building2 className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <Building2 className="w-4 h-4 text-white mt-0.5" />
           <div className="min-w-0">
             <div className="text-[11px] text-white/70 font-semibold">Įmonė</div>
             <div className="text-sm font-bold text-white break-words">{contactInfo.company}</div>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Phone className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <Phone className="w-4 h-4 text-white mt-0.5" />
           <div className="min-w-0">
             <div className="text-[11px] text-white/70 font-semibold">Telefonas</div>
             <div className="text-sm font-bold text-white break-words">{contactInfo.phone}</div>
           </div>
         </div>
         <div className="flex items-start gap-3">
-          <Mail className="w-4 h-4 text-[#1d8263] mt-0.5" />
+          <Mail className="w-4 h-4 text-white mt-0.5" />
           <div className="min-w-0">
             <div className="text-[11px] text-white/70 font-semibold">El. paštas</div>
             <div className="text-sm font-bold text-white break-all">{contactInfo.email}</div>
@@ -571,7 +577,11 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       )}
       
       <div className="flex gap-3 mt-8">
-        <Button onClick={goToPreviousStep} className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50" disabled={isLoading}>
+        <Button
+          onClick={goToPreviousStep}
+          className="flex-1 bg-[#1d8263] hover:bg-[#166b52] text-white border-2 border-white/25 font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+          disabled={isLoading}
+        >
           <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>

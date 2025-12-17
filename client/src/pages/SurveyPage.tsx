@@ -13,7 +13,6 @@ import { useToast } from "@/hooks/use-toast";
 
 type SurveyData = {
   service: string;
-  value: number;
   // Branch A (Užklausos)
   leadSource?: string;
   currentLeads?: number;
@@ -36,7 +35,6 @@ export default function SurveyPage() {
   const [branch, setBranch] = useState<'A' | 'B' | null>(null);
   const [formData, setFormData] = useState<SurveyData>({
     service: "",
-    value: 0,
   });
   const [validationErrors, setValidationErrors] = useState<{ 
     [key: string]: string;
@@ -91,25 +89,15 @@ export default function SurveyPage() {
     setStep(3);
   };
 
-  const handleValueNext = () => {
-    if (formData.value === 0 || formData.value <= 0) {
-      setValidationErrors({ value: "Prašome pasirinkti sumą" });
-      return;
-    }
-    trackQuizResponse(3, 'Kokia vidutinė vieno jūsų kliento vertė?', String(formData.value));
-    setValidationErrors({});
-    setStep(4);
-  };
-
   // Branch A handlers
   const handleLeadSourceNext = () => {
     if (!formData.leadSource) {
       setValidationErrors({ leadSource: "Prašome pasirinkti atsakymą" });
       return;
     }
-    trackQuizResponse(4, 'Iš kur šiandien gaunate daugiausia užklausų?', formData.leadSource);
+    trackQuizResponse(3, 'Iš kur šiandien gaunate daugiausia užklausų?', formData.leadSource);
     setValidationErrors({});
-    setStep(5);
+    setStep(4);
   };
 
   const handleCurrentLeadsNext = () => {
@@ -117,9 +105,9 @@ export default function SurveyPage() {
       setValidationErrors({ currentLeads: "Prašome pasirinkti skaičių" });
       return;
     }
-    trackQuizResponse(5, 'Kiek maždaug užklausų gaunate per mėnesį?', String(formData.currentLeads));
+    trackQuizResponse(4, 'Kiek maždaug užklausų gaunate per mėnesį?', String(formData.currentLeads));
     setValidationErrors({});
-    setStep(6);
+    setStep(5);
   };
 
   const handleDesiredLeadsNext = () => {
@@ -127,7 +115,7 @@ export default function SurveyPage() {
       setValidationErrors({ desiredLeads: "Prašome pasirinkti skaičių" });
       return;
     }
-    trackQuizResponse(6, 'Kiek norėtumėte gauti užklausų per mėnesį?', String(formData.desiredLeads));
+    trackQuizResponse(5, 'Kiek norėtumėte gauti užklausų per mėnesį?', String(formData.desiredLeads));
     setValidationErrors({});
     handleSubmit();
   };
@@ -138,9 +126,9 @@ export default function SurveyPage() {
       setValidationErrors({ usesCRM: "Prašome pasirinkti atsakymą" });
       return;
     }
-    trackQuizResponse(4, 'Ar naudojate CRM sistemą?', formData.usesCRM);
+    trackQuizResponse(3, 'Ar naudojate CRM sistemą?', formData.usesCRM);
     setValidationErrors({});
-    setStep(5);
+    setStep(4);
   };
 
   const handleConversionRateNext = () => {
@@ -148,9 +136,9 @@ export default function SurveyPage() {
       setValidationErrors({ conversionRate: "Prašome pasirinkti skaičių" });
       return;
     }
-    trackQuizResponse(5, 'Kiek iš 10 užklausų tampa pardavimais?', String(formData.conversionRate));
+    trackQuizResponse(4, 'Kiek iš 10 užklausų tampa pardavimais?', String(formData.conversionRate));
     setValidationErrors({});
-    setStep(6);
+    setStep(5);
   };
 
   const handleSalesPeopleNext = () => {
@@ -158,7 +146,7 @@ export default function SurveyPage() {
       setValidationErrors({ salesPeople: "Prašome pasirinkti skaičių" });
       return;
     }
-    trackQuizResponse(6, 'Kiek žmonių pas jus dirba su pardavimais?', String(formData.salesPeople));
+    trackQuizResponse(5, 'Kiek žmonių pas jus dirba su pardavimais?', String(formData.salesPeople));
     setValidationErrors({});
     handleSubmit();
   };
@@ -190,8 +178,8 @@ export default function SurveyPage() {
     setTimeout(() => setLocation('/booking'), 280);
   };
 
-  // Always show 6 steps total
-  const totalSteps = 6;
+  // Total steps after removing average value question
+  const totalSteps = 5;
   // If came with type, step 1 is skipped, so adjust progress calculation
   const adjustedStep = initialType && step > 1 ? step - 1 : step;
   const progress = (adjustedStep / totalSteps) * 100;
@@ -355,73 +343,8 @@ export default function SurveyPage() {
               </div>
             )}
 
-            {/* Step 3: Value */}
-            {step === 3 && (
-              <div className="space-y-8 animate-fade-in-slide">
-                <div className="text-center">
-                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
-                    Kokia vidutinė vieno jūsų kliento vertė?
-                  </h2>
-                </div>
-                
-                <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20">
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="text-4xl font-extrabold text-[#1d8263]">
-                        {formData.value >= 20000 ? "20,000+" : formData.value.toLocaleString()} €
-                      </span>
-                    </div>
-                  </div>
-                  <div className="px-2">
-                    <Slider
-                      value={[formData.value]}
-                      onValueChange={(value) => {
-                        setFormData(prev => ({ ...prev, value: value[0] }));
-                        setValidationErrors({});
-                      }}
-                      min={0}
-                      max={20000}
-                      step={100}
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="flex justify-between text-sm text-slate-500 font-medium">
-                    <span>0 €</span>
-                    <span>20,000+ €</span>
-                  </div>
-                  {validationErrors.value && (
-                    <motion.p 
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="text-sm text-destructive text-center"
-                    >
-                      {validationErrors.value}
-                    </motion.p>
-                  )}
-                </div>
-
-                <div className="max-w-sm mx-auto flex justify-between gap-4 mt-8">
-                  <Button
-                    variant="outline"
-                    onClick={() => setStep(2)}
-                    className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
-                  >
-                    <ArrowLeft className="w-5 h-5 mr-2" />
-                    Atgal
-                  </Button>
-                  <Button
-                    onClick={handleValueNext}
-                    className="flex-1 bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-[#1d8263] text-white py-6 text-base font-bold rounded-xl shadow-lg shadow-[#1d8263]/30 hover:shadow-xl hover:shadow-[#1d8263]/40 transition-all duration-300 hover:scale-105 active:scale-100"
-                  >
-                    Toliau
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </Button>
-                </div>
-              </div>
-            )}
-
-            {/* Branch A - Step 4: Lead Source */}
-            {step === 4 && branch === 'A' && (
+            {/* Branch A - Step 3: Lead Source */}
+            {step === 3 && branch === 'A' && (
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
@@ -484,8 +407,8 @@ export default function SurveyPage() {
               </div>
             )}
 
-            {/* Branch A - Step 5: Current Leads */}
-            {step === 5 && branch === 'A' && (
+            {/* Branch A - Step 4: Current Leads */}
+            {step === 4 && branch === 'A' && (
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
@@ -525,7 +448,7 @@ export default function SurveyPage() {
                 <div className="max-w-sm mx-auto flex justify-between gap-4 mt-8">
                   <Button
                     variant="outline"
-                    onClick={() => setStep(4)}
+                    onClick={() => setStep(3)}
                     className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
                     <ArrowLeft className="w-5 h-5 mr-2" />
@@ -542,8 +465,8 @@ export default function SurveyPage() {
               </div>
             )}
 
-            {/* Branch A - Step 6: Desired Leads */}
-            {step === 6 && branch === 'A' && (
+            {/* Branch A - Step 5: Desired Leads */}
+            {step === 5 && branch === 'A' && (
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
@@ -583,7 +506,7 @@ export default function SurveyPage() {
                 <div className="max-w-sm mx-auto flex justify-between gap-4 mt-8">
                   <Button
                     variant="outline"
-                    onClick={() => setStep(5)}
+                    onClick={() => setStep(4)}
                     className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
                     <ArrowLeft className="w-5 h-5 mr-2" />
@@ -600,8 +523,8 @@ export default function SurveyPage() {
               </div>
             )}
 
-            {/* Branch B - Step 4: CRM */}
-            {step === 4 && branch === 'B' && (
+            {/* Branch B - Step 3: CRM */}
+            {step === 3 && branch === 'B' && (
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
@@ -661,8 +584,8 @@ export default function SurveyPage() {
               </div>
             )}
 
-            {/* Branch B - Step 5: Conversion Rate (Slider) */}
-            {step === 5 && branch === 'B' && (
+            {/* Branch B - Step 4: Conversion Rate (Slider) */}
+            {step === 4 && branch === 'B' && (
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
@@ -700,7 +623,7 @@ export default function SurveyPage() {
                 <div className="max-w-sm mx-auto flex justify-between gap-4 mt-8">
                   <Button
                     variant="outline"
-                    onClick={() => setStep(4)}
+                    onClick={() => setStep(3)}
                     className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
                     <ArrowLeft className="w-5 h-5 mr-2" />
@@ -717,8 +640,8 @@ export default function SurveyPage() {
               </div>
             )}
 
-            {/* Branch B - Step 6: Sales People */}
-            {step === 6 && branch === 'B' && (
+            {/* Branch B - Step 5: Sales People */}
+            {step === 5 && branch === 'B' && (
               <div className="space-y-8 animate-fade-in-slide">
                 <div className="text-center">
                   <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 leading-relaxed">
@@ -758,7 +681,7 @@ export default function SurveyPage() {
                 <div className="max-w-sm mx-auto flex justify-between gap-4 mt-8">
                   <Button
                     variant="outline"
-                    onClick={() => setStep(5)}
+                    onClick={() => setStep(4)}
                     className="flex-1 border-2 border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 py-6 text-base font-semibold rounded-xl transition-all duration-300"
                   >
                     <ArrowLeft className="w-5 h-5 mr-2" />
