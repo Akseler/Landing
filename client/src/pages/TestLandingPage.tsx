@@ -692,7 +692,8 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
     >
       <div className="bg-white rounded-3xl p-3 shadow-md border border-slate-100">
         <div 
-          className="aspect-video w-full rounded-2xl overflow-hidden relative group bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
+          className="aspect-video w-full rounded-2xl overflow-hidden relative group cursor-pointer bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
+          onClick={handlePlayClick}
         >
           {/* Subtle geometric pattern */}
           <div className="absolute inset-0 opacity-10">
@@ -710,11 +711,7 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handlePlayClick();
-              }}
+              onClick={handlePlayClick}
               className="cursor-pointer bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-colors active:scale-[0.98] animate-pulse-subtle"
               style={{
                 animation: 'pulse-subtle 3s ease-in-out infinite',
