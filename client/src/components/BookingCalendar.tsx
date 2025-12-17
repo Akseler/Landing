@@ -272,12 +272,12 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
                       isActive
                         ? 'bg-white/18 text-white border-white/30 backdrop-blur'
                         : isCompleted
-                        ? 'bg-[#1d8263] text-white border-white/25'
+                        ? 'bg-white text-[#1d8263] border-white/40'
                         : 'bg-white/10 text-white/70 border-white/20 backdrop-blur'
                     }`}
                   >
                     {isCompleted ? (
-                      <Check className="w-5 h-5 text-white" />
+                      <Check className="w-5 h-5 text-[#1d8263]" />
                     ) : (
                       <Icon className="w-5 h-5" />
                     )}
