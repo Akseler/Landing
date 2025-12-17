@@ -356,7 +356,6 @@ export default function SurveyPage() {
                   {[
                     { value: "facebook_instagram", label: "Facebook / Instagram" },
                     { value: "google", label: "Google" },
-                    { value: "svetaine", label: "Svetainė" },
                     { value: "rekomendacijos", label: "Rekomendacijos" },
                     { value: "kita", label: "Kita" },
                   ].map((option) => (
