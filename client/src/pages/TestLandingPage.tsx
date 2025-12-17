@@ -940,7 +940,7 @@ export default function TestLandingPage() {
                 srautą su AI Pardavimų sistema
               </span>
             </h1>
-            <p className="text-sm md:text-lg text-slate-600 leading-relaxed">
+            <p className="text-[15px] sm:text-base md:text-[19px] text-slate-600 leading-relaxed">
               Jokių mėnesinių įsipareigojimų, mokate tik<br />
               už sugeneruotus rezultatus.
             </p>
