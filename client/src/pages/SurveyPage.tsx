@@ -416,7 +416,7 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20">
+                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20 overflow-hidden transform-gpu">
                     <div className="flex items-center justify-center gap-2 mb-2">
                       <Users className="w-6 h-6 text-[#1d8263]" />
                       <span className="text-5xl font-extrabold text-[#1d8263]">
@@ -474,7 +474,7 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20">
+                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20 overflow-hidden transform-gpu">
                     <div className="flex items-center justify-center gap-2 mb-2">
                       <Users className="w-6 h-6 text-[#1d8263]" />
                       <span className="text-5xl font-extrabold text-[#1d8263]">
@@ -593,7 +593,7 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20">
+                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20 overflow-hidden transform-gpu">
                     <div className="flex items-center justify-center gap-2 mb-2">
                       <TrendingUp className="w-6 h-6 text-[#1d8263]" />
                       <span className="text-5xl font-extrabold text-[#1d8263]">{formData.conversionRate || 0}</span>
@@ -649,7 +649,7 @@ export default function SurveyPage() {
                 </div>
                 
                 <div className="max-w-sm mx-auto space-y-6">
-                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20">
+                  <div className="text-center p-6 rounded-2xl bg-[#E0F2E8]/35 border-2 border-[#1d8263]/20 overflow-hidden transform-gpu">
                     <div className="flex items-center justify-center gap-2 mb-2">
                       <Users className="w-6 h-6 text-[#1d8263]" />
                       <span className="text-5xl font-extrabold text-[#1d8263]">
