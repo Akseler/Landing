@@ -170,7 +170,7 @@ function StepCard({
           <h3 className="text-[17px] md:text-[22px] font-extrabold text-slate-900 leading-tight">{title}</h3>
           <p className="mt-2 text-[13px] md:text-[14px] text-slate-600 leading-relaxed">{description}</p>
         </div>
-        <div className="relative px-4 md:px-6 pt-0 pb-5 md:pb-6 md:w-1/2 md:flex md:items-center md:justify-center">
+        <div className="relative px-4 md:px-6 pt-0 pb-5 md:py-6 md:min-h-[260px] md:w-1/2 md:flex md:items-center md:justify-center">
           <div className="relative z-10 w-full">{visual}</div>
         </div>
       </div>
