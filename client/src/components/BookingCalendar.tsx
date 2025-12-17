@@ -253,9 +253,9 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       <div className="mb-6">
         <div className="relative">
           {/* Progress line behind bubbles */}
-          <div className="absolute left-0 right-0 top-5 h-1 rounded-full bg-white/15 border border-white/20" />
+          <div className="absolute left-0 right-0 top-5 h-1 rounded-full bg-white/25 border border-white/35" />
           <div
-            className="absolute left-0 top-5 h-1 rounded-full bg-gradient-to-r from-[#7CFFCE] to-[#1d8263] transition-all duration-300"
+            className="absolute left-0 top-5 h-1 rounded-full bg-white transition-all duration-300"
             style={{ width: `${Math.max(1, ((currentIndex + 1) / steps.length) * 100)}%` }}
           />
 
@@ -382,7 +382,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       
       <Button
         onClick={goToNextStep}
-        className="w-full mt-8 bg-white/16 hover:bg-white/22 border border-white/25 text-white font-bold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300"
+        className="w-full mt-8 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300"
         size="lg"
       >
         Toliau
@@ -441,13 +441,13 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       )}
       
       <div className="flex gap-3 mt-6">
-        <Button onClick={goToPreviousStep} variant="outline" className="flex-1 border-2 border-white/20 text-white hover:bg-white/10 py-6 rounded-xl font-semibold">
+        <Button onClick={goToPreviousStep} className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300">
           <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
         <Button
           onClick={goToNextStep}
-          className="flex-1 bg-white/16 hover:bg-white/22 border border-white/25 text-white font-bold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+          className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
           disabled={!selectedDate}
         >
           Toliau
@@ -500,13 +500,13 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       </div>
       
       <div className="flex gap-3 mt-6">
-        <Button onClick={goToPreviousStep} variant="outline" className="flex-1 border-2 border-white/20 text-white hover:bg-white/10 py-6 rounded-xl font-semibold">
+        <Button onClick={goToPreviousStep} className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300">
           <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
         <Button
           onClick={goToNextStep}
-          className="flex-1 bg-white/16 hover:bg-white/22 border border-white/25 text-white font-bold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+          className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
           disabled={!selectedSlot}
         >
           Toliau
@@ -571,13 +571,13 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       )}
       
       <div className="flex gap-3 mt-8">
-        <Button onClick={goToPreviousStep} variant="outline" className="flex-1 border-2 border-white/20 text-white hover:bg-white/10 py-6 rounded-xl font-semibold" disabled={isLoading}>
+        <Button onClick={goToPreviousStep} className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50" disabled={isLoading}>
           <ArrowLeft className="w-5 h-5 mr-2" />
           Atgal
         </Button>
         <Button
           onClick={handleBooking}
-          className="flex-1 bg-white/16 hover:bg-white/22 border border-white/25 text-white font-bold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+          className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
           disabled={isLoading}
         >
           {isLoading ? (
