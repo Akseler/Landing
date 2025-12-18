@@ -53,3 +53,4 @@ $DOCKER_COMPOSE logs --tail=50
 echo "✅ Deployment complete!"
 echo "🌐 Check your site at: https://akseler.lt"
 
+
