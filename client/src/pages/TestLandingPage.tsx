@@ -800,7 +800,7 @@ export default function TestLandingPage() {
   const playerReadyRef = useRef(false);
 
   useEffect(() => {
-    document.title = "Akseler";
+    document.title = "Akseler | AI pardavimų sistema paslaugų teikėjams";
     trackPageView("/");
   }, []);
 
