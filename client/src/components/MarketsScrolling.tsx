@@ -36,14 +36,14 @@ export default function MarketsScrolling({
             className="block md:hidden text-[24px] font-bold text-center tracking-tight"
             data-testid="text-markets-scrolling-title"
           >
-          Pritaikoma įvairiose rinkose
+          Sprendimas pritaikytas<br />įvairiems paslaugų sektoriams
         </h2>
         {/* Desktop version */}
           <h2
-            className="hidden md:block text-[32px] lg:text-[36px] font-bold text-center tracking-tight whitespace-nowrap leading-tight"
+            className="hidden md:block text-[32px] lg:text-[36px] font-bold text-center tracking-tight leading-tight"
             data-testid="text-markets-scrolling-title-desktop"
           >
-          Pritaikoma įvairiose B2C rinkose
+          Sprendimas pritaikytas<br />įvairiems paslaugų sektoriams
         </h2>
       </div>
       ) : null}

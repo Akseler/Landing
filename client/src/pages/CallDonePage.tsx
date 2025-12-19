@@ -22,6 +22,9 @@ export default function CallDonePage() {
     initScrollTracking();
     initSessionDurationTracking();
     
+    // Scroll to top when page loads
+    window.scrollTo(0, 0);
+    
     const stored = sessionStorage.getItem('surveyResults');
     if (stored) {
       const data = JSON.parse(stored) as SurveyResults;

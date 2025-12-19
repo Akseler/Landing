@@ -755,7 +755,7 @@ function HowItWorksSection() {
       <div className="grid grid-cols-1 gap-5 max-w-4xl mx-auto">
         <StepCard
           step="1"
-          title="1. Sutvarkome užklausų srautą"
+          title="1. Užtikriname pastovų ir kokybišką užklausų srautą"
           description="Atliksime jūsų marketingo auditą ir jei matysime poreikį, sukursime naują strategiją pastoviam užklausų srautui."
           visual={<Step1Visual />}
           index={0}
@@ -763,14 +763,14 @@ function HowItWorksSection() {
         <StepCard
           step="2"
           title="2. AI susisiekia su užklausomis"
-          description="AI agentas iškarto parašo SMS žiniutę, užmezga žmogišką pokalbį, išsiaiškina kliento situaciją bei poreikius."
+          description="Mūsų AI iškarto parašo SMS žinutę naujai užklausai, užmezga žmogišką pokalbį ir išsiaiškina kliento situaciją bei poreikius."
           visual={<Step2Visual />}
           index={1}
         />
         <StepCard
           step="3"
-          title="3. AI su kvalifikuotais klientais planuoja pokalbius arba vizitus"
-          description="Jei klientas rimtai nusiteikęs, AI pasiūlo jam pokalbį su jūsų komanda arba vizitą jūsų lokacijoje ir suplanuoja kalendoriuje."
+          title="3. AI planuoja skambučius arba vizitus su kvalifikuotais klientais"
+          description="Jei klientas kvalifikuotas, mūsų AI suderina laiką skambučiui arba vizitui pas jus, pagal jūsų komandos užimtumą."
           visual={<Step3Visual />}
           index={2}
         />
@@ -1164,7 +1164,12 @@ export default function TestLandingPage() {
         <section className="space-y-8">
           <SectionHeading
             badge="Kam tai skirta"
-            title="Pritaikoma įvairiose rinkose"
+            title={
+              <>
+                Sprendimas pritaikytas įvairiems<br />
+                paslaugų sektoriams
+              </>
+            }
           />
           <div className="rounded-3xl overflow-hidden">
             <MarketsScrolling hideTitle compact />

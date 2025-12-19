@@ -37,3 +37,4 @@ echo "✅ Deployment complete!"
 echo "🌐 Check your site at: https://akseler.lt/test"
 
 
+

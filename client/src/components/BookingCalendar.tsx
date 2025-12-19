@@ -45,7 +45,7 @@ interface BookingCalendarProps {
 type Step = 'contact' | 'date' | 'time' | 'confirm' | 'success';
 
 export default function BookingCalendar({ surveyData, moneyLost }: BookingCalendarProps) {
-  const [step, setStep] = useState<Step>('contact');
+  const [step, setStep] = useState<Step>('date');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [availability, setAvailability] = useState<DayAvailability[]>([]);
@@ -138,14 +138,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
 
   // Handle step navigation
   const goToNextStep = () => {
-    if (step === 'contact') {
-      if (validateContactInfo()) {
-        trackEvent('booking_contact_submitted', '/booking', 'booking-contact-form');
-        // Send contact info to webhook
-        sendContactWebhook();
-        setStep('date');
-      }
-    } else if (step === 'date') {
+    if (step === 'date') {
       if (selectedDate) {
         trackEvent('booking_date_selected', '/booking', 'booking-date-picker', { date: selectedDate });
         setStep('time');
@@ -153,15 +146,22 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
     } else if (step === 'time') {
       if (selectedSlot) {
         trackEvent('booking_time_selected', '/booking', 'booking-time-picker', { datetime: selectedSlot.datetime });
+        setStep('contact');
+      }
+    } else if (step === 'contact') {
+      if (validateContactInfo()) {
+        trackEvent('booking_contact_submitted', '/booking', 'booking-contact-form');
+        // Send contact info to webhook
+        sendContactWebhook();
         setStep('confirm');
       }
     }
   };
 
   const goToPreviousStep = () => {
-    if (step === 'date') setStep('contact');
-    else if (step === 'time') setStep('date');
-    else if (step === 'confirm') setStep('time');
+    if (step === 'time') setStep('date');
+    else if (step === 'contact') setStep('time');
+    else if (step === 'confirm') setStep('contact');
   };
 
   // Handle booking submission
@@ -241,9 +241,9 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Render step indicator
   const renderStepIndicator = () => {
     const steps = [
-      { key: 'contact', label: 'Kontaktai', icon: User },
       { key: 'date', label: 'Data', icon: Calendar },
       { key: 'time', label: 'Laikas', icon: Clock },
+      { key: 'contact', label: 'Kontaktai', icon: User },
       { key: 'confirm', label: 'Patvirtinimas', icon: Check },
     ];
     
@@ -668,9 +668,9 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         <div className="relative z-10">
         {step !== 'success' && renderStepIndicator()}
         
-        {step === 'contact' && renderContactStep()}
         {step === 'date' && renderDateStep()}
         {step === 'time' && renderTimeStep()}
+        {step === 'contact' && renderContactStep()}
         {step === 'confirm' && renderConfirmStep()}
         {step === 'success' && renderSuccessStep()}
         </div>
