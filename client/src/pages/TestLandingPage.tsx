@@ -29,6 +29,7 @@ import { SiFacebook } from "react-icons/si";
 import veeslaLogo from "@assets/2_1763670424934.png";
 import energija24Logo from "@assets/energija transparent.png";
 import specdarbaiLogo from "@assets/3_1763670424934.png";
+import videoGif from "@assets/video-presentation.gif";
 
 const badgeGreen =
   "px-5 py-2 text-[11px] font-bold border-2 border-[#1d8263]/25 bg-[#1d8263]/5 text-[#1d8263] uppercase tracking-widest rounded-full";
@@ -692,43 +693,28 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
     >
       <div className="bg-white rounded-3xl p-3 shadow-md border border-slate-100">
         <div 
-          className="aspect-video w-full rounded-2xl overflow-hidden relative group cursor-pointer bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46]"
+          className="w-full max-w-md mx-auto rounded-2xl overflow-hidden relative group cursor-pointer"
           onClick={handlePlayClick}
         >
-          {/* Subtle geometric pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-32 h-32 border-2 border-white rounded-full -translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute top-1/4 right-0 w-24 h-24 border-2 border-white rounded-full translate-x-1/2 -translate-y-1/2" />
-            <div className="absolute bottom-0 left-1/3 w-20 h-20 border-2 border-white rounded-full translate-x-1/2 translate-y-1/2" />
-          </div>
-          
-          {/* Subtle grid pattern */}
-          <div className="absolute inset-0 opacity-5" style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)',
-            backgroundSize: '40px 40px'
-          }} />
+          <img 
+            src={videoGif} 
+            alt="Video presentation" 
+            className="w-full h-auto"
+            style={{ filter: 'blur(4px)' }}
+          />
           
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
               onClick={handlePlayClick}
-              className="cursor-pointer bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-colors active:scale-[0.98] animate-pulse-subtle"
-              style={{
-                animation: 'pulse-subtle 3s ease-in-out infinite',
-              }}
+              className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 z-10"
             >
               Žiūrėti video pristatymą
             </button>
-            <style>{`
-              @keyframes pulse-subtle {
-                0%, 100% { transform: scale(1); opacity: 0.9; }
-                50% { transform: scale(1.04); opacity: 1; }
-              }
-            `}</style>
           </div>
           
-          {/* Subtle glow effect */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+          {/* Subtle overlay to ensure button visibility */}
+          <div className="absolute inset-0 bg-black/5" />
         </div>
       </div>
     </motion.section>

@@ -6,6 +6,7 @@ import veeslaLogo from "@assets/3_1761686356688.png";
 import specdarbaiLogo from "@assets/2_1761686356688.png";
 import energija24Logo from "@assets/energija transparent.png";
 import videoThumbnail from "@assets/thumb_1764295191794.webp";
+import videoGif from "@assets/video-presentation.gif";
 
 export default function HeroSection() {
   const [showFallbackModal, setShowFallbackModal] = useState(false);
@@ -114,19 +115,20 @@ export default function HeroSection() {
           </h1>
         </div>
 
-        <div className="relative max-w-4xl mx-auto mb-8 md:mb-12 px-2 md:px-0">
+        <div className="relative max-w-md mx-auto mb-8 md:mb-12 px-2 md:px-0">
           <div 
             className="relative rounded-2xl overflow-hidden shadow-2xl cursor-pointer group"
             onClick={handlePlayClick}
             data-testid="button-play-video"
           >
             <img 
-              src={videoThumbnail} 
-              alt="Video thumbnail" 
-              className="w-full h-auto"
+              src={videoGif} 
+              alt="Video presentation" 
+              className="w-full h-auto blur-sm"
+              style={{ filter: 'blur(4px)' }}
             />
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform z-10">
                 <Play className="w-8 h-8 md:w-10 md:h-10 text-[#1d8263] ml-1" fill="#1d8263" />
               </div>
             </div>
@@ -211,7 +213,7 @@ export default function HeroSection() {
         <div className="mt-[72px] md:mt-0">
           <div className="flex items-center justify-center gap-4 mb-2 md:mb-4">
             <div className="h-px w-16 bg-foreground/20"></div>
-            <p className="text-sm text-foreground/60 font-medium">Mumis pasitiki</p>
+            <p className="text-sm text-foreground/60 font-medium">Mumis pasitiki dideli žaidėjai</p>
             <div className="h-px w-16 bg-foreground/20"></div>
           </div>
           

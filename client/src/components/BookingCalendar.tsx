@@ -446,15 +446,8 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       
       <div className="flex gap-3 mt-6">
         <Button
-          onClick={goToPreviousStep}
-          className="flex-1 bg-[#1d8263] hover:bg-[#166b52] text-white border-2 border-white/25 font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Atgal
-        </Button>
-        <Button
           onClick={goToNextStep}
-          className="flex-1 bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+          className="w-full bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
           disabled={!selectedDate}
         >
           Toliau

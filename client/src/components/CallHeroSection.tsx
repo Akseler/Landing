@@ -7,6 +7,7 @@ import veeslaLogo from "@assets/3_1761686356688.png";
 import specdarbaiLogo from "@assets/2_1761686356688.png";
 import energija24Logo from "@assets/energija transparent.png";
 import videoThumbnail from "@assets/thumb_1764295191794.webp";
+import videoGif from "@assets/video-presentation.gif";
 import { trackEvent } from "@/lib/analytics";
 
 export default function CallHeroSection() {
@@ -143,19 +144,20 @@ export default function CallHeroSection() {
           </h1>
         </div>
 
-        <div className="relative max-w-2xl lg:max-w-xl mx-auto mb-6 md:mb-5 px-2 md:px-0">
+        <div className="relative max-w-md mx-auto mb-6 md:mb-5 px-2 md:px-0">
           <div 
             className="relative rounded-2xl overflow-hidden shadow-2xl cursor-pointer group"
             onClick={handlePlayClick}
             data-testid="button-play-video"
           >
             <img 
-              src={videoThumbnail} 
-              alt="Video thumbnail" 
-              className="w-full h-auto"
+              src={videoGif} 
+              alt="Video presentation" 
+              className="w-full h-auto blur-sm"
+              style={{ filter: 'blur(4px)' }}
             />
-            <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors flex items-center justify-center">
-              <div className="w-16 h-16 md:w-20 md:h-20 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform animate-pulse-glow">
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+              <div className="w-16 h-16 md:w-20 md:h-20 bg-white/90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform z-10 animate-pulse-glow">
                 <Play className="w-8 h-8 md:w-10 md:h-10 text-[#1d8263] ml-1" fill="#1d8263" />
               </div>
             </div>
@@ -242,7 +244,7 @@ export default function CallHeroSection() {
         <div ref={trustSectionRef} className={`md:hidden mt-12 mb-12 transition-opacity duration-300 ${hasScrolled ? 'opacity-100' : 'opacity-0'} ${hasScrolled ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="h-px w-16 bg-foreground/20"></div>
-            <p className="text-sm text-foreground/60 font-medium">Mumis pasitiki</p>
+            <p className="text-sm text-foreground/60 font-medium">Mumis pasitiki dideli žaidėjai</p>
             <div className="h-px w-16 bg-foreground/20"></div>
           </div>
           
@@ -260,7 +262,7 @@ export default function CallHeroSection() {
     {/* Desktop: "Mumis pasitiki" section - appears after scroll */}
     <section ref={trustSectionRef} className={`hidden md:block py-12 px-6 lg:px-12 transition-opacity duration-300 ${hasScrolled ? 'opacity-100' : 'opacity-0'} ${hasScrolled ? 'pointer-events-auto' : 'pointer-events-none'}`}>
       <div className="max-w-2xl lg:max-w-2xl mx-auto text-center">
-        <p className="text-base text-foreground/60 font-medium mb-4">Mumis pasitiki</p>
+        <p className="text-base text-foreground/60 font-medium mb-4">Mumis pasitiki dideli žaidėjai</p>
         <div className="flex justify-center items-center gap-8 opacity-60">
           <img src={specdarbaiLogo} alt="SPECDARBAI" className="h-12 max-w-[150px] w-auto object-contain grayscale" data-testid="logo-specdarbai-desktop" />
             <span className="text-foreground/40 text-2xl">|</span>
