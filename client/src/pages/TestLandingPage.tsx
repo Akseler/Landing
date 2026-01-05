@@ -25,7 +25,7 @@ import {
 import { AnimatePresence, motion, useInView } from "framer-motion";
 import { Link } from "wouter";
 import useEmblaCarousel from "embla-carousel-react";
-import { SiFacebook } from "react-icons/si";
+import { SiFacebook, SiInstagram } from "react-icons/si";
 import veeslaLogo from "@assets/2_1763670424934.png";
 import energija24Logo from "@assets/energija transparent.png";
 import specdarbaiLogo from "@assets/3_1763670424934.png";
@@ -191,21 +191,15 @@ function Step1Visual() {
           {/* Reels-like header */}
           <div className="h-8 bg-[#1d8263]/10 border-b border-[#1d8263]/10 flex items-center px-3 justify-between">
             <div className="text-[10px] font-bold text-[#1d8263] uppercase tracking-wider">
-              Reklamos turinys
+              "META" REKLAMA
             </div>
             <div className="w-2 h-2 rounded-full bg-[#1d8263]/50" />
           </div>
           <div className="p-3 pt-3">
-            <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-              Video
-            </div>
-            <div className="mt-2 h-2 w-24 bg-slate-200 rounded-full" />
-            <div className="mt-2 h-2 w-16 bg-slate-100 rounded-full" />
-            <div className="mt-3 h-[74px] bg-slate-100 rounded-xl flex items-center justify-center relative overflow-hidden">
+            <div className="mt-3 h-[74px] bg-slate-100 rounded-xl flex items-center justify-center gap-4 relative overflow-hidden">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(29,130,99,0.18),transparent_50%)]" />
-              <div className="relative w-10 h-10 rounded-full bg-white/80 border border-slate-200 flex items-center justify-center">
-                <div className="w-0 h-0 border-t-[6px] border-t-transparent border-l-[10px] border-l-[#1d8263] border-b-[6px] border-b-transparent ml-0.5" />
-              </div>
+              <SiFacebook className="w-8 h-8 text-[#1877F2]" />
+              <SiInstagram className="w-8 h-8 text-[#E4405F]" />
             </div>
           </div>
         </motion.div>
@@ -222,7 +216,7 @@ function Step1Visual() {
           </div>
           <div className="p-3 pt-3">
             <div className="text-[10px] font-bold text-slate-700 uppercase tracking-wider">
-              Pardavimų svetainė
+              SVETAINĖ
             </div>
             <div className="mt-2 h-2 w-28 bg-[#1d8263]/20 rounded-full" />
             <div className="mt-2 h-2 w-20 bg-slate-100 rounded-full" />
@@ -691,26 +685,43 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="space-y-8"
     >
-      <div className="bg-white rounded-3xl p-3 shadow-md border border-slate-100">
+      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-3 shadow-md border-2 border-[#1d8263]/30">
         <div 
-          className="w-full max-w-md mx-auto rounded-2xl overflow-hidden relative group cursor-pointer"
+          className="w-full max-w-md mx-auto rounded-2xl overflow-hidden relative group cursor-pointer border-2 border-[#1d8263]/20"
           onClick={handlePlayClick}
         >
           <img 
             src={videoGif} 
             alt="Video presentation" 
             className="w-full h-auto"
-            style={{ filter: 'blur(4px)' }}
+            style={{ filter: 'blur(2.5px)' }}
           />
           
           {/* Button text instead of play button */}
           <div className="absolute inset-0 flex items-center justify-center">
             <button
               onClick={handlePlayClick}
-              className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 z-10"
+              className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 z-10 animate-pulse-subtle"
+              style={{
+                animation: 'pulse-subtle 3s ease-in-out infinite',
+              }}
             >
               Žiūrėti video pristatymą
             </button>
+            <style>{`
+              @keyframes pulse-subtle {
+                0%, 100% { 
+                  transform: scale(1); 
+                  opacity: 1; 
+                  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(29, 130, 99, 0.4);
+                }
+                50% { 
+                  transform: scale(1.02); 
+                  opacity: 0.95; 
+                  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(29, 130, 99, 0);
+                }
+              }
+            `}</style>
           </div>
           
           {/* Subtle overlay to ensure button visibility */}
