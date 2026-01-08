@@ -1,0 +1,13 @@
+node_modules
+dist
+.DS_Store
+server/public
+vite.config.ts.*
+*.tar.gz
+.env
+.env.local
+.env.*.local
+
+# Google Calendar OAuth token (contains sensitive refresh token)
+.google-calendar-token.json
+data/
