@@ -49,7 +49,7 @@ interface CallFunnelSummary {
   surveyPageVisitors: number;
   surveyToLandingRate: number;
   bookingPageVisitors: number;
-  bookingPageToSurveyRate: number;
+  bookingPageToLandingRate: number;
   bookings: number;
   bookingRate: number;
   overallConversionRate: number;
@@ -724,7 +724,7 @@ export default function AnalyticsPage() {
             <div className="grid grid-cols-2 gap-3 md:gap-4 mb-4">
                 <div className="p-4 md:p-5 bg-gradient-to-br from-slate-50 to-white rounded-lg border-2 border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-col">
-                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">1. Landing</h3>
+                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">1. Visitors</h3>
                     <div className="flex items-baseline gap-2">
                       <span className="text-2xl md:text-4xl font-bold text-[#1d8263]">{callFunnel?.landingPageVisitors || 0}</span>
                       <span className="text-xs md:text-sm text-muted-foreground font-medium">100%</span>
@@ -733,7 +733,7 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="p-4 md:p-5 bg-gradient-to-br from-slate-50 to-white rounded-lg border-2 border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-col">
-                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">2. Video</h3>
+                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">2. Watched VSL</h3>
                     <div className="flex items-baseline gap-2">
                       <span className="text-2xl md:text-4xl font-bold text-[#1d8263]">{callFunnel?.videoViews || 0}</span>
                       <span className="text-xs md:text-sm text-muted-foreground font-medium">{callFunnel?.videoToLandingRate || 0}%</span>
@@ -742,7 +742,7 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="p-4 md:p-5 bg-gradient-to-br from-slate-50 to-white rounded-lg border-2 border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-col">
-                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">3. Survey</h3>
+                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">3. Survey page</h3>
                     <div className="flex items-baseline gap-2">
                       <span className="text-2xl md:text-4xl font-bold text-[#1d8263]">{callFunnel?.surveyPageVisitors || 0}</span>
                       <span className="text-xs md:text-sm text-muted-foreground font-medium">{callFunnel?.surveyToLandingRate || 0}%</span>
@@ -751,10 +751,10 @@ export default function AnalyticsPage() {
                 </div>
                 <div className="p-4 md:p-5 bg-gradient-to-br from-slate-50 to-white rounded-lg border-2 border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex flex-col">
-                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">4. Booking</h3>
+                    <h3 className="font-semibold text-xs md:text-sm text-muted-foreground mb-2">4. Booking page</h3>
                     <div className="flex items-baseline gap-2">
                       <span className="text-2xl md:text-4xl font-bold text-[#1d8263]">{callFunnel?.bookingPageVisitors || 0}</span>
-                      <span className="text-xs md:text-sm text-muted-foreground font-medium">{callFunnel?.bookingPageToSurveyRate || 0}%</span>
+                      <span className="text-xs md:text-sm text-muted-foreground font-medium">{callFunnel?.bookingPageToLandingRate || 0}%</span>
                     </div>
                   </div>
                 </div>

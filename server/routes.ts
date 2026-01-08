@@ -636,7 +636,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       console.log('[API] /api/calendar/book - Booking successful for:', bookingData.email);
       
-      // Track booking event for analytics
       // Note: booking_completed event is tracked client-side in BookingCalendar.tsx
       // No need to track again here to avoid duplicates
       

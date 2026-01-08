@@ -41,7 +41,7 @@ export interface IStorage {
     surveyPageVisitors: number;
     surveyToLandingRate: number;
     bookingPageVisitors: number;
-    bookingPageToSurveyRate: number;
+    bookingPageToLandingRate: number;
     bookings: number;
     bookingRate: number;
     overallConversionRate: number;
@@ -77,6 +77,7 @@ export interface IStorage {
   getBookingsWithSurveyData(): Promise<Array<{
     bookingEvent: AnalyticsEvent;
     submission: CallFunnelSubmission | null;
+    surveyAnswers: Array<{ question: string; answer: string }>;
   }>>;
   
   // Delete individual items
@@ -285,20 +286,34 @@ export class DatabaseStorage implements IStorage {
     const registrationRate = uniqueVisitors > 0 ? (registrationCountValue / uniqueVisitors) * 100 : 0;
     const registrationFromCompletions = quizCompleteCount > 0 ? (registrationCountValue / quizCompleteCount) * 100 : 0;
 
-    // Calculate average session duration
+    // Calculate average session duration - get max duration per session (avoid duplicates from multiple unload events)
     const sessionDurationCondition = startDate && endDate
       ? drizzleSql`${analyticsEvents.eventType} = 'session_duration' AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
       : eq(analyticsEvents.eventType, 'session_duration');
     
     const sessionDurationEvents = await database
-      .select({ metadata: analyticsEvents.metadata })
+      .select({ metadata: analyticsEvents.metadata, sessionId: analyticsEvents.sessionId })
       .from(analyticsEvents)
       .where(sessionDurationCondition);
     
-    const durations = sessionDurationEvents
-      .map(e => e.metadata && typeof e.metadata === 'object' && 'duration' in e.metadata ? Number(e.metadata.duration) : null)
-      .filter((d): d is number => d !== null && !isNaN(d));
+    // Get max duration per session (user may have multiple session_duration events from beforeunload/pagehide)
+    // Cap durations at 10 minutes (600 seconds) to filter out unrealistic values from tabs left open
+    const MAX_DURATION_SECONDS = 600; // 10 minutes cap
+    const sessionMaxDurations = new Map<string, number>();
+    sessionDurationEvents.forEach(e => {
+      if (e.metadata && typeof e.metadata === 'object' && 'duration' in e.metadata && e.sessionId) {
+        const duration = Number(e.metadata.duration);
+        // Only count durations between 1 second and 10 minutes
+        if (!isNaN(duration) && duration > 0 && duration <= MAX_DURATION_SECONDS) {
+          const currentMax = sessionMaxDurations.get(e.sessionId) || 0;
+          if (duration > currentMax) {
+            sessionMaxDurations.set(e.sessionId, duration);
+          }
+        }
+      }
+    });
     
+    const durations = Array.from(sessionMaxDurations.values());
     const averageSessionDuration = durations.length > 0 
       ? Math.round(durations.reduce((a, b) => a + b, 0) / durations.length)
       : 0;
@@ -378,7 +393,7 @@ export class DatabaseStorage implements IStorage {
     surveyPageVisitors: number;
     surveyToLandingRate: number;
     bookingPageVisitors: number;
-    bookingPageToSurveyRate: number;
+    bookingPageToLandingRate: number;
     bookings: number;
     bookingRate: number;
     overallConversionRate: number;
@@ -460,13 +475,32 @@ export class DatabaseStorage implements IStorage {
         );
       }
       
-      // Count DISTINCT sessions that completed a booking (not total events)
-      const [bookingEvents] = await database
-        .select({ count: drizzleSql<number>`COUNT(DISTINCT ${analyticsEvents.sessionId})` })
+      // Count DISTINCT bookings by sessionId + email combination (same logic as getBookingsWithSurveyData)
+      // First get all booking events, then deduplicate
+      const allBookingEvents = await database
+        .select({ 
+          sessionId: analyticsEvents.sessionId,
+          metadata: analyticsEvents.metadata 
+        })
         .from(analyticsEvents)
         .where(and(...bookingEventConditions));
       
-      bookingsResult = bookingEvents;
+      // Deduplicate by email only (same as getBookingsWithSurveyData)
+      const seenEmails = new Set<string>();
+      const uniqueBookings = allBookingEvents.filter(event => {
+        const email = event.metadata && typeof event.metadata === 'object' && 'email' in event.metadata 
+          ? (event.metadata as any).email 
+          : '';
+        // Use email as the deduplication key, or sessionId if no email
+        const key = email || event.sessionId || 'unknown';
+        if (seenEmails.has(key)) {
+          return false;
+        }
+        seenEmails.add(key);
+        return true;
+      });
+      
+      bookingsResult = { count: uniqueBookings.length };
     } else {
       bookingsResult = { count: 0 };
     }
@@ -479,11 +513,11 @@ export class DatabaseStorage implements IStorage {
     const uzklausosClicks = uzklausosClicksResult?.count || 0;
     const pardavimaiClicks = pardavimaiClicksResult?.count || 0;
 
-    // Calculate conversion rates
+    // Calculate conversion rates - all percentages relative to landing page visitors
     const videoToLandingRate = landingCount > 0 ? (videoCount / landingCount) * 100 : 0;
     const surveyToLandingRate = landingCount > 0 ? (surveyCount / landingCount) * 100 : 0;
-    const bookingPageToSurveyRate = surveyCount > 0 ? (bookingPageCount / surveyCount) * 100 : 0;
-    const bookingRate = bookingPageCount > 0 ? (bookingsCount / bookingPageCount) * 100 : 0;
+    const bookingPageToLandingRate = landingCount > 0 ? (bookingPageCount / landingCount) * 100 : 0;
+    const bookingRate = landingCount > 0 ? (bookingsCount / landingCount) * 100 : 0;
     const overallConversionRate = landingCount > 0 ? (bookingsCount / landingCount) * 100 : 0; // Final conversion: bookings from landing visitors
 
     return {
@@ -493,7 +527,7 @@ export class DatabaseStorage implements IStorage {
       surveyPageVisitors: surveyCount,
       surveyToLandingRate: Math.round(surveyToLandingRate * 10) / 10,
       bookingPageVisitors: bookingPageCount,
-      bookingPageToSurveyRate: Math.round(bookingPageToSurveyRate * 10) / 10,
+      bookingPageToLandingRate: Math.round(bookingPageToLandingRate * 10) / 10,
       bookings: bookingsCount,
       bookingRate: Math.round(bookingRate * 10) / 10,
       overallConversionRate: Math.round(overallConversionRate * 10) / 10,
@@ -510,7 +544,7 @@ export class DatabaseStorage implements IStorage {
         surveyPageVisitors: 0,
         surveyToLandingRate: 0,
         bookingPageVisitors: 0,
-        bookingPageToSurveyRate: 0,
+        bookingPageToLandingRate: 0,
         bookings: 0,
         bookingRate: 0,
         overallConversionRate: 0,
@@ -757,24 +791,26 @@ export class DatabaseStorage implements IStorage {
         return [];
       }
 
-      // Get all booking_completed events - deduplicate by sessionId and email
+      // Get all booking_completed events - deduplicate by email only (not sessionId)
+      // This ensures count matches what user sees in the list
       const allBookingEvents = await database
         .select()
         .from(analyticsEvents)
         .where(eq(analyticsEvents.eventType, 'booking_completed'))
         .orderBy(desc(analyticsEvents.timestamp));
 
-      // Deduplicate bookings by sessionId + email combination
-      const seenBookings = new Set<string>();
+      // Deduplicate bookings by email only (same person can't book twice with same email)
+      const seenEmails = new Set<string>();
       const bookingEvents = allBookingEvents.filter(event => {
         const email = event.metadata && typeof event.metadata === 'object' && 'email' in event.metadata 
           ? (event.metadata as any).email 
           : '';
-        const key = `${event.sessionId}-${email}`;
-        if (seenBookings.has(key)) {
+        // Use email as the deduplication key, or sessionId if no email
+        const key = email || event.sessionId || event.id;
+        if (seenEmails.has(key)) {
           return false;
         }
-        seenBookings.add(key);
+        seenEmails.add(key);
         return true;
       });
 
