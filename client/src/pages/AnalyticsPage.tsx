@@ -771,7 +771,7 @@ export default function AnalyticsPage() {
                 </div>
               </div>
                   <div className="flex flex-col border-l border-[#1d8263]/20 pl-4 md:pl-6">
-                    <h3 className="font-semibold text-sm md:text-base text-muted-foreground mb-2">Konversija</h3>
+                    <h3 className="font-semibold text-sm md:text-base text-muted-foreground mb-2">Conversion Rate</h3>
                     <div className="text-2xl md:text-4xl font-bold text-[#1d8263]">{callFunnel?.overallConversionRate || 0}%</div>
                   </div>
                 </div>

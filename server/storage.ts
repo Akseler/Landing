@@ -286,10 +286,12 @@ export class DatabaseStorage implements IStorage {
     const registrationRate = uniqueVisitors > 0 ? (registrationCountValue / uniqueVisitors) * 100 : 0;
     const registrationFromCompletions = quizCompleteCount > 0 ? (registrationCountValue / quizCompleteCount) * 100 : 0;
 
-    // Calculate average session duration - get max duration per session (avoid duplicates from multiple unload events)
+    // Calculate average session duration - only for landing page (/)
+    // Cap at 5 minutes (300 seconds) to filter out unrealistic values from tabs left open
+    const MAX_DURATION_SECONDS = 300; // 5 minutes cap
     const sessionDurationCondition = startDate && endDate
-      ? drizzleSql`${analyticsEvents.eventType} = 'session_duration' AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
-      : eq(analyticsEvents.eventType, 'session_duration');
+      ? drizzleSql`${analyticsEvents.eventType} = 'session_duration' AND ${analyticsEvents.page} = '/' AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
+      : drizzleSql`${analyticsEvents.eventType} = 'session_duration' AND ${analyticsEvents.page} = '/'`;
     
     const sessionDurationEvents = await database
       .select({ metadata: analyticsEvents.metadata, sessionId: analyticsEvents.sessionId })
@@ -297,14 +299,12 @@ export class DatabaseStorage implements IStorage {
       .where(sessionDurationCondition);
     
     // Get max duration per session (user may have multiple session_duration events from beforeunload/pagehide)
-    // Cap durations at 10 minutes (600 seconds) to filter out unrealistic values from tabs left open
-    const MAX_DURATION_SECONDS = 600; // 10 minutes cap
     const sessionMaxDurations = new Map<string, number>();
     sessionDurationEvents.forEach(e => {
       if (e.metadata && typeof e.metadata === 'object' && 'duration' in e.metadata && e.sessionId) {
         const duration = Number(e.metadata.duration);
-        // Only count durations between 1 second and 10 minutes
-        if (!isNaN(duration) && duration > 0 && duration <= MAX_DURATION_SECONDS) {
+        // Only count durations between 5 seconds and 5 minutes (filter out very short and very long)
+        if (!isNaN(duration) && duration >= 5 && duration <= MAX_DURATION_SECONDS) {
           const currentMax = sessionMaxDurations.get(e.sessionId) || 0;
           if (duration > currentMax) {
             sessionMaxDurations.set(e.sessionId, duration);
@@ -461,49 +461,35 @@ export class DatabaseStorage implements IStorage {
         .filter((id): id is string => id !== null && id !== undefined && id !== '')
     )];
 
-    // Count bookings (booking_completed events) from landing page sessions - count DISTINCT sessions
-    let bookingsResult;
-    if (landingSessionIds.length > 0) {
-      const bookingEventConditions = [
-        eq(analyticsEvents.eventType, 'booking_completed'),
-        inArray(analyticsEvents.sessionId, landingSessionIds)
-      ];
-      
-      if (startDate && endDate) {
-        bookingEventConditions.push(
-          drizzleSql`${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
-        );
+    // Count ALL bookings (not filtered by landing sessions) - same logic as getBookingsWithSurveyData
+    const bookingDateCondition = startDate && endDate
+      ? drizzleSql`${analyticsEvents.eventType} = 'booking_completed' AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
+      : eq(analyticsEvents.eventType, 'booking_completed');
+    
+    const allBookingEvents = await database
+      .select({ 
+        sessionId: analyticsEvents.sessionId,
+        metadata: analyticsEvents.metadata 
+      })
+      .from(analyticsEvents)
+      .where(bookingDateCondition);
+    
+    // Deduplicate by email only (same as getBookingsWithSurveyData)
+    const seenEmails = new Set<string>();
+    const uniqueBookings = allBookingEvents.filter(event => {
+      const email = event.metadata && typeof event.metadata === 'object' && 'email' in event.metadata 
+        ? (event.metadata as any).email 
+        : '';
+      // Use email as the deduplication key, or sessionId if no email
+      const key = email || event.sessionId || 'unknown';
+      if (seenEmails.has(key)) {
+        return false;
       }
-      
-      // Count DISTINCT bookings by sessionId + email combination (same logic as getBookingsWithSurveyData)
-      // First get all booking events, then deduplicate
-      const allBookingEvents = await database
-        .select({ 
-          sessionId: analyticsEvents.sessionId,
-          metadata: analyticsEvents.metadata 
-        })
-        .from(analyticsEvents)
-        .where(and(...bookingEventConditions));
-      
-      // Deduplicate by email only (same as getBookingsWithSurveyData)
-      const seenEmails = new Set<string>();
-      const uniqueBookings = allBookingEvents.filter(event => {
-        const email = event.metadata && typeof event.metadata === 'object' && 'email' in event.metadata 
-          ? (event.metadata as any).email 
-          : '';
-        // Use email as the deduplication key, or sessionId if no email
-        const key = email || event.sessionId || 'unknown';
-        if (seenEmails.has(key)) {
-          return false;
-        }
-        seenEmails.add(key);
-        return true;
-      });
-      
-      bookingsResult = { count: uniqueBookings.length };
-    } else {
-      bookingsResult = { count: 0 };
-    }
+      seenEmails.add(key);
+      return true;
+    });
+    
+    const bookingsResult = { count: uniqueBookings.length };
 
     const landingCount = landingPageVisitors?.count || 0;
     const videoCount = videoViews?.count || 0;
