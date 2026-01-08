@@ -685,8 +685,8 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="space-y-8"
     >
-      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-3 shadow-md border-2 border-[#1d8263]/30">
-        <div className="w-full max-w-md mx-auto rounded-2xl overflow-hidden relative group border-2 border-[#1d8263]/20">
+      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl py-3 px-3 md:py-3 md:px-3 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto">
+        <div className="w-full max-w-md rounded-2xl overflow-hidden relative group border-2 border-[#1d8263]/20">
           <img 
             src={videoGif} 
             alt="Video presentation" 
