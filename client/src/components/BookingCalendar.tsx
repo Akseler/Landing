@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -49,6 +49,8 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [availability, setAvailability] = useState<DayAvailability[]>([]);
+  const isBookingInProgress = useRef(false); // Guard against duplicate booking calls
+  const facebookPixelFired = useRef(false); // Guard against duplicate Facebook Pixel events
   
   // Form state
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
@@ -168,6 +170,13 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   const handleBooking = async () => {
     if (!selectedSlot) return;
     
+    // Prevent duplicate calls using ref (more reliable than state for race conditions)
+    if (isBookingInProgress.current) {
+      console.log('[BookingCalendar] Booking already in progress, ignoring duplicate call');
+      return;
+    }
+    
+    isBookingInProgress.current = true;
     setIsLoading(true);
     setError(null);
     
@@ -197,8 +206,9 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         datetime: selectedSlot.datetime,
       });
       
-      // Fire Facebook Pixel event if available
-      if (typeof window !== 'undefined' && (window as any).fbq) {
+      // Fire Facebook Pixel event if available - only once per booking
+      if (typeof window !== 'undefined' && (window as any).fbq && !facebookPixelFired.current) {
+        facebookPixelFired.current = true; // Mark as fired BEFORE calling fbq
         (window as any).fbq('track', 'Schedule', {
           content_name: 'Akseler Demo Call',
           value: moneyLost || 0,
@@ -209,6 +219,9 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       setStep('success');
     } catch (err: any) {
       setError(err.message || 'Įvyko klaida');
+      // Reset guard on error so user can retry
+      isBookingInProgress.current = false;
+      facebookPixelFired.current = false; // Also reset Facebook Pixel guard on error
     } finally {
       setIsLoading(false);
     }

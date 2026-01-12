@@ -1,7 +1,9 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertRegistrationSchema, insertAnalyticsEventSchema, insertQuizResponseSchema, insertCallFunnelSubmissionSchema } from "@shared/schema";
+import { insertRegistrationSchema, insertAnalyticsEventSchema, insertQuizResponseSchema, insertCallFunnelSubmissionSchema, analyticsEvents } from "@shared/schema";
+import { db } from "./db";
+import { eq, and, sql as drizzleSql } from "drizzle-orm";
 import crypto from "crypto";
 import { getAvailability, sendBookingWebhook, sendContactWebhook, sendSurveyWebhook, validateBookingData, type BookingData, getAuthUrl, exchangeCodeForTokens, isCalendarAuthorized, isOAuthConfigured } from "./calendar";
 
@@ -169,6 +171,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // Update session activity
       await storage.updateSessionActivity(sessionId);
+
+      // Deduplication: Check for duplicate booking_completed events
+      if (eventType === 'booking_completed' && metadata && typeof metadata === 'object' && 'email' in metadata) {
+        const email = (metadata as any).email;
+        if (typeof email === 'string' && email.trim() !== '') {
+          // Check if a booking_completed event already exists for this email within the last 5 minutes
+          const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+          
+          if (db) {
+            const existingEvents = await db
+              .select()
+              .from(analyticsEvents)
+              .where(
+                and(
+                  eq(analyticsEvents.eventType, 'booking_completed'),
+                  drizzleSql`${analyticsEvents.metadata}->>'email' = ${email}`,
+                  drizzleSql`${analyticsEvents.timestamp} >= ${fiveMinutesAgo}`
+                )
+              )
+              .limit(1);
+            
+            if (existingEvents.length > 0) {
+              console.log(`[TRACK] Duplicate booking_completed event detected for email: ${email}, skipping`);
+              // Return the existing event instead of creating a duplicate
+              return res.json({ success: true, event: existingEvents[0], duplicate: true });
+            }
+          }
+        }
+      }
 
       // Create event
       const event = await storage.createEvent({
