@@ -538,6 +538,27 @@ export default function AnalyticsPage() {
     },
   });
 
+  const deleteBookingMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const token = authToken || localStorage.getItem('analytics_auth_token') || '';
+      const res = await fetch(`/api/analytics/booking/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) throw new Error('Nepavyko ištrinti booking');
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/analytics/bookings'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/analytics/call-funnel'] });
+      queryClient.invalidateQueries({ queryKey: ['/api/analytics/call-funnel', dateFilter] });
+      toast({ title: "Ištrinta", description: "Booking ištrintas" });
+    },
+    onError: (error: Error) => {
+      toast({ title: "Klaida", description: error.message, variant: "destructive" });
+    },
+  });
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
@@ -795,9 +816,9 @@ export default function AnalyticsPage() {
                     return (
                       <div 
                         key={booking.bookingEvent.id} 
-                        className="text-xs p-2 md:p-3 rounded-lg border border-[#1d8263]/30 bg-[#1d8263]/5 cursor-pointer transition-all hover:border-[#1d8263]/50"
+                        className="text-xs p-2 md:p-3 rounded-lg border border-[#1d8263]/30 bg-[#1d8263]/5 cursor-pointer transition-all hover:border-[#1d8263]/50 group relative"
                         onClick={() => setExpandedBookingId(isExpanded ? null : booking.bookingEvent.id)}
-                      >
+                        >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex flex-col md:flex-row md:items-center gap-0.5 md:gap-2 min-w-0">
                             <span className="font-semibold text-[#1d8263] truncate text-[11px] md:text-xs">{email}</span>
@@ -813,11 +834,23 @@ export default function AnalyticsPage() {
                               )}
                             </div>
                             </div>
-                          {surveyAnswers.length > 0 && (
-                            <span className="text-[10px] text-muted-foreground whitespace-nowrap">
-                              {isExpanded ? '▼' : '▶'}
-                            </span>
-                          )}
+                          <div className="flex items-center gap-2">
+                            {surveyAnswers.length > 0 && (
+                              <span className="text-[10px] text-muted-foreground whitespace-nowrap">
+                                {isExpanded ? '▼' : '▶'}
+                              </span>
+                            )}
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                deleteBookingMutation.mutate(booking.bookingEvent.id);
+                              }}
+                              className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-100 rounded text-red-600"
+                              title="Ištrinti"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </button>
+                          </div>
                           </div>
                         {isExpanded && surveyAnswers.length > 0 && (
                           <div className="mt-3 pt-3 border-t border-[#1d8263]/20">
@@ -865,16 +898,16 @@ export default function AnalyticsPage() {
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-[#1d8263]"></span>
               </span>
               Užklausos vs Pardavimai
-            </CardTitle>
-          </CardHeader>
+              </CardTitle>
+            </CardHeader>
           <CardContent className="pt-4 px-4 md:px-6">
             <div className="grid grid-cols-2 gap-4">
               <div className="p-5 md:p-6 bg-black/80 rounded-lg border-2 border-black/30 shadow-lg">
                 <div className="flex flex-col items-center text-center">
                   <h3 className="font-semibold text-sm md:text-base text-white/90 uppercase tracking-wide mb-3">Užklausos</h3>
                   <div className="text-3xl md:text-5xl font-bold text-white">{callFunnel?.uzklausosClicks || 0}</div>
-                </div>
-              </div>
+                    </div>
+                  </div>
               <div className="p-5 md:p-6 bg-black/80 rounded-lg border-2 border-black/30 shadow-lg">
                 <div className="flex flex-col items-center text-center">
                   <h3 className="font-semibold text-sm md:text-base text-white/90 uppercase tracking-wide mb-3">Pardavimai</h3>

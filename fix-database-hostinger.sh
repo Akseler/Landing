@@ -46,3 +46,4 @@ echo ""
 echo "✅ Done! Check your application logs to verify database connection."
 echo "You should see: 'Database connection successful'"
 
+

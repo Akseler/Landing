@@ -83,6 +83,7 @@ export interface IStorage {
   // Delete individual items
   deleteRegistration(id: string): Promise<void>;
   deleteCallFunnelSubmission(id: string): Promise<void>;
+  deleteBookingEvent(id: string): Promise<void>;
 }
 
 // DatabaseStorage implementation using Drizzle ORM
@@ -460,18 +461,18 @@ export class DatabaseStorage implements IStorage {
         .map(s => s.sessionId)
         .filter((id): id is string => id !== null && id !== undefined && id !== '')
     )];
-
+    
     // Count ALL bookings (not filtered by landing sessions) - same logic as getBookingsWithSurveyData
     const bookingDateCondition = startDate && endDate
       ? drizzleSql`${analyticsEvents.eventType} = 'booking_completed' AND ${analyticsEvents.timestamp} >= ${startDate.toISOString()} AND ${analyticsEvents.timestamp} < ${endDate.toISOString()}`
       : eq(analyticsEvents.eventType, 'booking_completed');
-    
+      
     const allBookingEvents = await database
       .select({ 
         sessionId: analyticsEvents.sessionId,
         metadata: analyticsEvents.metadata 
       })
-      .from(analyticsEvents)
+        .from(analyticsEvents)
       .where(bookingDateCondition);
     
     // Deduplicate by email only (same as getBookingsWithSurveyData)
@@ -1071,6 +1072,13 @@ export class DatabaseStorage implements IStorage {
       console.error(`[deleteCallFunnelSubmission] Error deleting submission ${id}:`, error);
       throw error;
     }
+  }
+
+  async deleteBookingEvent(id: string): Promise<void> {
+    const database = getDb();
+    // Delete the booking_completed event by ID
+    await database.delete(analyticsEvents).where(eq(analyticsEvents.id, id));
+    console.log(`[deleteBookingEvent] Successfully deleted booking event ${id}`);
   }
 }
 

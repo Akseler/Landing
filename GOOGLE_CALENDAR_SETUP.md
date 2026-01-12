@@ -85,3 +85,4 @@ After authorization, visit the booking page and check if busy times are marked a
 - The token is stored in `/app/data/google-calendar-token.json` in the container
 - Tokens are automatically refreshed when expired
 
+

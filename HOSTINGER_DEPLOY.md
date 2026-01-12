@@ -18,3 +18,4 @@ git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git && cd YOUR_REPO && git 
 2. Push the branch: `git push -u origin vol.69`
 3. On Hostinger console, run the deployment command above
 
+

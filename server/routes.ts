@@ -490,6 +490,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete individual booking event (password protected)
+  app.delete("/api/analytics/booking/:id", async (req, res) => {
+    if (!validateAnalyticsAccess(req, res)) return;
+    
+    try {
+      const id = req.params.id;
+      if (!id) {
+        console.error('[API] /api/analytics/booking/:id - Invalid ID');
+        return res.status(400).json({ error: "Invalid booking ID" });
+      }
+      
+      console.log(`[API] /api/analytics/booking/${id} - Deleting booking event...`);
+      await storage.deleteBookingEvent(id);
+      console.log(`[API] /api/analytics/booking/${id} - Successfully deleted`);
+      
+      res.json({ success: true, message: "Booking event deleted" });
+    } catch (error: any) {
+      console.error(`[API] /api/analytics/booking/${req.params.id} - Error:`, error);
+      res.status(500).json({ error: error.message || 'Failed to delete booking' });
+    }
+  });
+
   // ============================================
   // CALENDAR BOOKING ENDPOINTS
   // ============================================

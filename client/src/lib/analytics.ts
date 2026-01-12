@@ -29,11 +29,11 @@ export async function trackEvent(
   try {
     const sessionId = getSessionId();
     const payload = {
-      sessionId,
-      eventType,
-      page,
-      buttonId,
-      metadata,
+        sessionId,
+        eventType,
+        page,
+        buttonId,
+        metadata,
     };
     
     // Use fetch with keepalive for reliable tracking
@@ -173,8 +173,8 @@ export function initScrollTracking(): void {
     
     if (scrollableHeight > 0) {
       const scrollPercent = Math.round((scrollTop / scrollableHeight) * 100);
-      if (scrollPercent > maxScrollDepth) {
-        maxScrollDepth = scrollPercent;
+    if (scrollPercent > maxScrollDepth) {
+      maxScrollDepth = scrollPercent;
       }
     }
   };
@@ -202,8 +202,8 @@ export function initScrollTracking(): void {
       
       // Send scroll depth event every 5 seconds if user has scrolled
       if (maxScrollDepth > 0) {
-        const page = window.location.pathname;
-        trackEvent('scroll_depth', page, undefined, { depth: maxScrollDepth });
+      const page = window.location.pathname;
+      trackEvent('scroll_depth', page, undefined, { depth: maxScrollDepth });
       }
     }
   }, 5000);

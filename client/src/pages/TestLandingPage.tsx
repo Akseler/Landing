@@ -873,13 +873,13 @@ export default function TestLandingPage() {
       
       // Try to play in modal
       if (playerRef.current) {
-        try {
-          await playerRef.current.setVolume(1);
-          await playerRef.current.play();
-        } catch (playError) {
-          console.log('Video playback error:', playError);
-        }
+      try {
+        await playerRef.current.setVolume(1);
+        await playerRef.current.play();
+      } catch (playError) {
+        console.log('Video playback error:', playError);
       }
+    }
     }
   }, [showFallbackModal]);
 
@@ -1234,29 +1234,29 @@ export default function TestLandingPage() {
 
       {/* Hidden iframe for pre-loading - positioned off-screen */}
       {!showFallbackModal && (
-        <div 
-          className="fixed"
-          style={{ 
-            left: '-9999px', 
-            top: '-9999px', 
-            width: '1px', 
-            height: '1px',
-            overflow: 'hidden',
+      <div 
+        className="fixed"
+        style={{ 
+          left: '-9999px', 
+          top: '-9999px', 
+          width: '1px', 
+          height: '1px',
+          overflow: 'hidden',
             visibility: 'hidden',
             pointerEvents: 'none'
-          }}
-        >
-          <iframe
-            ref={iframeRef}
-            src="https://player.vimeo.com/video/1140626708?h=58a2a7ce8b&badge=0&autopause=0&quality=1080p&player_id=0&app_id=58479"
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-            referrerPolicy="strict-origin-when-cross-origin"
-            style={{ width: '100%', height: '100%' }}
-            title="AI Pardavimų ir marketingo sistema"
-            allowFullScreen
-          ></iframe>
-        </div>
+        }}
+      >
+        <iframe
+          ref={iframeRef}
+          src="https://player.vimeo.com/video/1140626708?h=58a2a7ce8b&badge=0&autopause=0&quality=1080p&player_id=0&app_id=58479"
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          style={{ width: '100%', height: '100%' }}
+          title="AI Pardavimų ir marketingo sistema"
+          allowFullScreen
+        ></iframe>
+      </div>
       )}
 
       {/* Fallback Modal - only shown when native fullscreen fails */}

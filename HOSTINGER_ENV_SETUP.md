@@ -101,3 +101,4 @@ GHL_BOOKING_WEBHOOK_URL=your-webhook-url
 
 These are optional - the app will work without them, just without those features.
 
+
