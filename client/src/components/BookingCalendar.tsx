@@ -50,7 +50,6 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   const [error, setError] = useState<string | null>(null);
   const [availability, setAvailability] = useState<DayAvailability[]>([]);
   const isBookingInProgress = useRef(false); // Guard against duplicate booking calls
-  const facebookPixelFired = useRef(false); // Guard against duplicate Facebook Pixel events
   
   // Form state
   const [contactInfo, setContactInfo] = useState<ContactInfo>({
@@ -210,14 +209,28 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
         datetime: selectedSlot.datetime,
       });
       
-      // Fire Facebook Pixel event if available - only once per booking
-      if (typeof window !== 'undefined' && (window as any).fbq && !facebookPixelFired.current) {
-        facebookPixelFired.current = true; // Mark as fired BEFORE calling fbq
-        (window as any).fbq('track', 'Schedule', {
-          content_name: 'Akseler Demo Call',
-          value: moneyLost || 0,
-          currency: 'EUR',
-        });
+      // Fire Facebook Pixel event with event ID for deduplication
+      if (typeof window !== 'undefined' && (window as any).fbq) {
+        // Generate unique event ID for this booking (email + timestamp)
+        const eventId = `schedule_${contactInfo.email}_${Date.now()}`;
+        
+        // Check if this event was already fired (using sessionStorage for persistence)
+        const firedEventsKey = 'fb_pixel_schedule_events';
+        const firedEvents = JSON.parse(sessionStorage.getItem(firedEventsKey) || '[]');
+        
+        if (!firedEvents.includes(eventId)) {
+          // Mark as fired BEFORE calling fbq
+          firedEvents.push(eventId);
+          sessionStorage.setItem(firedEventsKey, JSON.stringify(firedEvents));
+          
+          // Fire with event ID for Facebook deduplication
+          (window as any).fbq('track', 'Schedule', {
+            content_name: 'Akseler Demo Call',
+            value: moneyLost || 0,
+            currency: 'EUR',
+            eventID: eventId, // Facebook uses this for deduplication
+          });
+        }
       }
       
       setStep('success');
@@ -225,7 +238,6 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
       setError(err.message || 'Įvyko klaida');
       // Reset guard on error so user can retry
       isBookingInProgress.current = false;
-      facebookPixelFired.current = false; // Also reset Facebook Pixel guard on error
     } finally {
       setIsLoading(false);
     }
