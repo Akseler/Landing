@@ -526,12 +526,7 @@ export async function sendContactWebhook(contactInfo: {
   company: string;
   phone: string;
   email: string;
-  surveyData?: {
-    leads: number;
-    value: number;
-    closeRate: number;
-    speed: string;
-  };
+  surveyData?: any; // Accept full survey data structure
 }): Promise<{ success: boolean; error?: string }> {
   const webhookUrl = process.env.GHL_CONTACT_WEBHOOK_URL || 'https://services.leadconnectorhq.com/hooks/VOJnJpYkp9TeABP2pBiV/webhook-trigger/oDItvATLqhyJAv3lhPyv';
   
@@ -546,6 +541,12 @@ export async function sendContactWebhook(contactInfo: {
     const firstName = nameParts[0] || contactInfo.name;
     const lastName = nameParts.slice(1).join(' ') || '';
     
+    // Extract calculated values if they exist (for backward compatibility)
+    const leads = contactInfo.surveyData?.leads || contactInfo.surveyData?.desiredLeads || contactInfo.surveyData?.currentLeads || null;
+    const value = contactInfo.surveyData?.value || null;
+    const closeRate = contactInfo.surveyData?.closeRate || contactInfo.surveyData?.conversionRate || null;
+    const speed = contactInfo.surveyData?.speed || null;
+    
     const payload = {
       firstName: firstName,
       lastName: lastName,
@@ -557,15 +558,28 @@ export async function sendContactWebhook(contactInfo: {
       source: 'akseler.lt',
       formName: 'Booking Contact Form',
       timestamp: new Date().toISOString(),
-      // Survey data
-      ...(contactInfo.surveyData && {
-        leads: contactInfo.surveyData.leads,
-        dealValue: contactInfo.surveyData.value,
-        closeRate: contactInfo.surveyData.closeRate,
-        responseSpeed: contactInfo.surveyData.speed,
-        // Calculated fields
-        salesNow: Math.round(contactInfo.surveyData.leads * (contactInfo.surveyData.closeRate / 100)),
-        revNow: Math.round(contactInfo.surveyData.leads * (contactInfo.surveyData.closeRate / 100) * contactInfo.surveyData.value),
+      
+      // All survey fields (including empty/null) - Branch A (Užklausos)
+      survey_branch: contactInfo.surveyData?.branch || null,
+      survey_leadSource: contactInfo.surveyData?.leadSource || null,
+      survey_currentLeads: contactInfo.surveyData?.currentLeads ?? null,
+      survey_desiredLeads: contactInfo.surveyData?.desiredLeads ?? null,
+      
+      // All survey fields (including empty/null) - Branch B (Pardavimai)
+      survey_usesCRM: contactInfo.surveyData?.usesCRM || null,
+      survey_conversionRate: contactInfo.surveyData?.conversionRate ?? null,
+      survey_salesPeople: contactInfo.surveyData?.salesPeople ?? null,
+      
+      // Calculated/processed fields (if available)
+      survey_leads: leads ?? null,
+      survey_dealValue: value ?? null,
+      survey_closeRate: closeRate ?? null,
+      survey_responseSpeed: speed || null,
+      
+      // Calculated fields (if we have the data)
+      ...(leads !== null && closeRate !== null && value !== null && {
+        salesNow: Math.round(leads * (closeRate / 100)),
+        revNow: Math.round(leads * (closeRate / 100) * value),
       }),
     };
     

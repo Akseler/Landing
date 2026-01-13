@@ -113,6 +113,10 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   // Send contact info to webhook
   const sendContactWebhook = async () => {
     try {
+      // Get full survey data from sessionStorage (includes all fields)
+      const storedSurveyData = sessionStorage.getItem('surveyResults');
+      const fullSurveyData = storedSurveyData ? JSON.parse(storedSurveyData) : (surveyData || {});
+      
       const response = await fetch('/api/calendar/contact', {
         method: 'POST',
         headers: {
@@ -123,7 +127,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
           company: contactInfo.company,
           phone: contactInfo.phone,
           email: contactInfo.email,
-          surveyData: surveyData || undefined,
+          surveyData: fullSurveyData, // Send full survey data with all fields
         }),
       });
       
