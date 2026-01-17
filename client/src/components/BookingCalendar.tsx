@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -633,54 +634,67 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   );
 
   // Render success step
-  const renderSuccessStep = () => (
-    <div className="text-center py-6 md:py-8">
-      <div className="w-20 h-20 md:w-24 md:h-24 bg-white/18 border border-white/25 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-lg shadow-black/20 backdrop-blur">
-        <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12 text-white" />
-      </div>
-      
-      <h3 className="text-2xl md:text-3xl font-extrabold mb-3 text-white whitespace-nowrap">
-        Rezervacija gauta
-      </h3>
-      <p className="text-white/85 mb-6 md:mb-8 text-base md:text-lg">
-        Patvirtinimo laiškas išsiųstas į{" "}
-        <strong className="text-white">{contactInfo.email}</strong>
-      </p>
-      
-      <div className="bg-white/10 rounded-2xl border border-white/20 backdrop-blur shadow-lg shadow-black/15 p-5 md:p-6 max-w-sm mx-auto text-white">
-        <div className="flex items-center justify-center gap-2 text-slate-900 font-extrabold whitespace-nowrap">
-          <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center">
-            <Calendar className="w-5 h-5 text-white" />
-          </div>
-          <span className="text-base md:text-lg text-white">
-            {selectedDate && formatDateShort(selectedDate)}{" "}
-            {selectedSlot && formatTime(selectedSlot.datetime)}
-          </span>
+  const renderSuccessStep = () => {
+    const [, setLocation] = useLocation();
+    
+    return (
+      <div className="text-center py-6 md:py-8">
+        <div className="w-20 h-20 md:w-24 md:h-24 bg-white/18 border border-white/25 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-lg shadow-black/20 backdrop-blur">
+          <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12 text-white" />
         </div>
-
-        <div className="h-px bg-white/15 my-4" />
-
-        <div className="text-left space-y-3">
-          <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-lg bg-white/18 border border-white/20 text-white flex items-center justify-center font-extrabold text-sm shrink-0">
-              1
+        
+        <h3 className="text-2xl md:text-3xl font-extrabold mb-3 text-white whitespace-nowrap">
+          Rezervacija gauta
+        </h3>
+        <p className="text-white/85 mb-6 md:mb-8 text-base md:text-lg">
+          Patvirtinimo laiškas išsiųstas į{" "}
+          <strong className="text-white">{contactInfo.email}</strong>
+        </p>
+        
+        <div className="bg-white/10 rounded-2xl border border-white/20 backdrop-blur shadow-lg shadow-black/15 p-5 md:p-6 max-w-sm mx-auto text-white mb-6">
+          <div className="flex items-center justify-center gap-2 text-slate-900 font-extrabold whitespace-nowrap">
+            <div className="w-9 h-9 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center">
+              <Calendar className="w-5 h-5 text-white" />
             </div>
-            <div className="text-sm md:text-[15px] text-white/90 font-semibold leading-snug">
-              Patvirtinkite el. paštu atsiųstą pakvietimą į mūsų pokalbį
-            </div>
+            <span className="text-base md:text-lg text-white">
+              {selectedDate && formatDateShort(selectedDate)}{" "}
+              {selectedSlot && formatTime(selectedSlot.datetime)}
+            </span>
           </div>
-          <div className="flex items-start gap-3">
-            <div className="w-7 h-7 rounded-lg bg-white/18 border border-white/20 text-white flex items-center justify-center font-extrabold text-sm shrink-0">
-              2
+
+          <div className="h-px bg-white/15 my-4" />
+
+          <div className="text-left space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-white/18 border border-white/20 text-white flex items-center justify-center font-extrabold text-sm shrink-0">
+                1
+              </div>
+              <div className="text-sm md:text-[15px] text-white/90 font-semibold leading-snug">
+                Patvirtinkite el. paštu atsiųstą pakvietimą į mūsų pokalbį
+              </div>
             </div>
-            <div className="text-sm md:text-[15px] text-white/90 font-semibold leading-snug">
-              Su jumis SMS žinute susisieks mūsų komanda
+            <div className="flex items-start gap-3">
+              <div className="w-7 h-7 rounded-lg bg-white/18 border border-white/20 text-white flex items-center justify-center font-extrabold text-sm shrink-0">
+                2
+              </div>
+              <div className="text-sm md:text-[15px] text-white/90 font-semibold leading-snug">
+                Su jumis SMS žinute susisieks mūsų komanda
+              </div>
             </div>
           </div>
         </div>
+        
+        <Button
+          onClick={() => setLocation('/')}
+          className="w-full bg-white hover:bg-white/90 text-[#1d8263] font-extrabold py-6 rounded-xl shadow-lg shadow-black/20 hover:shadow-xl transition-all duration-300"
+          size="lg"
+        >
+          Grįžti į pagrindinį
+          <ArrowRight className="w-5 h-5 ml-2" />
+        </Button>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="w-full max-w-xl mx-auto">
