@@ -686,12 +686,22 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       className="space-y-8"
     >
       <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-4 md:p-4 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto overflow-hidden">
-        <div className="w-full max-w-md rounded-2xl overflow-hidden relative group">
+        <div className="w-full max-w-md relative group">
           <img 
             src={videoGif} 
             alt="Video presentation" 
             className="w-full h-auto block"
-            style={{ filter: 'blur(2.5px)' }}
+            style={{ 
+              filter: 'blur(2.5px)',
+              borderRadius: '1rem',
+              WebkitBorderRadius: '1rem',
+              maskImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M16 0h68c8.837 0 16 7.163 16 16v68c0 8.837-7.163 16-16 16H16c-8.837 0-16-7.163-16-16V16C0 7.163 7.163 0 16 0z\' fill=\'%23000\'/%3E%3C/svg%3E")',
+              WebkitMaskImage: 'url("data:image/svg+xml,%3Csvg width=\'100\' height=\'100\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cpath d=\'M16 0h68c8.837 0 16 7.163 16 16v68c0 8.837-7.163 16-16 16H16c-8.837 0-16-7.163-16-16V16C0 7.163 7.163 0 16 0z\' fill=\'%23000\'/%3E%3C/svg%3E")',
+              maskSize: '100% 100%',
+              WebkitMaskSize: '100% 100%',
+              maskRepeat: 'no-repeat',
+              WebkitMaskRepeat: 'no-repeat',
+            }}
           />
           
           {/* Button text instead of play button */}
@@ -1071,10 +1081,10 @@ export default function TestLandingPage() {
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
               <div className="space-y-6">
                 <h2 className="text-xl font-extrabold text-white text-center whitespace-nowrap">
-                  Ko trūksta jūsų paslaugų verslui?
-                </h2>
-                <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
-                  {/* Užklausų */}
+                Ko trūksta jūsų paslaugų verslui?
+              </h2>
+              <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
+                {/* Užklausų */}
                   <div
                     onClick={async (e) => {
                       e.preventDefault();
