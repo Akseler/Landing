@@ -9,6 +9,7 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, sql as drizzleSql, inArray, and, or } from "drizzle-orm";
+import { randomUUID } from "crypto";
 
 function getDb() {
   if (!db) {
@@ -84,6 +85,7 @@ export interface IStorage {
   deleteRegistration(id: string): Promise<void>;
   deleteCallFunnelSubmission(id: string): Promise<void>;
   deleteBookingEvent(id: string): Promise<void>;
+  restoreBookingByEmail(email: string): Promise<AnalyticsEvent | null>;
 }
 
 // DatabaseStorage implementation using Drizzle ORM
@@ -1104,6 +1106,96 @@ export class DatabaseStorage implements IStorage {
     // Delete the booking_completed event by ID
     await database.delete(analyticsEvents).where(eq(analyticsEvents.id, id));
     console.log(`[deleteBookingEvent] Successfully deleted booking event ${id}`);
+  }
+
+  async restoreBookingByEmail(email: string): Promise<AnalyticsEvent | null> {
+    const database = getDb();
+    try {
+      // Find submission by email
+      const submissions = await database
+        .select()
+        .from(callFunnelSubmissions)
+        .where(eq(callFunnelSubmissions.email, email))
+        .limit(1);
+
+      if (submissions.length === 0) {
+        console.log(`[restoreBookingByEmail] No submission found for email: ${email}`);
+        return null;
+      }
+
+      const submission = submissions[0];
+
+      // Find the most recent booking_completed event with this email (in case it wasn't fully deleted)
+      const existingBooking = await database
+        .select()
+        .from(analyticsEvents)
+        .where(
+          and(
+            eq(analyticsEvents.eventType, 'booking_completed'),
+            drizzleSql`${analyticsEvents.metadata}->>'email' = ${email}`
+          )
+        )
+        .orderBy(desc(analyticsEvents.timestamp))
+        .limit(1);
+
+      if (existingBooking.length > 0) {
+        console.log(`[restoreBookingByEmail] Booking already exists for email: ${email}`);
+        return existingBooking[0];
+      }
+
+      // Find session for this email (from submission or from other events)
+      let sessionId = submission.sessionId;
+      if (!sessionId && submission.ipAddress) {
+        // Try to find session by IP
+        const sessionsByIP = await database
+          .select({ id: analyticsSessions.id })
+          .from(analyticsSessions)
+          .where(eq(analyticsSessions.ipAddress, submission.ipAddress))
+          .orderBy(desc(analyticsSessions.lastVisit))
+          .limit(1);
+        
+        if (sessionsByIP.length > 0) {
+          sessionId = sessionsByIP[0].id;
+        }
+      }
+
+      if (!sessionId) {
+        // Create a new session if none exists
+        sessionId = randomUUID();
+        await database.insert(analyticsSessions).values({
+          id: sessionId,
+          ipAddress: submission.ipAddress || 'unknown',
+          userAgent: null,
+        });
+      }
+
+      // Create booking_completed event with metadata from submission
+      // Use submission timestamp or current time
+      const bookingTimestamp = submission.createdAt || new Date().toISOString();
+      
+      const newBookingEvent: InsertAnalyticsEvent = {
+        sessionId,
+        eventType: 'booking_completed',
+        page: '/booking',
+        metadata: {
+          email: submission.email,
+          name: '', // We don't have this in submission
+          datetime: '', // We don't have this in submission
+        },
+        timestamp: bookingTimestamp,
+      };
+
+      const result = await database
+        .insert(analyticsEvents)
+        .values(newBookingEvent)
+        .returning();
+
+      console.log(`[restoreBookingByEmail] Successfully restored booking for email: ${email}`);
+      return result[0] || null;
+    } catch (error: any) {
+      console.error(`[restoreBookingByEmail] Error restoring booking for ${email}:`, error);
+      throw error;
+    }
   }
 }
 
