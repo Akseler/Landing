@@ -685,17 +685,13 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="space-y-8"
     >
-      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-4 md:p-4 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto overflow-hidden">
-        <div className="w-full max-w-md overflow-hidden relative group rounded-2xl">
+      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-4 md:p-4 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto">
+        <div className="w-full max-w-md overflow-hidden rounded-2xl relative group">
           <img 
             src={videoGif} 
             alt="Video presentation" 
             className="w-full h-auto"
-            style={{ 
-              filter: 'blur(2.5px)',
-              borderRadius: '1rem',
-              WebkitBorderRadius: '1rem',
-            }}
+            style={{ filter: 'blur(2.5px)' }}
           />
           
           {/* Button text instead of play button */}
