@@ -1051,7 +1051,7 @@ export default function TestLandingPage() {
           </div>
 
           {/* Desktop: Separate Ko trūksta (top) and Video (bottom) sections */}
-          <div className="mt-4 hidden md:block space-y-6">
+          <div className="mt-4 hidden md:block space-y-28">
             {/* Ko trūksta Section - Top (Desktop) */}
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
               <div className="space-y-6">
