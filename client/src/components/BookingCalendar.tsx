@@ -46,6 +46,7 @@ interface BookingCalendarProps {
 type Step = 'contact' | 'date' | 'time' | 'confirm' | 'success';
 
 export default function BookingCalendar({ surveyData, moneyLost }: BookingCalendarProps) {
+  const [, setLocation] = useLocation();
   const [step, setStep] = useState<Step>('date');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -634,10 +635,7 @@ export default function BookingCalendar({ surveyData, moneyLost }: BookingCalend
   );
 
   // Render success step
-  const renderSuccessStep = () => {
-    const [, setLocation] = useLocation();
-    
-    return (
+  const renderSuccessStep = () => (
       <div className="text-center py-6 md:py-8">
         <div className="w-20 h-20 md:w-24 md:h-24 bg-white/18 border border-white/25 rounded-full flex items-center justify-center mx-auto mb-6 md:mb-8 shadow-lg shadow-black/20 backdrop-blur">
           <CheckCircle2 className="w-10 h-10 md:w-12 md:h-12 text-white" />
