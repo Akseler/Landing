@@ -950,14 +950,14 @@ export default function TestLandingPage() {
 
           {/* Mobile: Combined Video + Ko trūksta */}
           <div className="mt-4 md:hidden">
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 shadow-lg space-y-8">
+            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 shadow-lg space-y-8 overflow-hidden">
               {/* Video Section - Top */}
               <div className="max-w-[580px] mx-auto">
                 <div className="w-full overflow-hidden relative group">
                   <img 
                     src={videoGif} 
                     alt="Video presentation" 
-                    className="w-full h-auto"
+                    className="w-full h-auto block"
                     style={{ filter: 'blur(2.5px)' }}
                   />
                   
