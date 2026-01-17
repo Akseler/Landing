@@ -686,7 +686,7 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       className="space-y-8"
     >
       <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-4 md:p-4 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto overflow-hidden">
-        <div className="w-full max-w-md rounded-2xl overflow-hidden relative group">
+        <div className="w-full max-w-md overflow-hidden relative group">
           <img 
             src={videoGif} 
             alt="Video presentation" 
@@ -953,7 +953,7 @@ export default function TestLandingPage() {
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 shadow-lg space-y-8 overflow-hidden">
               {/* Video Section - Top */}
               <div className="max-w-[580px] mx-auto">
-                <div className="w-full rounded-2xl overflow-hidden relative group">
+                <div className="w-full overflow-hidden relative group">
                   <img 
                     src={videoGif} 
                     alt="Video presentation" 
