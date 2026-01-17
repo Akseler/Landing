@@ -953,7 +953,7 @@ export default function TestLandingPage() {
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 shadow-lg space-y-8 overflow-hidden">
               {/* Video Section - Top */}
               <div className="max-w-[580px] mx-auto">
-                <div className="w-full overflow-hidden relative group">
+                <div className="w-full relative group">
                   <img 
                     src={videoGif} 
                     alt="Video presentation" 
