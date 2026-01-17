@@ -32,7 +32,7 @@ import specdarbaiLogo from "@assets/3_1763670424934.png";
 import videoGif from "@assets/video-presentation.gif";
 
 const badgeGreen =
-  "px-5 py-2 text-[11px] font-bold border-2 border-[#1d8263]/25 bg-[#1d8263]/5 text-[#1d8263] uppercase tracking-widest rounded-full";
+  "px-6 py-2.5 text-[12px] font-bold border-2 border-[#1d8263]/25 bg-[#1d8263]/5 text-[#1d8263] uppercase tracking-widest rounded-full";
 
 function SectionHeading({
   badge,
@@ -685,8 +685,8 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="space-y-8"
     >
-      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-4 md:p-4 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto overflow-hidden relative">
-        <div className="w-full max-w-md relative group">
+      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl py-3 px-3 md:py-3 md:px-3 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto">
+        <div className="w-full max-w-md rounded-2xl overflow-hidden relative group border-2 border-[#1d8263]/20">
           <img 
             src={videoGif} 
             alt="Video presentation" 
@@ -927,8 +927,8 @@ export default function TestLandingPage() {
         <section ref={heroRef} className="space-y-9 text-center">
           <div className="space-y-3 pt-8 pb-2">
             <div className="flex justify-center">
-              <Badge variant="outline" className={`${badgeGreen} text-xs sm:text-sm`}>
-                PASLAUGŲ VERSLAMS
+              <Badge variant="outline" className={badgeGreen}>
+                paslaugų verslams
               </Badge>
             </div>
             <h1 className="text-[6vw] sm:text-[5vw] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900">
@@ -948,128 +948,23 @@ export default function TestLandingPage() {
             </p>
           </div>
 
-          {/* Mobile: Combined Video + Ko trūksta */}
-          <div className="mt-4 md:hidden">
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 shadow-lg space-y-8 overflow-hidden">
-              {/* Video Section - Top */}
-              <div className="max-w-[580px] mx-auto">
-                <div className="w-full relative group">
-                  <img 
-                    src={videoGif} 
-                    alt="Video presentation" 
-                    className="w-full h-auto block"
-                    style={{ filter: 'blur(2.5px)' }}
-                  />
-                  
-                  {/* Button text instead of play button */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handlePlayClick();
-                      }}
-                      className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 z-10 animate-pulse-subtle"
-                      style={{
-                        animation: 'pulse-subtle 3s ease-in-out infinite',
-                      }}
-                    >
-                      Žiūrėti video pristatymą
-                    </button>
-                    <style>{`
-                      @keyframes pulse-subtle {
-                        0%, 100% { 
-                          transform: scale(1); 
-                          opacity: 1; 
-                          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(29, 130, 99, 0.4);
-                        }
-                        50% { 
-                          transform: scale(1.02); 
-                          opacity: 0.95; 
-                          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(29, 130, 99, 0);
-                        }
-                      }
-                    `}</style>
-                  </div>
-                  
-                  {/* Subtle overlay to ensure button visibility */}
-                  <div className="absolute inset-0 bg-black/5" />
-                </div>
-              </div>
-
-              {/* Ko trūksta Section - Bottom */}
-              <div className="space-y-6">
-                <h2 className="text-[4.4vw] sm:text-[3.7vw] font-extrabold text-white text-center whitespace-nowrap">
+          <div className="mt-4">
+            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-6">
+              <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap">
                 Ko trūksta jūsų paslaugų verslui?
               </h2>
               <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
                 {/* Užklausų */}
-                  <div
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      // Track button click and wait for it
-                      await trackButtonClick('button-uzklausos', '/');
-                      // Navigate after tracking is complete
-                      setLocation('/survey?type=uzklausos');
-                    }}
-                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  >
-                    <div className="w-14 h-14 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                      <Users className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="font-bold text-base text-white leading-tight">
-                      Užklausų
-                    </span>
-                  </div>
-
-                  {/* Pardavimų */}
-                  <div
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      // Track button click and wait for it
-                      await trackButtonClick('button-pardavimai', '/');
-                      // Navigate after tracking is complete
-                      setLocation('/survey?type=pardavimai');
-                    }}
-                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  >
-                    <div className="w-14 h-14 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                      <Percent className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="font-bold text-base text-white leading-tight">
-                      Pardavimų
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <RotatingTrust whiteText />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Desktop: Separate Ko trūksta (top) and Video (bottom) sections */}
-          <div className="mt-4 hidden md:block space-y-28">
-            {/* Ko trūksta Section - Top (Desktop) */}
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
-              <div className="space-y-6">
-                <h2 className="text-xl font-extrabold text-white text-center whitespace-nowrap">
-                  Ko trūksta jūsų paslaugų verslui?
-                </h2>
-                <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
-                  {/* Užklausų */}
-                  <div
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      // Track button click and wait for it
-                      await trackButtonClick('button-uzklausos', '/');
-                      // Navigate after tracking is complete
-                      setLocation('/survey?type=uzklausos');
-                    }}
-                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                <div
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Track button click and wait for it
+                    await trackButtonClick('button-uzklausos', '/');
+                    // Navigate after tracking is complete
+                    setLocation('/survey?type=uzklausos');
+                  }}
+                  className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
                 >
                   <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
                     <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
@@ -1077,19 +972,19 @@ export default function TestLandingPage() {
                   <span className="font-bold text-base md:text-lg text-white leading-tight">
                     Užklausų
                   </span>
-                  </div>
+                </div>
 
                 {/* Pardavimų */}
-                  <div
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      // Track button click and wait for it
-                      await trackButtonClick('button-pardavimai', '/');
-                      // Navigate after tracking is complete
-                      setLocation('/survey?type=pardavimai');
-                    }}
-                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                <div
+                  onClick={async (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    // Track button click and wait for it
+                    await trackButtonClick('button-pardavimai', '/');
+                    // Navigate after tracking is complete
+                    setLocation('/survey?type=pardavimai');
+                  }}
+                  className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
                 >
                   <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
                     <Percent className="w-6 h-6 md:w-8 md:h-8 text-white" />
@@ -1097,7 +992,7 @@ export default function TestLandingPage() {
                   <span className="font-bold text-base md:text-lg text-white leading-tight">
                     Pardavimų
                   </span>
-                  </div>
+                </div>
               </div>
 
               <div>
@@ -1105,11 +1000,10 @@ export default function TestLandingPage() {
               </div>
             </div>
           </div>
-
-            {/* Video Section - Bottom (Desktop) */}
-        <VSLSection handlePlayClick={handlePlayClick} />
-          </div>
         </section>
+
+        {/* VSL */}
+        <VSLSection handlePlayClick={handlePlayClick} />
 
         {/* HOW IT WORKS (4 steps) */}
         <HowItWorksSection />

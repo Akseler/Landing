@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { CheckCircle2, XCircle, Trash2, Calendar, RefreshCw, ChevronDown, ChevronUp, Play } from 'lucide-react';
+import { CheckCircle2, XCircle, Trash2, Calendar, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 import { Link } from 'wouter';
 import { queryClient, apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
@@ -74,7 +74,6 @@ interface BookingWithSurvey {
     createdAt: string;
   } | null;
   surveyAnswers: Array<{ question: string; answer: string }>;
-  watchedVSL: boolean;
 }
 
 interface Session {
@@ -836,11 +835,6 @@ export default function AnalyticsPage() {
                             </div>
                             </div>
                           <div className="flex items-center gap-2">
-                            {booking.watchedVSL && (
-                              <div className="flex items-center gap-1 text-[#1d8263]" title="Žiūrėjo video">
-                                <Play className="w-3 h-3" fill="#1d8263" />
-                              </div>
-                            )}
                             {surveyAnswers.length > 0 && (
                               <span className="text-[10px] text-muted-foreground whitespace-nowrap">
                                 {isExpanded ? '▼' : '▶'}
