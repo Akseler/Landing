@@ -690,7 +690,7 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           <img 
             src={videoGif} 
             alt="Video presentation" 
-            className="w-full h-auto"
+            className="w-full h-auto rounded-2xl"
             style={{ filter: 'blur(2.5px)' }}
           />
           
