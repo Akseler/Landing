@@ -860,14 +860,14 @@ export class DatabaseStorage implements IStorage {
           let watchedVSL = false;
           try {
             if (event.sessionId) {
+              // Check for video_play events - can be on any page, just need same sessionId
               const videoEvents = await database
                 .select({ id: analyticsEvents.id })
                 .from(analyticsEvents)
                 .where(
                   and(
                     eq(analyticsEvents.sessionId, event.sessionId),
-                    eq(analyticsEvents.eventType, 'video_play'),
-                    or(eq(analyticsEvents.page, '/'), eq(analyticsEvents.page, '/call'))
+                    eq(analyticsEvents.eventType, 'video_play')
                   )
                 )
                 .limit(1);
