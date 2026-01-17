@@ -686,7 +686,15 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       className="space-y-8"
     >
       <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-4 md:p-4 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto overflow-hidden">
-        <div className="w-full max-w-md rounded-2xl overflow-hidden relative group">
+        <div 
+          className="w-full max-w-md rounded-2xl overflow-hidden relative group"
+          style={{
+            WebkitBorderRadius: '1rem',
+            transform: 'translateZ(0)',
+            WebkitTransform: 'translateZ(0)',
+            willChange: 'transform',
+          }}
+        >
           <img 
             src={videoGif} 
             alt="Video presentation" 
@@ -953,7 +961,15 @@ export default function TestLandingPage() {
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 shadow-lg space-y-8 overflow-hidden">
               {/* Video Section - Top */}
               <div className="max-w-[580px] mx-auto">
-                <div className="w-full rounded-2xl overflow-hidden relative group">
+                <div 
+                  className="w-full rounded-2xl overflow-hidden relative group"
+                  style={{
+                    WebkitBorderRadius: '1rem',
+                    transform: 'translateZ(0)',
+                    WebkitTransform: 'translateZ(0)',
+                    willChange: 'transform',
+                  }}
+                >
                   <img 
                     src={videoGif} 
                     alt="Video presentation" 
@@ -999,10 +1015,10 @@ export default function TestLandingPage() {
               {/* Ko trūksta Section - Bottom */}
               <div className="space-y-6">
                 <h2 className="text-[4.4vw] sm:text-[3.7vw] font-extrabold text-white text-center whitespace-nowrap">
-                  Ko trūksta jūsų paslaugų verslui?
-                </h2>
-                <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
-                  {/* Užklausų */}
+                Ko trūksta jūsų paslaugų verslui?
+              </h2>
+              <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
+                {/* Užklausų */}
                   <div
                     onClick={async (e) => {
                       e.preventDefault();
@@ -1070,16 +1086,16 @@ export default function TestLandingPage() {
                       setLocation('/survey?type=uzklausos');
                     }}
                     className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  >
-                    <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                      <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                    </div>
-                    <span className="font-bold text-base md:text-lg text-white leading-tight">
-                      Užklausų
-                    </span>
+                >
+                  <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+                    <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                  </div>
+                  <span className="font-bold text-base md:text-lg text-white leading-tight">
+                    Užklausų
+                  </span>
                   </div>
 
-                  {/* Pardavimų */}
+                {/* Pardavimų */}
                   <div
                     onClick={async (e) => {
                       e.preventDefault();
@@ -1090,24 +1106,24 @@ export default function TestLandingPage() {
                       setLocation('/survey?type=pardavimai');
                     }}
                     className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  >
-                    <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                      <Percent className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                    </div>
-                    <span className="font-bold text-base md:text-lg text-white leading-tight">
-                      Pardavimų
-                    </span>
+                >
+                  <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+                    <Percent className="w-6 h-6 md:w-8 md:h-8 text-white" />
                   </div>
-                </div>
+                  <span className="font-bold text-base md:text-lg text-white leading-tight">
+                    Pardavimų
+                  </span>
+                  </div>
+              </div>
 
-                <div>
-                  <RotatingTrust whiteText />
-                </div>
+              <div>
+                <RotatingTrust whiteText />
               </div>
             </div>
+          </div>
 
             {/* Video Section - Bottom (Desktop) */}
-            <VSLSection handlePlayClick={handlePlayClick} />
+        <VSLSection handlePlayClick={handlePlayClick} />
           </div>
         </section>
 
