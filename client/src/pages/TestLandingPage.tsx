@@ -1050,12 +1050,9 @@ export default function TestLandingPage() {
             </div>
           </div>
 
-          {/* Desktop: Separate Video and Ko trūksta sections */}
+          {/* Desktop: Separate Ko trūksta (top) and Video (bottom) sections */}
           <div className="mt-4 hidden md:block space-y-6">
-            {/* Video Section - Separate */}
-            <VSLSection handlePlayClick={handlePlayClick} />
-
-            {/* Ko trūksta Section - Separate */}
+            {/* Ko trūksta Section - Top (Desktop) */}
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
               <div className="space-y-6">
                 <h2 className="text-xl font-extrabold text-white text-center whitespace-nowrap">
@@ -1108,6 +1105,9 @@ export default function TestLandingPage() {
                 </div>
               </div>
             </div>
+
+            {/* Video Section - Bottom (Desktop) */}
+            <VSLSection handlePlayClick={handlePlayClick} />
           </div>
         </section>
 
