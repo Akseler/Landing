@@ -685,12 +685,12 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className="space-y-8"
     >
-      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl py-3 px-3 md:py-3 md:px-3 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto">
-        <div className="w-full max-w-md rounded-2xl overflow-hidden relative group border-2 border-[#1d8263]/20">
+      <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-4 md:p-4 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto overflow-hidden">
+        <div className="w-full max-w-md overflow-hidden relative group">
           <img 
             src={videoGif} 
             alt="Video presentation" 
-            className="w-full h-auto rounded-2xl"
+            className="w-full h-auto"
             style={{ filter: 'blur(2.5px)' }}
           />
           
@@ -953,11 +953,11 @@ export default function TestLandingPage() {
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 shadow-lg space-y-8">
               {/* Video Section - Top */}
               <div className="max-w-[580px] mx-auto">
-                <div className="w-full rounded-2xl overflow-hidden relative group">
+                <div className="w-full overflow-hidden relative group">
                   <img 
                     src={videoGif} 
                     alt="Video presentation" 
-                    className="w-full h-auto rounded-2xl"
+                    className="w-full h-auto"
                     style={{ filter: 'blur(2.5px)' }}
                   />
                   
@@ -992,7 +992,7 @@ export default function TestLandingPage() {
                   </div>
                   
                   {/* Subtle overlay to ensure button visibility */}
-                  <div className="absolute inset-0 bg-black/5 rounded-2xl" />
+                  <div className="absolute inset-0 bg-black/5" />
                 </div>
               </div>
 
