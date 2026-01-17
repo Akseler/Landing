@@ -732,6 +732,70 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
   );
 }
 
+function KoTrukstaMobileSection({ setLocation }: { setLocation: (path: string) => void }) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 30 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className="space-y-6"
+    >
+      <h2 className="text-[4.4vw] sm:text-[3.7vw] font-extrabold text-white text-center whitespace-nowrap">
+        Ko trūksta jūsų paslaugų verslui?
+      </h2>
+      <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
+        {/* Užklausų */}
+        <div
+          onClick={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Track button click and wait for it
+            await trackButtonClick('button-uzklausos', '/');
+            // Navigate after tracking is complete
+            setLocation('/survey?type=uzklausos');
+          }}
+          className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+        >
+          <div className="w-14 h-14 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+            <Users className="w-6 h-6 text-white" />
+          </div>
+          <span className="font-bold text-base text-white leading-tight">
+            Užklausų
+          </span>
+        </div>
+
+        {/* Pardavimų */}
+        <div
+          onClick={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            // Track button click and wait for it
+            await trackButtonClick('button-pardavimai', '/');
+            // Navigate after tracking is complete
+            setLocation('/survey?type=pardavimai');
+          }}
+          className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+        >
+          <div className="w-14 h-14 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+            <Percent className="w-6 h-6 text-white" />
+          </div>
+          <span className="font-bold text-base text-white leading-tight">
+            Pardavimų
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <RotatingTrust whiteText />
+      </div>
+    </motion.div>
+  );
+}
+
 function HowItWorksSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -997,56 +1061,7 @@ export default function TestLandingPage() {
               </div>
 
               {/* Ko trūksta Section - Bottom */}
-              <div className="space-y-6">
-                <h2 className="text-[4.4vw] sm:text-[3.7vw] font-extrabold text-white text-center whitespace-nowrap">
-                Ko trūksta jūsų paslaugų verslui?
-              </h2>
-              <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
-                {/* Užklausų */}
-                  <div
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      // Track button click and wait for it
-                      await trackButtonClick('button-uzklausos', '/');
-                      // Navigate after tracking is complete
-                      setLocation('/survey?type=uzklausos');
-                    }}
-                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  >
-                    <div className="w-14 h-14 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                      <Users className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="font-bold text-base text-white leading-tight">
-                      Užklausų
-                    </span>
-                  </div>
-
-                  {/* Pardavimų */}
-                  <div
-                    onClick={async (e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      // Track button click and wait for it
-                      await trackButtonClick('button-pardavimai', '/');
-                      // Navigate after tracking is complete
-                      setLocation('/survey?type=pardavimai');
-                    }}
-                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 flex flex-col items-center justify-center gap-3 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                  >
-                    <div className="w-14 h-14 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                      <Percent className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="font-bold text-base text-white leading-tight">
-                      Pardavimų
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <RotatingTrust whiteText />
-                </div>
-              </div>
+              <KoTrukstaMobileSection setLocation={setLocation} />
             </div>
           </div>
 
