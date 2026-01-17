@@ -927,8 +927,8 @@ export default function TestLandingPage() {
         <section ref={heroRef} className="space-y-9 text-center">
           <div className="space-y-3 pt-8 pb-2">
             <div className="flex justify-center">
-              <Badge variant="outline" className={badgeGreen}>
-                paslaugų teikėjams
+              <Badge variant="outline" className={`${badgeGreen} text-xs sm:text-sm`}>
+                PASLAUGŲ VERSLAMS
               </Badge>
             </div>
             <h1 className="text-[6vw] sm:text-[5vw] md:text-[36px] font-extrabold leading-[1.2] tracking-tight text-slate-900">
