@@ -1090,9 +1090,6 @@ export default function TestLandingPage() {
           </div>
         </section>
 
-        {/* VSL */}
-        <VSLSection handlePlayClick={handlePlayClick} />
-
         {/* HOW IT WORKS (4 steps) */}
         <HowItWorksSection />
 
