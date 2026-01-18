@@ -1104,11 +1104,10 @@ export default function TestLandingPage() {
                 </div>
               </div>
 
-              </div>
-
               <div>
                 <RotatingTrust whiteText />
               </div>
+            </div>
             </ScrollRevealSection>
           </div>
         </section>
