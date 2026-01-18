@@ -854,7 +854,6 @@ export default function TestLandingPage() {
       }
     }
   }, [gifLoaded]);
-  }, []);
 
   // Initialize Vimeo player on mount
   useEffect(() => {
