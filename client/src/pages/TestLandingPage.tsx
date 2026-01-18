@@ -1058,7 +1058,7 @@ export default function TestLandingPage() {
                 />
               </div>
 
-              <div>
+              <div className="space-y-6">
                 <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap mb-6">
                   Ko trūksta jūsų paslaugų verslui?
                 </h2>
