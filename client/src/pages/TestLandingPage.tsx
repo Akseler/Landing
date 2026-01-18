@@ -765,74 +765,77 @@ function VSLVideo({
 }) {
   return (
     <div className="w-full max-w-md mx-auto relative group">
-      {/* GIF Image - vertical/portrait orientation */}
-      <img 
-        src={videoGif} 
-        alt="Video presentation" 
-        className="w-full h-auto block"
-        width={640}
-        height={1138}
-        loading="eager"
-        fetchPriority="high"
-        onLoad={() => setGifLoaded?.(true)}
-        style={{ 
-          filter: 'blur(2.5px)',
-          // "Nuclear option" for iOS rounding: mask-image
-          maskImage: 'radial-gradient(white, black)',
-          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-          borderRadius: '1rem', // Standard backup
-          transform: 'translateZ(0)', // Hardware acceleration
-          overflow: 'hidden'
-        }}
-      />
-      
-      {/* Green border overlay - layered on top */}
+      {/* Container responsible for rounding and clipping */}
       <div 
-        className="absolute inset-0 rounded-2xl border-2 border-white/20 pointer-events-none z-10"
-        style={{ 
-          borderRadius: '1rem',
-          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
+        className="relative w-full rounded-2xl overflow-hidden"
+        style={{
+          transform: 'translateZ(0)', // Force GPU for iOS
+          WebkitMaskImage: '-webkit-radial-gradient(white, black)', // Force iOS clipping
+          isolation: 'isolate'
         }}
-      />
-      
-      {/* Button text instead of play button */}
-      <div className="absolute inset-0 flex items-center justify-center z-20">
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            handlePlayClick();
+      >
+        {/* GIF Image - No rounding/masking on it directly */}
+        <img 
+          src={videoGif} 
+          alt="Video presentation" 
+          className="w-full h-auto block"
+          width={640}
+          height={1138}
+          loading="eager"
+          fetchPriority="high"
+          onLoad={() => setGifLoaded?.(true)}
+          style={{ 
+            filter: 'blur(2.5px)',
+            width: '100%',
+            height: 'auto',
+            display: 'block'
           }}
-          className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-12 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
-          style={{
-            animation: 'pulse-subtle 3s ease-in-out infinite',
+        />
+        
+        {/* Green border overlay - layered on top */}
+        <div 
+          className="absolute inset-0 rounded-2xl border-2 border-white/20 pointer-events-none z-10"
+          style={{ 
+            borderRadius: '1rem',
+            boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
           }}
-        >
-          Žiūrėti video pristatymą
-        </button>
-        <style>{`
-          @keyframes pulse-subtle {
-            0%, 100% { 
-              transform: scale(1); 
-              opacity: 1; 
-              box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(29, 130, 99, 0.4);
+        />
+        
+        {/* Button text instead of play button */}
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePlayClick();
+            }}
+            className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-12 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
+            style={{
+              animation: 'pulse-subtle 3s ease-in-out infinite',
+            }}
+          >
+            Žiūrėti video pristatymą
+          </button>
+          <style>{`
+            @keyframes pulse-subtle {
+              0%, 100% { 
+                transform: scale(1); 
+                opacity: 1; 
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(29, 130, 99, 0.4);
+              }
+              50% { 
+                transform: scale(1.02); 
+                opacity: 0.95; 
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(29, 130, 99, 0);
+              }
             }
-            50% { 
-              transform: scale(1.02); 
-              opacity: 0.95; 
-              box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(29, 130, 99, 0);
-            }
-          }
-        `}</style>
+          `}</style>
+        </div>
+        
+        {/* Subtle overlay */}
+        <div 
+          className="absolute inset-0 bg-black/5 pointer-events-none z-10" 
+        />
       </div>
-      
-      {/* Subtle overlay */}
-      <div 
-        className="absolute inset-0 bg-black/5 pointer-events-none z-10" 
-        style={{ 
-          borderRadius: '1rem',
-          clipPath: 'inset(0 round 1rem)'
-        }}
-      />
     </div>
   );
 }
