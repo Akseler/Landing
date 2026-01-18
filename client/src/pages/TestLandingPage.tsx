@@ -101,7 +101,11 @@ function AnimatedSectionHeading({
 
 function ScrollRevealSection({ children }: { children: React.ReactNode }) {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, margin: "-50px" });
+  // Only trigger when scrolled down significantly (200px from top on mobile, 100px on desktop)
+  const isInView = useInView(ref, { 
+    once: false, 
+    margin: "200px 0px -200px 0px" // Requires scrolling 200px before showing
+  });
 
   return (
     <motion.div
@@ -109,6 +113,11 @@ function ScrollRevealSection({ children }: { children: React.ReactNode }) {
       initial={{ opacity: 0, y: 40 }}
       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      style={{ 
+        // Hide completely until scrolled
+        visibility: isInView ? 'visible' : 'hidden',
+        pointerEvents: isInView ? 'auto' : 'none'
+      }}
     >
       {children}
     </motion.div>
