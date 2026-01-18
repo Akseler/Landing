@@ -812,6 +812,7 @@ export default function TestLandingPage() {
   const resultsSectionRef = useRef<HTMLElement | null>(null);
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [hideStickyOnFinal, setHideStickyOnFinal] = useState(false);
+  const [showHeroContent, setShowHeroContent] = useState(false);
   
   // Video modal state
   const [showFallbackModal, setShowFallbackModal] = useState(false);
@@ -824,6 +825,30 @@ export default function TestLandingPage() {
     trackPageView("/");
     initScrollTracking();
     initSessionDurationTracking();
+    
+    // On desktop, show content immediately
+    if (window.innerWidth >= 768) {
+      setShowHeroContent(true);
+    }
+    
+    // On mobile, show content after scroll or after a short delay (GIF loaded)
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setShowHeroContent(true);
+      }
+    };
+    
+    // Also show after 800ms to ensure GIF has started loading
+    const timer = setTimeout(() => {
+      setShowHeroContent(true);
+    }, 800);
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+    };
   }, []);
 
   // Initialize Vimeo player on mount
@@ -1040,56 +1065,58 @@ export default function TestLandingPage() {
                 />
               </div>
 
-              <div>
+              {/* Hidden on mobile until scroll/GIF loads - always visible on desktop */}
+              <div 
+                className={`transition-all duration-500 ${showHeroContent ? 'opacity-100 translate-y-0' : 'md:opacity-100 md:translate-y-0 opacity-0 translate-y-4 pointer-events-none md:pointer-events-auto'}`}
+              >
                 <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap mb-6">
                   Ko trūksta jūsų paslaugų verslui?
                 </h2>
                 <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
-                {/* Užklausų */}
-                <div
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // Track button click and wait for it
-                    await trackButtonClick('button-uzklausos', '/');
-                    // Navigate after tracking is complete
-                    setLocation('/survey?type=uzklausos');
-                  }}
-                  className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                >
-                  <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                    <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                  {/* Užklausų */}
+                  <div
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      // Track button click and wait for it
+                      await trackButtonClick('button-uzklausos', '/');
+                      // Navigate after tracking is complete
+                      setLocation('/survey?type=uzklausos');
+                    }}
+                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                  >
+                    <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+                      <Users className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <span className="font-bold text-base md:text-lg text-white leading-tight">
+                      Užklausų
+                    </span>
                   </div>
-                  <span className="font-bold text-base md:text-lg text-white leading-tight">
-                    Užklausų
-                  </span>
+
+                  {/* Pardavimų */}
+                  <div
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      // Track button click and wait for it
+                      await trackButtonClick('button-pardavimai', '/');
+                      // Navigate after tracking is complete
+                      setLocation('/survey?type=pardavimai');
+                    }}
+                    className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                  >
+                    <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
+                      <Percent className="w-6 h-6 md:w-8 md:h-8 text-white" />
+                    </div>
+                    <span className="font-bold text-base md:text-lg text-white leading-tight">
+                      Pardavimų
+                    </span>
+                  </div>
                 </div>
 
-                {/* Pardavimų */}
-                <div
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    // Track button click and wait for it
-                    await trackButtonClick('button-pardavimai', '/');
-                    // Navigate after tracking is complete
-                    setLocation('/survey?type=pardavimai');
-                  }}
-                  className="group hero-button relative rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/40 p-7 md:p-10 flex flex-col items-center justify-center gap-3 md:gap-4 text-center active:scale-[0.98] transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-                >
-                  <div className="w-14 h-14 md:w-20 md:h-20 rounded-full bg-white/15 border border-white/25 flex items-center justify-center mb-1 group-hover:scale-110 group-hover:bg-white/25 transition-all duration-300">
-                    <Percent className="w-6 h-6 md:w-8 md:h-8 text-white" />
-                  </div>
-                  <span className="font-bold text-base md:text-lg text-white leading-tight">
-                    Pardavimų
-                  </span>
+                <div className="mt-6">
+                  <RotatingTrust whiteText />
                 </div>
-              </div>
-
-              </div>
-
-              <div>
-                <RotatingTrust whiteText />
               </div>
             </div>
           </div>
