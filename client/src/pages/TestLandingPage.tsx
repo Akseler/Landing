@@ -832,23 +832,27 @@ export default function TestLandingPage() {
       setShowHeroContent(true);
     }
     
-    // On mobile, show content only after scroll AND GIF is loaded
+    // On mobile, show content only after scroll
     const handleScroll = () => {
-      if (window.scrollY > 50 && gifLoaded) {
+      if (window.scrollY > 50) {
         setShowHeroContent(true);
       }
     };
-    
-    // Also show content when GIF loads (on desktop or if already scrolled)
-    if (gifLoaded && (window.innerWidth >= 768 || window.scrollY > 50)) {
-      setShowHeroContent(true);
-    }
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
+  }, []);
+
+  // Show content when GIF loads (on mobile, only if already scrolled)
+  useEffect(() => {
+    if (gifLoaded) {
+      if (window.innerWidth >= 768 || window.scrollY > 50) {
+        setShowHeroContent(true);
+      }
+    }
   }, [gifLoaded]);
   }, []);
 
