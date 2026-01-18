@@ -971,7 +971,8 @@ export default function TestLandingPage() {
           </div>
 
           <div className="mt-4">
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-8">
+            <ScrollRevealSection>
+              <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-8">
               
               {/* VSL VIDEO SECTION - Moved inside the green box */}
               <div className="w-full max-w-full mx-auto relative group">
