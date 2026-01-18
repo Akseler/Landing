@@ -1025,7 +1025,7 @@ export default function TestLandingPage() {
                       e.stopPropagation();
                       handlePlayClick();
                     }}
-                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-10 py-5 md:px-14 md:py-6 text-lg md:text-xl rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
+                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-10 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
                     style={{
                       animation: 'pulse-subtle 3s ease-in-out infinite',
                     }}
