@@ -15,7 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { CheckCircle2, XCircle, Trash2, Calendar, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
+import { CheckCircle2, XCircle, Trash2, Calendar, RefreshCw, ChevronDown, ChevronUp, Video } from 'lucide-react';
 import { Link } from 'wouter';
 import { queryClient, apiRequest } from '@/lib/queryClient';
 import { useToast } from '@/hooks/use-toast';
@@ -74,6 +74,7 @@ interface BookingWithSurvey {
     createdAt: string;
   } | null;
   surveyAnswers: Array<{ question: string; answer: string }>;
+  watchedVSL?: boolean;
 }
 
 interface Session {
@@ -821,7 +822,12 @@ export default function AnalyticsPage() {
                         >
                         <div className="flex items-center justify-between gap-2">
                           <div className="flex flex-col md:flex-row md:items-center gap-0.5 md:gap-2 min-w-0">
-                            <span className="font-semibold text-[#1d8263] truncate text-[11px] md:text-xs">{email}</span>
+                            <div className="flex items-center gap-1.5">
+                              <span className="font-semibold text-[#1d8263] truncate text-[11px] md:text-xs">{email}</span>
+                              {booking.watchedVSL && (
+                                <Video className="w-3 h-3 md:w-4 md:h-4 text-[#1d8263] flex-shrink-0" title="Watched VSL" />
+                              )}
+                            </div>
                             <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground">
                               <span>{new Date(booking.bookingEvent.timestamp).toLocaleString('lt-LT', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' })}</span>
                               {datetime && (

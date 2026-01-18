@@ -770,6 +770,7 @@ export class DatabaseStorage implements IStorage {
     bookingEvent: AnalyticsEvent;
     submission: CallFunnelSubmission | null;
     surveyAnswers: Array<{ question: string; answer: string }>;
+    watchedVSL: boolean;
   }>> {
     try {
       const database = getDb();
@@ -853,10 +854,34 @@ export class DatabaseStorage implements IStorage {
             console.error(`[getBookingsWithSurveyData] Error finding data for booking ${event.id}:`, error);
           }
 
+          // Check if this session watched the VSL (video_play event)
+          let watchedVSL = false;
+          try {
+            if (event.sessionId) {
+              const videoEvents = await database
+                .select({ id: analyticsEvents.id })
+                .from(analyticsEvents)
+                .where(
+                  and(
+                    eq(analyticsEvents.sessionId, event.sessionId),
+                    eq(analyticsEvents.eventType, 'video_play'),
+                    or(eq(analyticsEvents.page, '/'), eq(analyticsEvents.page, '/call'))
+                  )
+                )
+                .limit(1);
+              
+              watchedVSL = videoEvents.length > 0;
+            }
+          } catch (error) {
+            console.error(`[getBookingsWithSurveyData] Error checking VSL for booking ${event.id}:`, error);
+            // Continue with watchedVSL = false
+          }
+
           return {
             bookingEvent: event,
             submission,
             surveyAnswers,
+            watchedVSL,
           };
         })
       );
