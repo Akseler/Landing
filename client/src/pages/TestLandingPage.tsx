@@ -757,14 +757,16 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
 function VSLVideo({ 
   handlePlayClick, 
   videoGif, 
-  setGifLoaded 
+  setGifLoaded,
+  className = "max-w-md"
 }: { 
   handlePlayClick: () => void; 
   videoGif: string; 
   setGifLoaded?: (loaded: boolean) => void;
+  className?: string;
 }) {
   return (
-    <div className="w-full max-w-md mx-auto relative group">
+    <div className={`w-full mx-auto relative group ${className}`}>
       {/* Container responsible for rounding and clipping */}
       <div 
         className="relative w-full rounded-2xl overflow-hidden"
@@ -1087,7 +1089,7 @@ export default function TestLandingPage() {
 
           <div className="mt-4 space-y-16 md:space-y-20">
             {/* Green Box - Hero Content */}
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
+            <div className="w-full mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
               
               {/* MOBILE ONLY: VSL VIDEO SECTION - Inside the green box */}
               <div className="md:hidden w-full max-w-md mx-auto relative group mb-8">
@@ -1105,7 +1107,7 @@ export default function TestLandingPage() {
                 <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap mb-6">
                   Ko trūksta jūsų paslaugų verslui?
                 </h2>
-                <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
+                <div className="max-w-2xl mx-auto grid grid-cols-2 gap-4">
                   {/* Užklausų */}
                   <div
                     onClick={async (e) => {
@@ -1154,10 +1156,11 @@ export default function TestLandingPage() {
             </div>
 
             {/* DESKTOP ONLY: VSL VIDEO SECTION - Separated below green box */}
-            <div className="hidden md:block max-w-[640px] mx-auto bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-3 shadow-md border-2 border-[#1d8263]/30 w-fit">
+            <div className="hidden md:block w-full mx-auto bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-3 shadow-md border-2 border-[#1d8263]/30">
               <VSLVideo 
                 handlePlayClick={handlePlayClick}
                 videoGif={videoGif}
+                className="max-w-xl"
               />
             </div>
           </div>
