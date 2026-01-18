@@ -754,6 +754,89 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
   );
 }
 
+function VSLVideo({ 
+  handlePlayClick, 
+  videoGif, 
+  setGifLoaded 
+}: { 
+  handlePlayClick: () => void; 
+  videoGif: string; 
+  setGifLoaded?: (loaded: boolean) => void;
+}) {
+  return (
+    <div className="w-full max-w-md mx-auto relative group">
+      {/* GIF Image - vertical/portrait orientation */}
+      <img 
+        src={videoGif} 
+        alt="Video presentation" 
+        className="w-full h-auto block"
+        width={640}
+        height={1138}
+        loading="eager"
+        fetchPriority="high"
+        onLoad={() => setGifLoaded?.(true)}
+        style={{ 
+          filter: 'blur(2.5px)',
+          // "Nuclear option" for iOS rounding: mask-image
+          maskImage: 'radial-gradient(white, black)',
+          WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+          borderRadius: '1rem', // Standard backup
+          transform: 'translateZ(0)', // Hardware acceleration
+          overflow: 'hidden'
+        }}
+      />
+      
+      {/* Green border overlay - layered on top */}
+      <div 
+        className="absolute inset-0 rounded-2xl border-2 border-white/20 pointer-events-none z-10"
+        style={{ 
+          borderRadius: '1rem',
+          boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
+        }}
+      />
+      
+      {/* Button text instead of play button */}
+      <div className="absolute inset-0 flex items-center justify-center z-20">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            handlePlayClick();
+          }}
+          className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-12 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
+          style={{
+            animation: 'pulse-subtle 3s ease-in-out infinite',
+          }}
+        >
+          Žiūrėti video pristatymą
+        </button>
+        <style>{`
+          @keyframes pulse-subtle {
+            0%, 100% { 
+              transform: scale(1); 
+              opacity: 1; 
+              box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(29, 130, 99, 0.4);
+            }
+            50% { 
+              transform: scale(1.02); 
+              opacity: 0.95; 
+              box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(29, 130, 99, 0);
+            }
+          }
+        `}</style>
+      </div>
+      
+      {/* Subtle overlay */}
+      <div 
+        className="absolute inset-0 bg-black/5 pointer-events-none z-10" 
+        style={{ 
+          borderRadius: '1rem',
+          clipPath: 'inset(0 round 1rem)'
+        }}
+      />
+    </div>
+  );
+}
+
 function HowItWorksSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -999,82 +1082,20 @@ export default function TestLandingPage() {
             </p>
           </div>
 
-          <div className="mt-4">
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-8">
+          <div className="mt-4 space-y-16 md:space-y-20">
+            {/* Green Box - Hero Content */}
+            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
               
-              {/* VSL VIDEO SECTION - Moved inside the green box */}
-              <div className="w-full max-w-md mx-auto relative group">
-                {/* GIF Image - vertical/portrait orientation */}
-                <img 
-                  src={videoGif} 
-                  alt="Video presentation" 
-                  className="w-full h-auto block"
-                  width={640}
-                  height={1138}
-                  loading="eager"
-                  fetchPriority="high"
-                  onLoad={() => setGifLoaded(true)}
-                  style={{ 
-                    filter: 'blur(2.5px)',
-                    // "Nuclear option" for iOS rounding: mask-image
-                    maskImage: 'radial-gradient(white, black)',
-                    WebkitMaskImage: '-webkit-radial-gradient(white, black)',
-                    borderRadius: '1rem', // Standard backup
-                    transform: 'translateZ(0)', // Hardware acceleration
-                    overflow: 'hidden'
-                  }}
-                />
-                
-                {/* Green border overlay - layered on top */}
-                <div 
-                  className="absolute inset-0 rounded-2xl border-2 border-white/20 pointer-events-none z-10"
-                  style={{ 
-                    borderRadius: '1rem',
-                    boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
-                  }}
-                />
-                
-                {/* Button text instead of play button */}
-                <div className="absolute inset-0 flex items-center justify-center z-20">
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handlePlayClick();
-                    }}
-                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-12 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
-                    style={{
-                      animation: 'pulse-subtle 3s ease-in-out infinite',
-                    }}
-                  >
-                    Žiūrėti video pristatymą
-                  </button>
-                  <style>{`
-                    @keyframes pulse-subtle {
-                      0%, 100% { 
-                        transform: scale(1); 
-                        opacity: 1; 
-                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(29, 130, 99, 0.4);
-                      }
-                      50% { 
-                        transform: scale(1.02); 
-                        opacity: 0.95; 
-                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(29, 130, 99, 0);
-                      }
-                    }
-                  `}</style>
-                </div>
-                
-                {/* Subtle overlay */}
-                <div 
-                  className="absolute inset-0 bg-black/5 pointer-events-none z-10" 
-                  style={{ 
-                    borderRadius: '1rem',
-                    clipPath: 'inset(0 round 1rem)'
-                  }}
+              {/* MOBILE ONLY: VSL VIDEO SECTION - Inside the green box */}
+              <div className="md:hidden w-full max-w-md mx-auto relative group mb-8">
+                <VSLVideo 
+                  handlePlayClick={handlePlayClick}
+                  videoGif={videoGif}
+                  setGifLoaded={setGifLoaded}
                 />
               </div>
 
-              {/* Hidden on mobile until scroll/GIF loads - always visible on desktop */}
+              {/* Hero Content - Always visible on desktop, hidden initially on mobile */}
               <div 
                 className={`transition-all duration-500 ${showHeroContent ? 'opacity-100 translate-y-0' : 'md:opacity-100 md:translate-y-0 opacity-0 translate-y-4 pointer-events-none md:pointer-events-auto'}`}
               >
@@ -1127,6 +1148,14 @@ export default function TestLandingPage() {
                   <RotatingTrust whiteText />
                 </div>
               </div>
+            </div>
+
+            {/* DESKTOP ONLY: VSL VIDEO SECTION - Separated below green box */}
+            <div className="hidden md:block max-w-[640px] mx-auto bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-3 shadow-md border-2 border-[#1d8263]/30 w-fit">
+              <VSLVideo 
+                handlePlayClick={handlePlayClick}
+                videoGif={videoGif}
+              />
             </div>
           </div>
         </section>
