@@ -831,23 +831,17 @@ export default function TestLandingPage() {
       setShowHeroContent(true);
     }
     
-    // On mobile, show content after scroll or after a short delay (GIF loaded)
+    // On mobile, show content only after scroll
     const handleScroll = () => {
       if (window.scrollY > 50) {
         setShowHeroContent(true);
       }
     };
     
-    // Also show after 800ms to ensure GIF has started loading
-    const timer = setTimeout(() => {
-      setShowHeroContent(true);
-    }, 800);
-    
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      clearTimeout(timer);
     };
   }, []);
 
