@@ -971,11 +971,77 @@ export default function TestLandingPage() {
           </div>
 
           <div className="mt-4">
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-6">
-              <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap">
-                Ko trūksta jūsų paslaugų verslui?
-              </h2>
-              <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
+            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-8">
+              
+              {/* VSL VIDEO SECTION - Moved inside the green box */}
+              <div className="w-full max-w-md mx-auto relative group">
+                {/* GIF Image - using clip-path for reliable rounding on iOS */}
+                <img 
+                  src={videoGif} 
+                  alt="Video presentation" 
+                  className="w-full h-auto block"
+                  style={{ 
+                    filter: 'blur(2.5px)',
+                    clipPath: 'inset(0 round 1rem)',
+                    WebkitClipPath: 'inset(0 round 1rem)', // iOS Safari support
+                    transform: 'translateZ(0)' // Force hardware acceleration
+                  }}
+                />
+                
+                {/* Green border overlay - layered on top */}
+                <div 
+                  className="absolute inset-0 rounded-2xl border-2 border-white/20 pointer-events-none z-10"
+                  style={{ 
+                    borderRadius: '1rem',
+                    boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
+                  }}
+                />
+                
+                {/* Button text instead of play button */}
+                <div className="absolute inset-0 flex items-center justify-center z-20">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePlayClick();
+                    }}
+                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-6 py-3 md:px-8 md:py-4 text-sm md:text-base rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
+                    style={{
+                      animation: 'pulse-subtle 3s ease-in-out infinite',
+                    }}
+                  >
+                    Žiūrėti video pristatymą
+                  </button>
+                  <style>{`
+                    @keyframes pulse-subtle {
+                      0%, 100% { 
+                        transform: scale(1); 
+                        opacity: 1; 
+                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 0 rgba(29, 130, 99, 0.4);
+                      }
+                      50% { 
+                        transform: scale(1.02); 
+                        opacity: 0.95; 
+                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 0 8px rgba(29, 130, 99, 0);
+                      }
+                    }
+                  `}</style>
+                </div>
+                
+                {/* Subtle overlay */}
+                <div 
+                  className="absolute inset-0 bg-black/5 pointer-events-none z-10" 
+                  style={{ 
+                    borderRadius: '1rem',
+                    clipPath: 'inset(0 round 1rem)'
+                  }}
+                />
+              </div>
+
+              <div>
+                <h2 className="text-[4.4vw] sm:text-[3.7vw] md:text-xl font-extrabold text-white text-center whitespace-nowrap mb-6">
+                  Ko trūksta jūsų paslaugų verslui?
+                </h2>
+                <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
                 {/* Užklausų */}
                 <div
                   onClick={async (e) => {
