@@ -974,12 +974,12 @@ export default function TestLandingPage() {
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-8">
               
               {/* VSL VIDEO SECTION - Moved inside the green box */}
-              <div className="w-full max-w-md mx-auto relative group">
-                {/* GIF Image - using mask-image for bulletproof iOS rounding */}
+              <div className="w-full max-w-full mx-auto relative group">
+                {/* GIF Image - horizontal/landscape orientation */}
                 <img 
                   src={videoGif} 
                   alt="Video presentation" 
-                  className="w-full h-auto block"
+                  className="w-full h-auto block object-contain"
                   style={{ 
                     filter: 'blur(2.5px)',
                     // "Nuclear option" for iOS rounding: mask-image
@@ -987,7 +987,8 @@ export default function TestLandingPage() {
                     WebkitMaskImage: '-webkit-radial-gradient(white, black)',
                     borderRadius: '1rem', // Standard backup
                     transform: 'translateZ(0)', // Hardware acceleration
-                    overflow: 'hidden'
+                    overflow: 'hidden',
+                    aspectRatio: '16 / 9' // Force horizontal/landscape aspect ratio
                   }}
                 />
                 
@@ -1007,7 +1008,7 @@ export default function TestLandingPage() {
                       e.stopPropagation();
                       handlePlayClick();
                     }}
-                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-6 py-3 md:px-8 md:py-4 text-sm md:text-base rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
+                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-12 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
                     style={{
                       animation: 'pulse-subtle 3s ease-in-out infinite',
                     }}
