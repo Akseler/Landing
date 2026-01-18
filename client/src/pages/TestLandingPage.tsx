@@ -686,12 +686,24 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
       className="space-y-8"
     >
       <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl py-3 px-3 md:py-3 md:px-3 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto">
-        <div className="w-full max-w-md rounded-2xl overflow-hidden relative group border-2 border-[#1d8263]/20">
+        <div className="w-full max-w-md relative group">
+          {/* GIF Image - no rounded corners, just the image */}
           <img 
             src={videoGif} 
             alt="Video presentation" 
             className="w-full h-auto"
             style={{ filter: 'blur(2.5px)' }}
+          />
+          
+          {/* Green border overlay - layered on top with rounded inside corners */}
+          <div 
+            className="absolute inset-0 rounded-2xl border-2 border-[#1d8263]/20 pointer-events-none"
+            style={{ 
+              borderRadius: '1rem',
+              borderStyle: 'solid',
+              borderWidth: '2px',
+              borderColor: 'rgba(29, 130, 99, 0.2)'
+            }}
           />
           
           {/* Button text instead of play button */}
@@ -725,7 +737,7 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
           </div>
           
           {/* Subtle overlay to ensure button visibility */}
-          <div className="absolute inset-0 bg-black/5" />
+          <div className="absolute inset-0 bg-black/5 pointer-events-none" />
         </div>
       </div>
     </motion.section>
