@@ -975,16 +975,19 @@ export default function TestLandingPage() {
               
               {/* VSL VIDEO SECTION - Moved inside the green box */}
               <div className="w-full max-w-md mx-auto relative group">
-                {/* GIF Image - using clip-path for reliable rounding on iOS */}
+                {/* GIF Image - using mask-image for bulletproof iOS rounding */}
                 <img 
                   src={videoGif} 
                   alt="Video presentation" 
                   className="w-full h-auto block"
                   style={{ 
                     filter: 'blur(2.5px)',
-                    clipPath: 'inset(0 round 1rem)',
-                    WebkitClipPath: 'inset(0 round 1rem)', // iOS Safari support
-                    transform: 'translateZ(0)' // Force hardware acceleration
+                    // "Nuclear option" for iOS rounding: mask-image
+                    maskImage: 'radial-gradient(white, black)',
+                    WebkitMaskImage: '-webkit-radial-gradient(white, black)',
+                    borderRadius: '1rem', // Standard backup
+                    transform: 'translateZ(0)', // Hardware acceleration
+                    overflow: 'hidden'
                   }}
                 />
                 
