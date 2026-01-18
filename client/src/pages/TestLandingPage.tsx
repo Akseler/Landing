@@ -1390,9 +1390,10 @@ export default function TestLandingPage() {
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="fixed inset-x-0 bottom-0 z-50"
+            style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
           >
             <div className="pointer-events-none h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />
-            <div className="absolute inset-x-0 bottom-3 flex justify-center px-4 pointer-events-none">
+            <div className="absolute inset-x-0 bottom-0 flex justify-center px-4 pointer-events-none" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}>
               <div className="w-full max-w-[720px] pointer-events-auto">
                 <Link href="/survey">
                   <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
