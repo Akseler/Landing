@@ -1103,6 +1103,7 @@ export default function TestLandingPage() {
                   </span>
                 </div>
               </div>
+              </div>
 
               <div>
                 <RotatingTrust whiteText />
