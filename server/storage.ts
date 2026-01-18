@@ -78,6 +78,7 @@ export interface IStorage {
     bookingEvent: AnalyticsEvent;
     submission: CallFunnelSubmission | null;
     surveyAnswers: Array<{ question: string; answer: string }>;
+    watchedVSL: boolean;
   }>>;
   
   // Delete individual items
