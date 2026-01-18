@@ -99,31 +99,6 @@ function AnimatedSectionHeading({
   );
 }
 
-function ScrollRevealSection({ children }: { children: React.ReactNode }) {
-  const ref = useRef(null);
-  // Only trigger when scrolled down significantly (200px from top on mobile, 100px on desktop)
-  const isInView = useInView(ref, { 
-    once: false, 
-    margin: "200px 0px -200px 0px" // Requires scrolling 200px before showing
-  });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 40 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      style={{ 
-        // Hide completely until scrolled
-        visibility: isInView ? 'visible' : 'hidden',
-        pointerEvents: isInView ? 'auto' : 'none'
-      }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
 function RotatingTrust({ whiteText = false }: { whiteText?: boolean }) {
   const items = useMemo(
     () => [
@@ -996,16 +971,15 @@ export default function TestLandingPage() {
           </div>
 
           <div className="mt-4">
-            <ScrollRevealSection>
-              <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-8">
+            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg space-y-8">
               
               {/* VSL VIDEO SECTION - Moved inside the green box */}
-              <div className="w-full max-w-full mx-auto relative group">
-                {/* GIF Image - horizontal/landscape orientation */}
+              <div className="w-full max-w-md mx-auto relative group">
+                {/* GIF Image - vertical/portrait orientation */}
                 <img 
                   src={videoGif} 
                   alt="Video presentation" 
-                  className="w-full h-auto block object-contain"
+                  className="w-full h-auto block"
                   style={{ 
                     filter: 'blur(2.5px)',
                     // "Nuclear option" for iOS rounding: mask-image
@@ -1013,8 +987,7 @@ export default function TestLandingPage() {
                     WebkitMaskImage: '-webkit-radial-gradient(white, black)',
                     borderRadius: '1rem', // Standard backup
                     transform: 'translateZ(0)', // Hardware acceleration
-                    overflow: 'hidden',
-                    aspectRatio: '16 / 9' // Force horizontal/landscape aspect ratio
+                    overflow: 'hidden'
                   }}
                 />
                 
@@ -1034,7 +1007,7 @@ export default function TestLandingPage() {
                       e.stopPropagation();
                       handlePlayClick();
                     }}
-                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-10 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
+                    className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 md:px-12 md:py-5 text-base md:text-lg rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle whitespace-nowrap"
                     style={{
                       animation: 'pulse-subtle 3s ease-in-out infinite',
                     }}
@@ -1072,8 +1045,8 @@ export default function TestLandingPage() {
                   Ko trūksta jūsų paslaugų verslui?
                 </h2>
                 <div className="max-w-[580px] mx-auto grid grid-cols-2 gap-4">
-                  {/* Užklausų */}
-                  <div
+                {/* Užklausų */}
+                <div
                   onClick={async (e) => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -1112,13 +1085,13 @@ export default function TestLandingPage() {
                   </span>
                 </div>
               </div>
+
               </div>
 
               <div>
                 <RotatingTrust whiteText />
               </div>
             </div>
-            </ScrollRevealSection>
           </div>
         </section>
 
