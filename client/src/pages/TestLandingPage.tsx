@@ -687,33 +687,37 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
     >
       <div className="bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl py-3 px-3 md:py-3 md:px-3 shadow-md border-2 border-[#1d8263]/30 w-fit mx-auto">
         <div className="w-full max-w-md relative group">
-          {/* GIF Image - no rounded corners, just the image */}
+          {/* GIF Image - using clip-path for reliable rounding on iOS */}
           <img 
             src={videoGif} 
             alt="Video presentation" 
-            className="w-full h-auto"
-            style={{ filter: 'blur(2.5px)' }}
+            className="w-full h-auto block"
+            style={{ 
+              filter: 'blur(2.5px)',
+              clipPath: 'inset(0 round 1rem)',
+              WebkitClipPath: 'inset(0 round 1rem)', // iOS Safari support
+              transform: 'translateZ(0)' // Force hardware acceleration
+            }}
           />
           
-          {/* Green border overlay - layered on top with rounded inside corners */}
+          {/* Green border overlay - layered on top */}
           <div 
-            className="absolute inset-0 rounded-2xl border-2 border-[#1d8263]/20 pointer-events-none"
+            className="absolute inset-0 rounded-2xl border-2 border-[#1d8263]/20 pointer-events-none z-10"
             style={{ 
               borderRadius: '1rem',
-              borderStyle: 'solid',
-              borderWidth: '2px',
-              borderColor: 'rgba(29, 130, 99, 0.2)'
+              // Ensure border renders nicely on top
+              boxShadow: 'inset 0 0 0 1px rgba(29, 130, 99, 0.1)'
             }}
           />
           
           {/* Button text instead of play button */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="absolute inset-0 flex items-center justify-center z-20">
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handlePlayClick();
               }}
-              className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 z-10 animate-pulse-subtle"
+              className="cursor-pointer bg-gradient-to-r from-[#1d8263] to-[#166b52] hover:from-[#166b52] hover:to-[#1d8263] border-2 border-white/30 hover:border-white/50 text-white font-extrabold px-8 py-4 rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-black/30 hover:shadow-xl hover:shadow-black/40 animate-pulse-subtle"
               style={{
                 animation: 'pulse-subtle 3s ease-in-out infinite',
               }}
@@ -736,8 +740,14 @@ function VSLSection({ handlePlayClick }: { handlePlayClick: () => void }) {
             `}</style>
           </div>
           
-          {/* Subtle overlay to ensure button visibility */}
-          <div className="absolute inset-0 bg-black/5 pointer-events-none" />
+          {/* Subtle overlay */}
+          <div 
+            className="absolute inset-0 bg-black/5 pointer-events-none z-10" 
+            style={{ 
+              borderRadius: '1rem',
+              clipPath: 'inset(0 round 1rem)'
+            }}
+          />
         </div>
       </div>
     </motion.section>
