@@ -1366,7 +1366,7 @@ export default function TestLandingPage() {
             <h2 className="text-[5.5vw] sm:text-[4.5vw] md:text-[36px] font-extrabold tracking-tight leading-[1.2]">
               Kad gautūmėt pastovų ir<br />
               kokybišką klientų srautą,<br />
-              jums reikia plano
+              jums reikia aiškaus plano.
             </h2>
             <div className="space-y-4">
               <Link href="/survey">
@@ -1457,20 +1457,18 @@ export default function TestLandingPage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 bottom-0 z-[100]"
+            className="fixed inset-x-0 bottom-0 z-[100] pointer-events-none"
           >
-            {/* Gradient fade above the solid background */}
-            <div className="absolute bottom-full left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            {/* Gradient container with blur */}
+            <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-white via-white/90 to-transparent backdrop-blur-[2px]" />
             
-            {/* Solid background container with safe area padding */}
-            <div className="bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.1)] px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
-              <div className="w-full max-w-[720px] mx-auto">
-                <Link href="/survey">
-                  <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
-                    Noriu konsultacijos
-                  </a>
-                </Link>
-              </div>
+            {/* Button container - centered and pushed up from bottom */}
+            <div className="relative w-full max-w-[720px] mx-auto px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-12 flex justify-center pointer-events-auto">
+              <Link href="/survey">
+                <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
+                  Noriu konsultacijos
+                </a>
+              </Link>
             </div>
           </motion.div>
         )}
