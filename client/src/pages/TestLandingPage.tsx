@@ -813,6 +813,7 @@ export default function TestLandingPage() {
   const [showStickyCta, setShowStickyCta] = useState(false);
   const [hideStickyOnFinal, setHideStickyOnFinal] = useState(false);
   const [showHeroContent, setShowHeroContent] = useState(false);
+  const [gifLoaded, setGifLoaded] = useState(false);
   
   // Video modal state
   const [showFallbackModal, setShowFallbackModal] = useState(false);
@@ -831,18 +832,24 @@ export default function TestLandingPage() {
       setShowHeroContent(true);
     }
     
-    // On mobile, show content only after scroll
+    // On mobile, show content only after scroll AND GIF is loaded
     const handleScroll = () => {
-      if (window.scrollY > 50) {
+      if (window.scrollY > 50 && gifLoaded) {
         setShowHeroContent(true);
       }
     };
+    
+    // Also show content when GIF loads (on desktop or if already scrolled)
+    if (gifLoaded && (window.innerWidth >= 768 || window.scrollY > 50)) {
+      setShowHeroContent(true);
+    }
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
+  }, [gifLoaded]);
   }, []);
 
   // Initialize Vimeo player on mount
@@ -999,6 +1006,11 @@ export default function TestLandingPage() {
                   src={videoGif} 
                   alt="Video presentation" 
                   className="w-full h-auto block"
+                  width={640}
+                  height={1138}
+                  loading="eager"
+                  fetchPriority="high"
+                  onLoad={() => setGifLoaded(true)}
                   style={{ 
                     filter: 'blur(2.5px)',
                     // "Nuclear option" for iOS rounding: mask-image
