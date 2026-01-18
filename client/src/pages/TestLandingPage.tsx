@@ -1457,18 +1457,20 @@ export default function TestLandingPage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 bottom-0 z-[100] pointer-events-none"
+            className="fixed inset-x-0 bottom-0 z-[100]"
           >
-            {/* Gradient container - shorter and sharper */}
-            <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-white via-white/95 to-transparent backdrop-blur-[2px]" />
+            {/* Gradient fade above the solid background */}
+            <div className="absolute bottom-full left-0 right-0 h-16 bg-gradient-to-t from-white/80 to-transparent pointer-events-none" />
             
-            {/* Button container */}
-            <div className="relative w-full max-w-[720px] mx-auto px-4 pb-[max(1.25rem,env(safe-area-inset-bottom))] pt-8 flex justify-center pointer-events-auto">
-              <Link href="/survey">
-                <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
-                  Noriu konsultacijos
-                </a>
-              </Link>
+            {/* Glassy background container with safe area padding */}
+            <div className="bg-white/80 backdrop-blur-xl border-t border-white/50 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.05)] px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+              <div className="w-full max-w-[720px] mx-auto">
+                <Link href="/survey">
+                  <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
+                    Noriu konsultacijos
+                  </a>
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
