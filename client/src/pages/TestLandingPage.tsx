@@ -1371,7 +1371,7 @@ export default function TestLandingPage() {
             <div className="space-y-4">
               <Link href="/survey">
                 <a className="block w-full bg-white text-[#1d8263] font-extrabold py-4 rounded-xl shadow-2xl hover:bg-slate-50 transition-colors active:scale-[0.98] text-base md:text-lg whitespace-nowrap">
-                  Registruotis pokalbiui
+                  Gauti konsultaciją
                 </a>
               </Link>
               <div className="flex items-center justify-center gap-2 text-xs md:text-sm text-white/80 whitespace-nowrap">
@@ -1457,15 +1457,17 @@ export default function TestLandingPage() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="fixed inset-x-0 bottom-0 z-50"
-            style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}
+            className="fixed inset-x-0 bottom-0 z-[100]"
           >
-            <div className="pointer-events-none h-16 bg-gradient-to-t from-white via-white/80 to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 flex justify-center px-4 pointer-events-none" style={{ paddingBottom: 'max(0.75rem, env(safe-area-inset-bottom))' }}>
-              <div className="w-full max-w-[720px] pointer-events-auto">
+            {/* Gradient fade above the solid background */}
+            <div className="absolute bottom-full left-0 right-0 h-12 bg-gradient-to-t from-white to-transparent pointer-events-none" />
+            
+            {/* Solid background container with safe area padding */}
+            <div className="bg-white/95 backdrop-blur-md border-t border-slate-100 shadow-[0_-4px_20px_-4px_rgba(0,0,0,0.1)] px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+              <div className="w-full max-w-[720px] mx-auto">
                 <Link href="/survey">
                   <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
-                    Registruotis strateginiui pokalbiui
+                    Noriu konsultacijos
                   </a>
                 </Link>
               </div>
