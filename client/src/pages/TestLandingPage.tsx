@@ -1461,11 +1461,11 @@ export default function TestLandingPage() {
           >
             {/* Blurred glass container with safe area padding and fade effect */}
             <div 
-              className="backdrop-blur-xl px-4 pt-12 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
+              className="backdrop-blur-xl px-4 pt-20 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
               style={{
-                background: 'linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 50%, transparent 100%)',
-                maskImage: 'linear-gradient(to top, black 0%, black 60%, transparent 100%)',
-                WebkitMaskImage: 'linear-gradient(to top, black 0%, black 60%, transparent 100%)'
+                background: 'linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 40%, transparent 100%)',
+                maskImage: 'linear-gradient(to top, black 0%, black 50%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to top, black 0%, black 50%, transparent 100%)'
               }}
             >
               <div className="w-full max-w-[720px] mx-auto">
