@@ -1459,11 +1459,15 @@ export default function TestLandingPage() {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="fixed inset-x-0 bottom-0 z-[100]"
           >
-            {/* Gradient fade above the blurred background */}
-            <div className="absolute bottom-full left-0 right-0 h-8 bg-gradient-to-t from-white/70 to-transparent pointer-events-none" />
-            
-            {/* Blurred glass container with safe area padding */}
-            <div className="bg-white/70 backdrop-blur-xl px-4 pt-3 pb-[max(1.25rem,env(safe-area-inset-bottom))]">
+            {/* Blurred glass container with safe area padding and fade effect */}
+            <div 
+              className="backdrop-blur-xl px-4 pt-8 pb-[max(1.25rem,env(safe-area-inset-bottom))]"
+              style={{
+                background: 'linear-gradient(to top, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 60%, transparent 100%)',
+                maskImage: 'linear-gradient(to top, black 0%, black 70%, transparent 100%)',
+                WebkitMaskImage: 'linear-gradient(to top, black 0%, black 70%, transparent 100%)'
+              }}
+            >
               <div className="w-full max-w-[720px] mx-auto">
                 <Link href="/survey">
                   <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
