@@ -1380,7 +1380,7 @@ export default function TestLandingPage() {
                   animate={{ opacity: [1, 0.3, 1] }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 />
-                <span>Kiekvieną mėnesį apsiemame po 2 klientus</span>
+                <span>Kiekvieną mėnesį apsiimame po 2 klientus.</span>
               </div>
             </div>
           </div>
@@ -1471,7 +1471,7 @@ export default function TestLandingPage() {
               <div className="w-full max-w-[720px] mx-auto">
                 <Link href="/survey">
                   <a className="block w-full bg-[#1d8263] text-white font-extrabold py-4 rounded-xl shadow-lg shadow-[#1d8263]/25 text-center active:scale-[0.98] transition-transform">
-                    Noriu konsultacijos
+                    Noriu gauti konsultaciją
                   </a>
                 </Link>
               </div>
