@@ -11,7 +11,9 @@ export default function MarketsScrolling({
     "Saulės elektrinės",
     "ŠVOK",
     "Draudimas",
-    "Estetinė medicina"
+    "Estetinė medicina",
+    "Teisinės paslaugos",
+    "Remontas"
   ];
 
   const marketsRow2 = [
@@ -20,7 +22,9 @@ export default function MarketsScrolling({
     "Veterinarija",
     "Agentūros",
     "Mašinų lizingas",
-    "Psichikos klinikos"
+    "Psichikos klinikos",
+    "Elektrikai",
+    "Konsultantai"
   ];
 
   return (
