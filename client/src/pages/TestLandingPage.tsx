@@ -118,7 +118,7 @@ function RotatingTrust({ whiteText = false }: { whiteText?: boolean }) {
   return (
     <div className="pt-2 flex flex-col items-center justify-center gap-3">
       <div className={`text-sm font-semibold ${whiteText ? "text-white" : "text-slate-600"}`}>
-        Mumis pasitiki rinkos lyderiai
+        Mumis pasitiki dideli žaidėjai
       </div>
       <div className="h-10 w-[200px] relative">
         <AnimatePresence mode="wait">
