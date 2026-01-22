@@ -1087,10 +1087,10 @@ export default function TestLandingPage() {
 
           <div className="mt-8 space-y-16 md:space-y-20">
             {/* Green Box - Hero Content */}
-            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
+            <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-4 md:p-10 shadow-lg">
               
               {/* MOBILE ONLY: VSL VIDEO SECTION - Inside the green box */}
-              <div className="md:hidden w-full max-w-md mx-auto relative group mb-8">
+              <div className="md:hidden w-full max-w-lg mx-auto relative group mb-6">
                 <VSLVideo 
                   handlePlayClick={handlePlayClick}
                   videoGif={videoGif}
@@ -1102,7 +1102,7 @@ export default function TestLandingPage() {
               <div 
                 className={`transition-all duration-500 ${showHeroContent ? 'opacity-100 translate-y-0' : 'md:opacity-100 md:translate-y-0 opacity-0 translate-y-4 pointer-events-none md:pointer-events-auto'}`}
               >
-                <div className="mt-6">
+                <div className="mt-4 md:mt-6">
                   <RotatingTrust whiteText />
                 </div>
               </div>
