@@ -116,11 +116,11 @@ function RotatingTrust({ whiteText = false }: { whiteText?: boolean }) {
   }, [items.length]);
 
   return (
-    <div className="pt-2 flex flex-col items-center justify-center gap-4">
-      <div className={`text-base md:text-lg font-semibold ${whiteText ? "text-white" : "text-slate-600"}`}>
+    <div className="pt-2 flex flex-col items-center justify-center gap-3 md:gap-3">
+      <div className={`text-base md:text-sm font-semibold ${whiteText ? "text-white" : "text-slate-600"}`}>
         Mumis pasitiki dideli žaidėjai
       </div>
-      <div className="h-12 md:h-14 w-[240px] md:w-[280px] relative">
+      <div className="h-12 w-[240px] md:h-10 md:w-[200px] relative">
         <AnimatePresence mode="wait">
           <motion.div
             key={items[idx].name}
@@ -133,7 +133,7 @@ function RotatingTrust({ whiteText = false }: { whiteText?: boolean }) {
             <img
               src={items[idx].logo}
               alt={items[idx].name}
-              className={`h-10 md:h-12 w-auto object-contain ${whiteText ? "brightness-0 invert opacity-90" : "opacity-70 grayscale"}`}
+              className={`h-10 md:h-8 w-auto object-contain ${whiteText ? "brightness-0 invert opacity-90" : "opacity-70 grayscale"}`}
             />
           </motion.div>
         </AnimatePresence>
@@ -764,7 +764,7 @@ function VSLVideo({
   setGifLoaded?: (loaded: boolean) => void;
 }) {
   return (
-    <div className="w-full max-w-xl md:max-w-lg mx-auto relative group">
+    <div className="w-full max-w-md mx-auto relative group">
       {/* Container responsible for rounding and clipping */}
       <div 
         className="relative w-full rounded-2xl overflow-hidden"
@@ -794,7 +794,7 @@ function VSLVideo({
         
         {/* Green border overlay - layered on top */}
         <div 
-          className="absolute inset-0 rounded-2xl border-2 border-white/20 pointer-events-none z-10"
+          className="absolute inset-0 rounded-2xl border md:border-2 border-white/20 pointer-events-none z-10"
           style={{ 
             borderRadius: '1rem',
             boxShadow: 'inset 0 0 0 1px rgba(255, 255, 255, 0.1)'
@@ -1090,7 +1090,7 @@ export default function TestLandingPage() {
             <div className="max-w-[640px] mx-auto bg-gradient-to-br from-[#1d8263] via-[#167a5a] to-[#0f5f46] rounded-3xl p-8 md:p-10 shadow-lg">
               
               {/* MOBILE ONLY: VSL VIDEO SECTION - Inside the green box */}
-              <div className="md:hidden w-full max-w-xl mx-auto relative group mb-8">
+              <div className="md:hidden w-full max-w-md mx-auto relative group mb-8">
                 <VSLVideo 
                   handlePlayClick={handlePlayClick}
                   videoGif={videoGif}
@@ -1109,7 +1109,7 @@ export default function TestLandingPage() {
             </div>
 
             {/* DESKTOP ONLY: VSL VIDEO SECTION - Separated below green box */}
-            <div className="hidden md:block max-w-[640px] mx-auto bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-2 shadow-md border border-[#1d8263]/30 w-fit">
+            <div className="hidden md:block max-w-[640px] mx-auto bg-gradient-to-r from-[#1d8263] to-[#166b52] rounded-3xl p-3 shadow-md border-2 border-[#1d8263]/30 w-fit">
               <VSLVideo 
                 handlePlayClick={handlePlayClick}
                 videoGif={videoGif}
