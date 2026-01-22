@@ -854,7 +854,7 @@ function HowItWorksSection() {
     >
       <SectionHeading
         badge="4 žingsnių formulė"
-        title="Kaip veikia AI pardavimų sistema"
+        title="Kaip veikia Dirbtinio Intelekto pardavimų sistema"
       />
 
       <div className="grid grid-cols-1 gap-5 max-w-4xl mx-auto">
