@@ -26,6 +26,7 @@ import { AnimatePresence, motion, useInView } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import useEmblaCarousel from "embla-carousel-react";
 import { SiFacebook, SiInstagram } from "react-icons/si";
+import veeslaLogo from "@assets/2_1763670424934.png";
 import energija24Logo from "@assets/energija transparent.png";
 import specdarbaiLogo from "@assets/3_1763670424934.png";
 import videoGif from "@assets/video-presentation.gif";
@@ -101,6 +102,7 @@ function AnimatedSectionHeading({
 function RotatingTrust({ whiteText = false }: { whiteText?: boolean }) {
   const items = useMemo(
     () => [
+      { name: "Veesla", logo: veeslaLogo },
       { name: "Energija24", logo: energija24Logo },
       { name: "Specdarbai", logo: specdarbaiLogo },
     ],
