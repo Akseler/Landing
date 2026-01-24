@@ -1,9 +1,12 @@
 import { Switch, Route, useLocation } from "wouter";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import WaitlistPage from "@/pages/WaitlistPage";
 import AnalyticsPage from "@/pages/AnalyticsPage";
 import TestLandingPage from "@/pages/TestLandingPage";
@@ -30,6 +33,80 @@ function ScrollToTop() {
   return null;
 }
 
+// Protected Landing Page - requires same password as analytics
+function ProtectedLandingPage() {
+  const [password, setPassword] = useState('');
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authError, setAuthError] = useState('');
+
+  useEffect(() => {
+    const savedToken = localStorage.getItem('analytics_auth_token');
+    if (savedToken) {
+      setIsAuthenticated(true);
+    }
+  }, []);
+
+  const handleAuth = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setAuthError('');
+
+    try {
+      const response = await fetch('/api/analytics/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      if (response.ok) {
+        setIsAuthenticated(true);
+        localStorage.setItem('analytics_auth_token', password);
+      } else {
+        setAuthError('Neteisingas slaptažodis');
+      }
+    } catch (error) {
+      setAuthError('Klaida jungiantis');
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <Card className="w-full max-w-md border-2">
+          <CardHeader>
+            <CardTitle className="text-2xl text-center">Landing Prieiga</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleAuth} className="space-y-4">
+              <div>
+                <Input
+                  type="password"
+                  placeholder="Įveskite slaptažodį"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="text-center"
+                />
+              </div>
+              {authError && (
+                <p className="text-sm text-destructive text-center">
+                  {authError}
+                </p>
+              )}
+              <Button 
+                type="submit" 
+                className="w-full bg-[#1d8263] hover:bg-[#1d8263]/90"
+              >
+                Prisijungti
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  return <TestLandingPage />;
+}
+
 // WAITLIST MODE: Most routes redirect to waitlist, but analytics and landing accessible
 function Router() {
   return (
@@ -37,7 +114,7 @@ function Router() {
       <ScrollToTop />
       <Switch>
         <Route path="/analytics" component={AnalyticsPage} />
-        <Route path="/landing" component={TestLandingPage} />
+        <Route path="/landing" component={ProtectedLandingPage} />
         <Route path="/" component={WaitlistPage} />
         <Route component={WaitlistPage} />
       </Switch>
