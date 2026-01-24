@@ -201,25 +201,33 @@ export default function WaitlistPage() {
             />
             
             <div className="absolute inset-0 flex items-center justify-center z-20">
+              {/* Blurry white glow behind button */}
+              <div 
+                className="absolute w-32 h-32 md:w-40 md:h-40 rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 40%, transparent 70%)',
+                  filter: 'blur(8px)'
+                }}
+              />
               <motion.button
                 onClick={handlePlayClick}
                 animate={{ 
-                  scale: [1, 1.15, 1],
+                  scale: [1, 1.1, 1],
                 }}
                 transition={{ 
-                  duration: 2, 
+                  duration: 2.5, 
                   repeat: Infinity, 
                   ease: "easeInOut" 
                 }}
-                className="cursor-pointer w-20 h-20 md:w-24 md:h-24 flex items-center justify-center hover:scale-125 transition-transform duration-300 active:scale-95"
+                className="relative cursor-pointer w-20 h-20 md:w-24 md:h-24 rounded-full bg-[#1d8263] hover:bg-[#22956f] flex items-center justify-center hover:scale-110 transition-all duration-300 active:scale-95 shadow-xl"
+                style={{
+                  boxShadow: '0 0 40px rgba(29, 130, 99, 0.5), 0 0 80px rgba(255, 255, 255, 0.15)'
+                }}
               >
                 <svg 
-                  className="w-16 h-16 md:w-20 md:h-20 text-white/90 drop-shadow-2xl ml-1" 
+                  className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" 
                   fill="currentColor" 
                   viewBox="0 0 24 24"
-                  style={{
-                    filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.3))'
-                  }}
                 >
                   <path d="M8 5v14l11-7z"/>
                 </svg>
