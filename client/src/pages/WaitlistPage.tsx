@@ -29,100 +29,139 @@ export default function WaitlistPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-6 relative overflow-hidden">
-      {/* Grid background */}
-      <div className="absolute inset-0 opacity-[0.06]">
+    <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      {/* Grid background - full */}
+      <div className="absolute inset-0">
         <div 
-          className="absolute inset-0"
+          className="absolute inset-0 opacity-[0.12]"
           style={{
             backgroundImage: `
               linear-gradient(rgba(29, 130, 99, 1) 1px, transparent 1px),
               linear-gradient(90deg, rgba(29, 130, 99, 1) 1px, transparent 1px)
             `,
-            backgroundSize: '60px 60px'
+            backgroundSize: '60px 60px',
+            backgroundPosition: 'center center'
+          }}
+        />
+        {/* Radial fade from center */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(ellipse 70% 50% at 50% 50%, transparent 0%, #050505 70%)'
           }}
         />
       </div>
 
-      {/* Glowing orbs */}
-      <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] bg-[#1d8263]/25 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/3 w-[400px] h-[400px] bg-[#1d8263]/15 rounded-full blur-[120px] pointer-events-none" />
+      {/* Subtle glow behind content */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#1d8263]/15 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center w-full max-w-sm">
+      <div className="relative z-10 flex flex-col items-center w-full max-w-md">
         {/* Logo */}
-        <motion.img 
-          src={akselerLogo} 
-          alt="Akseler" 
-          className="h-8 md:h-9 w-auto brightness-0 invert opacity-90 mb-12"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.9 }}
-          transition={{ duration: 0.8 }}
-        />
-        
-        {/* Date */}
-        <motion.h1
-          initial={{ opacity: 0, y: 20 }}
+        <motion.div 
+          className="mb-10"
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-white font-semibold tracking-tight text-center mb-4"
-          style={{ 
-            fontSize: 'clamp(72px, 20vw, 120px)', 
-            lineHeight: 1,
-            fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
-          }}
+          transition={{ duration: 0.6 }}
         >
-          02.01
-        </motion.h1>
+          <img 
+            src={akselerLogo} 
+            alt="Akseler" 
+            className="h-9 md:h-10 w-auto brightness-0 invert opacity-80"
+          />
+        </motion.div>
+        
+        {/* Date - aligned to grid aesthetic */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="relative mb-4"
+        >
+          {/* Horizontal accent lines through date */}
+          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] flex items-center justify-between pointer-events-none">
+            <div className="w-8 h-px bg-[#1d8263]/40" />
+            <div className="w-8 h-px bg-[#1d8263]/40" />
+          </div>
+          
+          <h1
+            className="text-white font-semibold tracking-tight text-center relative"
+            style={{ 
+              fontSize: 'clamp(90px, 25vw, 150px)', 
+              lineHeight: 0.9,
+              fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
+            }}
+          >
+            02.01
+          </h1>
+        </motion.div>
         
         {/* Label */}
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-[#1d8263] text-sm font-medium tracking-[0.2em] uppercase mb-12"
+          className="text-[#1d8263] text-sm md:text-base font-medium tracking-[0.3em] uppercase mb-12"
         >
           Jau netrukus
         </motion.p>
 
-        {/* Email signup */}
+        {/* Email signup - box with grid-like border */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="w-full"
+          className="w-full max-w-sm"
         >
           {!isSubmitted ? (
             <form onSubmit={handleSubmit}>
-              <div className="flex gap-3">
+              <div 
+                className="relative flex items-center h-14 rounded-xl overflow-hidden"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(29,130,99,0.1) 0%, rgba(29,130,99,0.05) 100%)',
+                  border: '1px solid rgba(29,130,99,0.25)'
+                }}
+              >
+                {/* Corner accents */}
+                <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#1d8263]/50" />
+                <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-[#1d8263]/50" />
+                <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-[#1d8263]/50" />
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#1d8263]/50" />
+                
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="El. paštas"
                   required
-                  className="flex-1 h-12 px-4 rounded-xl bg-white/[0.08] border border-white/[0.12] text-white text-[15px] placeholder:text-white/40 focus:outline-none focus:border-[#1d8263]/50 focus:bg-white/[0.1] transition-all"
+                  className="flex-1 h-full px-5 bg-transparent text-white text-[15px] placeholder:text-white/30 focus:outline-none"
                   style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}
                 />
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="h-12 px-5 rounded-xl bg-[#1d8263] hover:bg-[#229570] text-white text-[15px] font-medium flex items-center gap-2 transition-all disabled:opacity-50 active:scale-[0.98]"
+                  className="h-9 px-4 mr-2.5 rounded-lg bg-[#1d8263] hover:bg-[#229570] text-white text-[13px] font-medium flex items-center gap-1.5 transition-all disabled:opacity-50 active:scale-[0.98]"
                   style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Text", system-ui, sans-serif' }}
                 >
                   {isLoading ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                   ) : (
                     <>
-                      <span className="hidden sm:inline">Priminti</span>
-                      <ArrowRight className="w-4 h-4" />
+                      <span>Priminti</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}
                 </button>
               </div>
             </form>
           ) : (
-            <div className="flex items-center justify-center gap-2 h-12 text-white/70">
+            <div 
+              className="flex items-center justify-center gap-2 h-14 rounded-xl text-white/70"
+              style={{
+                background: 'linear-gradient(135deg, rgba(29,130,99,0.1) 0%, rgba(29,130,99,0.05) 100%)',
+                border: '1px solid rgba(29,130,99,0.25)'
+              }}
+            >
               <Check className="w-5 h-5 text-[#1d8263]" />
               <span className="text-[15px]">Priminsime!</span>
             </div>
