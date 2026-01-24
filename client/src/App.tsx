@@ -4,20 +4,21 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Home from "@/pages/Home";
-import CallPage from "@/pages/CallPage";
-import WebyPage from "@/pages/WebyPage";
-import WebinarPage from "@/pages/WebinarPage";
-import QuizPage from "@/pages/QuizPage";
-import SurveyPage from "@/pages/SurveyPage";
-import DonePage from "@/pages/DonePage";
-import BookingPage from "@/pages/CallDonePage";
-import BookedPage from "@/pages/BookedPage";
-import SuccessPage from "@/pages/SuccessPage";
-import ThankYouPage from "@/pages/ThankYouPage";
-import AnalyticsPage from "@/pages/AnalyticsPage";
-import NotFound from "@/pages/not-found";
-import TestLandingPage from "@/pages/TestLandingPage";
+import WaitlistPage from "@/pages/WaitlistPage";
+// import Home from "@/pages/Home";
+// import CallPage from "@/pages/CallPage";
+// import WebyPage from "@/pages/WebyPage";
+// import WebinarPage from "@/pages/WebinarPage";
+// import QuizPage from "@/pages/QuizPage";
+// import SurveyPage from "@/pages/SurveyPage";
+// import DonePage from "@/pages/DonePage";
+// import BookingPage from "@/pages/CallDonePage";
+// import BookedPage from "@/pages/BookedPage";
+// import SuccessPage from "@/pages/SuccessPage";
+// import ThankYouPage from "@/pages/ThankYouPage";
+// import AnalyticsPage from "@/pages/AnalyticsPage";
+// import NotFound from "@/pages/not-found";
+// import TestLandingPage from "@/pages/TestLandingPage";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -29,6 +30,20 @@ function ScrollToTop() {
   return null;
 }
 
+// WAITLIST MODE: All routes redirect to waitlist page
+function Router() {
+  return (
+    <>
+      <ScrollToTop />
+      <Switch>
+        {/* All routes blocked - showing waitlist only */}
+        <Route path="/:rest*" component={WaitlistPage} />
+      </Switch>
+    </>
+  );
+}
+
+/* ORIGINAL ROUTES - Uncomment when ready to launch
 function Router() {
   return (
     <>
@@ -52,6 +67,7 @@ function Router() {
     </>
   );
 }
+*/
 
 function App() {
   return (

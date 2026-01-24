@@ -74,6 +74,27 @@ export async function registerRoutes(app: Express): Promise<Server> {
     res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
   });
 
+  // Waitlist signup endpoint
+  app.post("/api/waitlist", async (req, res) => {
+    try {
+      const { email } = req.body;
+      
+      if (!email || typeof email !== 'string' || !email.includes('@')) {
+        return res.status(400).json({ error: 'Valid email required' });
+      }
+      
+      console.log('[WAITLIST] New signup:', email);
+      
+      // For now, just log it. Can add database storage later.
+      // TODO: Store in database or send to webhook
+      
+      res.json({ success: true, message: 'Signup received' });
+    } catch (error: any) {
+      console.error('[WAITLIST] Error:', error);
+      res.status(500).json({ error: 'Failed to process signup' });
+    }
+  });
+
   // Quiz submission API - accepts both qualified and unqualified registrations
   app.post("/api/quiz/submit", async (req, res) => {
     try {
