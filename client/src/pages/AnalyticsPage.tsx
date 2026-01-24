@@ -622,7 +622,7 @@ export default function AnalyticsPage() {
                 <RefreshCw className="w-4 h-4 mr-2" />
                 <span className="hidden sm:inline">Atnaujinti</span>
               </Button>
-              <Link href="/">
+              <Link href="/landing">
                 <Button variant="outline" size="sm" data-testid="button-back-home" className="h-9 px-3" title="Grįžti į pagrindinį">
                   <span className="hidden sm:inline">Grįžti</span>
                   <span className="sm:hidden">←</span>

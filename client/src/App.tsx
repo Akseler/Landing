@@ -5,6 +5,8 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import WaitlistPage from "@/pages/WaitlistPage";
+import AnalyticsPage from "@/pages/AnalyticsPage";
+import TestLandingPage from "@/pages/TestLandingPage";
 // import Home from "@/pages/Home";
 // import CallPage from "@/pages/CallPage";
 // import WebyPage from "@/pages/WebyPage";
@@ -16,9 +18,7 @@ import WaitlistPage from "@/pages/WaitlistPage";
 // import BookedPage from "@/pages/BookedPage";
 // import SuccessPage from "@/pages/SuccessPage";
 // import ThankYouPage from "@/pages/ThankYouPage";
-// import AnalyticsPage from "@/pages/AnalyticsPage";
 // import NotFound from "@/pages/not-found";
-// import TestLandingPage from "@/pages/TestLandingPage";
 
 function ScrollToTop() {
   const [location] = useLocation();
@@ -30,13 +30,14 @@ function ScrollToTop() {
   return null;
 }
 
-// WAITLIST MODE: All routes redirect to waitlist page
+// WAITLIST MODE: Most routes redirect to waitlist, but analytics and landing accessible
 function Router() {
   return (
     <>
       <ScrollToTop />
       <Switch>
-        {/* All routes blocked - showing waitlist only */}
+        <Route path="/analytics" component={AnalyticsPage} />
+        <Route path="/landing" component={TestLandingPage} />
         <Route path="/" component={WaitlistPage} />
         <Route component={WaitlistPage} />
       </Switch>
