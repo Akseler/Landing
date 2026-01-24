@@ -34,7 +34,7 @@ export default function WaitlistPage() {
       style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif' }}
     >
       {/* Grid background - aligned */}
-      <div className="absolute inset-0 opacity-[0.06]">
+      <div className="absolute inset-0 opacity-[0.08]">
         <div 
           className="absolute inset-0"
           style={{
@@ -46,31 +46,21 @@ export default function WaitlistPage() {
             backgroundPosition: 'center center'
           }}
         />
+        {/* Center fade - makes grid less visible in the middle */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'radial-gradient(circle at center, rgba(10,10,10,1) 0%, rgba(10,10,10,1) 30%, rgba(10,10,10,0.8) 50%, rgba(10,10,10,0) 70%)'
+          }}
+        />
       </div>
 
-      {/* Big center blur spot - fades content into grid */}
-      <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        style={{
-          width: '800px',
-          height: '800px',
-          background: 'radial-gradient(circle, rgba(10,10,10,1) 0%, rgba(10,10,10,0.95) 25%, rgba(10,10,10,0.7) 50%, rgba(10,10,10,0) 70%)',
-        }}
-      />
-      
-      {/* Subtle green glow in center */}
-      <div 
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        style={{
-          width: '600px',
-          height: '600px',
-          background: 'radial-gradient(circle, rgba(29,130,99,0.15) 0%, rgba(29,130,99,0.05) 40%, transparent 70%)',
-          filter: 'blur(40px)'
-        }}
-      />
+      {/* Glowing orbs */}
+      <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] bg-[#1d8263]/25 rounded-full blur-[150px] pointer-events-none" />
+      <div className="absolute bottom-1/3 right-1/3 w-[400px] h-[400px] bg-[#1d8263]/15 rounded-full blur-[120px] pointer-events-none" />
 
       {/* Main content - centered in grid */}
-      <div className="relative z-10 flex flex-col items-center" style={{ gap: '50px' }}>
+      <div className="relative flex flex-col items-center" style={{ gap: '50px' }}>
         {/* Logo */}
         <motion.img 
           src={akselerLogo} 
@@ -87,11 +77,14 @@ export default function WaitlistPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="flex flex-col items-center"
+          className="relative flex flex-col items-center"
           style={{ gap: '25px' }}
         >
+          {/* Glow */}
+          <div className="absolute inset-0 blur-3xl bg-[#1d8263]/20 scale-150" />
+          
           <h1 
-            className="text-white font-semibold tracking-tight"
+            className="relative text-white font-semibold tracking-tight"
             style={{ fontSize: 'clamp(72px, 15vw, 120px)', lineHeight: 1, letterSpacing: '-0.03em' }}
           >
             02.01
