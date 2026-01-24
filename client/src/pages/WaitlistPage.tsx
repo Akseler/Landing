@@ -30,27 +30,24 @@ export default function WaitlistPage() {
 
   return (
     <div className="min-h-screen min-h-[100dvh] bg-[#0a0a0a] flex flex-col items-center justify-center px-6 relative overflow-hidden">
-      {/* Subtle grain animation */}
+      {/* CSS Animations */}
       <style>{`
-        @keyframes grain {
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.25; transform: translate(-50%, -50%) scale(1); }
+          50% { opacity: 0.35; transform: translate(-50%, -50%) scale(1.05); }
+        }
+        @keyframes float-1 {
           0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(-1px, 1px); }
-          50% { transform: translate(1px, -1px); }
-          75% { transform: translate(-1px, -1px); }
+          50% { transform: translate(10px, -15px); }
+        }
+        @keyframes float-2 {
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(-15px, 10px); }
         }
       `}</style>
-      
-      {/* Grain overlay */}
-      <div 
-        className="fixed inset-0 pointer-events-none opacity-[0.025] z-20"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          animation: 'grain 4s steps(8) infinite',
-        }}
-      />
 
-      {/* Grid background - bigger boxes */}
-      <div className="absolute inset-0 opacity-[0.07]">
+      {/* Grid background - pure CSS */}
+      <div className="absolute inset-0 opacity-[0.06]">
         <div 
           className="absolute inset-0"
           style={{
@@ -65,13 +62,26 @@ export default function WaitlistPage() {
         <div 
           className="absolute inset-0"
           style={{
-            background: 'radial-gradient(ellipse 70% 60% at 50% 50%, #0a0a0a 0%, transparent 80%)'
+            background: 'radial-gradient(ellipse 60% 50% at 50% 50%, #0a0a0a 0%, transparent 70%)'
           }}
         />
       </div>
 
-      {/* Glowing orb */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90vw] h-[70vh] max-w-[800px] max-h-[600px] bg-[#1d8263]/30 rounded-full blur-[80px] md:blur-[100px] pointer-events-none" />
+      {/* Animated glowing orbs */}
+      <div 
+        className="absolute top-1/2 left-1/2 w-[80vw] h-[60vh] max-w-[700px] max-h-[500px] bg-[#1d8263] rounded-full blur-[100px] md:blur-[120px] pointer-events-none"
+        style={{ animation: 'pulse-glow 8s ease-in-out infinite' }}
+      />
+      
+      {/* Floating accent orbs */}
+      <div 
+        className="absolute top-1/4 right-1/4 w-32 h-32 md:w-48 md:h-48 bg-[#1d8263]/20 rounded-full blur-[60px] pointer-events-none"
+        style={{ animation: 'float-1 12s ease-in-out infinite' }}
+      />
+      <div 
+        className="absolute bottom-1/4 left-1/4 w-24 h-24 md:w-40 md:h-40 bg-[#1d8263]/15 rounded-full blur-[50px] pointer-events-none"
+        style={{ animation: 'float-2 10s ease-in-out infinite' }}
+      />
 
       {/* Main content */}
       <div className="relative z-10 flex flex-col items-center w-full max-w-md">
