@@ -27,3 +27,5 @@ echo "If you see 'Database connection successful' in the logs, everything is wor
 echo "The warnings about SUPABASE_DATABASE_URL, GOOGLE_OAUTH, etc. are just for optional features."
 
 
+
+
