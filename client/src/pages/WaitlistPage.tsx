@@ -114,7 +114,7 @@ export default function WaitlistPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4 py-8 relative overflow-hidden">
+    <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center px-4 py-8 relative overflow-hidden">
       {/* Animated grid background */}
       <div className="absolute inset-0 opacity-[0.03]">
         <div 
@@ -133,18 +133,20 @@ export default function WaitlistPage() {
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#1d8263]/20 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-[#1d8263]/10 rounded-full blur-[120px] pointer-events-none" />
 
-      {/* Security badge */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="flex items-center gap-2 mb-8 px-4 py-2 rounded-full border border-[#1d8263]/30 bg-[#1d8263]/5"
-      >
-        <Lock className="w-3.5 h-3.5 text-[#1d8263]" />
-        <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#1d8263]">
-          Early Access
-        </span>
-      </motion.div>
+      {/* Main content wrapper - grows to fill space */}
+      <div className="flex-1 flex flex-col items-center justify-center w-full">
+        {/* Security badge */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="flex items-center gap-2 mb-8 px-4 py-2 rounded-full border border-[#1d8263]/30 bg-[#1d8263]/5"
+        >
+          <Lock className="w-3.5 h-3.5 text-[#1d8263]" />
+          <span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#1d8263]">
+            Early Access
+          </span>
+        </motion.div>
 
       {/* Main content */}
       <motion.div
@@ -261,20 +263,21 @@ export default function WaitlistPage() {
           </motion.div>
         )}
       </motion.div>
+      </div>
 
       {/* Footer with logo */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.6 }}
-        className="absolute bottom-6 flex flex-col items-center gap-2"
+        className="mt-auto pt-8 pb-4 flex flex-col items-center gap-3"
       >
         <img 
           src={akselerLogo} 
           alt="Akseler" 
-          className="h-4 w-auto brightness-0 invert opacity-30"
+          className="h-5 w-auto brightness-0 invert opacity-40"
         />
-        <span className="text-white/20 text-[10px] font-mono tracking-wider">
+        <span className="text-white/30 text-xs font-mono tracking-wider">
           © 2025
         </span>
       </motion.div>
