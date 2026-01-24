@@ -37,7 +37,8 @@ function Router() {
       <ScrollToTop />
       <Switch>
         {/* All routes blocked - showing waitlist only */}
-        <Route path="/:rest*" component={WaitlistPage} />
+        <Route path="/" component={WaitlistPage} />
+        <Route component={WaitlistPage} />
       </Switch>
     </>
   );
