@@ -225,11 +225,11 @@ export default function WaitlistPage() {
                 }}
               >
                 <svg 
-                  className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" 
+                  className="w-12 h-12 md:w-14 md:h-14 text-white ml-1.5" 
                   fill="currentColor" 
                   viewBox="0 0 24 24"
                 >
-                  <path d="M8 5v14l11-7z"/>
+                  <path d="M8 6.82v10.36c0 .79.87 1.27 1.54.84l8.14-5.18c.62-.39.62-1.29 0-1.69L9.54 5.98C8.87 5.55 8 6.03 8 6.82z"/>
                 </svg>
               </motion.button>
             </div>
