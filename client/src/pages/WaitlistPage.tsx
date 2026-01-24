@@ -170,7 +170,7 @@ export default function WaitlistPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="w-full max-w-sm mb-10"
+        className="w-full max-w-sm mb-12 md:mb-16"
       >
         <div className="relative rounded-2xl overflow-hidden border-2 border-[#1d8263]/30 bg-black/50 backdrop-blur-sm">
           <div 
@@ -203,9 +203,18 @@ export default function WaitlistPage() {
             <div className="absolute inset-0 flex items-center justify-center z-20">
               <button
                 onClick={handlePlayClick}
-                className="cursor-pointer bg-[#1d8263] hover:bg-[#166b52] border border-[#1d8263] hover:border-[#1d8263] text-white font-bold px-6 py-3 md:px-8 md:py-4 text-sm md:text-base rounded-lg transition-all active:scale-[0.98] shadow-lg shadow-[#1d8263]/30"
+                className="cursor-pointer w-20 h-20 md:w-24 md:h-24 rounded-full bg-[#1d8263]/80 backdrop-blur-md border-2 border-white/20 hover:bg-[#1d8263] hover:border-white/40 hover:scale-110 flex items-center justify-center transition-all duration-300 active:scale-95 shadow-2xl shadow-[#1d8263]/50"
+                style={{
+                  boxShadow: '0 0 60px rgba(29, 130, 99, 0.4), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+                }}
               >
-                Žiūrėti video
+                <svg 
+                  className="w-8 h-8 md:w-10 md:h-10 text-white ml-1" 
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M8 5v14l11-7z"/>
+                </svg>
               </button>
             </div>
             
@@ -219,47 +228,60 @@ export default function WaitlistPage() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, delay: 0.4 }}
-        className="w-full max-w-sm"
+        className="w-full max-w-md px-4"
       >
         {!isSubmitted ? (
-          <form onSubmit={handleSubmit} className="relative">
-            <div className="relative flex items-center">
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="vardas@email.com"
-                required
-                className="w-full h-12 md:h-14 px-4 pr-14 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30 text-sm focus:outline-none focus:border-[#1d8263]/50 focus:ring-1 focus:ring-[#1d8263]/30 transition-all font-mono"
-              />
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="absolute right-2 w-9 h-9 md:w-10 md:h-10 rounded-md bg-[#1d8263] hover:bg-[#166b52] flex items-center justify-center transition-all disabled:opacity-50"
-              >
-                {isLoading ? (
-                  <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  <ArrowRight className="w-4 h-4 text-white" />
-                )}
-              </button>
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-white/90 text-lg md:text-xl font-semibold mb-2">
+                Gaukite prieigą pirmieji
+              </h3>
+              <p className="text-white/50 text-sm">
+                Užsiregistruokite ir sužinokite kai startuosime
+              </p>
             </div>
-            <p className="text-white/60 text-sm mt-4 text-center font-mono tracking-wide">
-              Užsiregistruokite ir gaukite prieigą pirmieji
-            </p>
-          </form>
+            
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="relative">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="jusu@email.com"
+                  required
+                  className="w-full h-14 md:h-16 px-5 pr-16 rounded-xl bg-white/5 border border-white/15 text-white text-base placeholder:text-white/30 focus:outline-none focus:border-[#1d8263]/60 focus:ring-2 focus:ring-[#1d8263]/20 focus:bg-white/10 transition-all duration-300"
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-11 h-11 md:w-12 md:h-12 rounded-lg bg-[#1d8263] hover:bg-[#166b52] flex items-center justify-center transition-all duration-200 disabled:opacity-50 hover:scale-105 active:scale-95"
+                >
+                  {isLoading ? (
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    <ArrowRight className="w-5 h-5 text-white" />
+                  )}
+                </button>
+              </div>
+            </form>
+          </div>
         ) : (
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="flex flex-col items-center gap-3 py-4"
+            className="flex flex-col items-center gap-4 py-8"
           >
-            <div className="w-12 h-12 rounded-full bg-[#1d8263]/20 border border-[#1d8263]/30 flex items-center justify-center">
-              <CheckCircle2 className="w-6 h-6 text-[#1d8263]" />
+            <div className="w-16 h-16 rounded-full bg-[#1d8263]/20 border-2 border-[#1d8263]/40 flex items-center justify-center">
+              <CheckCircle2 className="w-8 h-8 text-[#1d8263]" />
             </div>
-            <p className="text-white/70 text-sm font-mono">
-              Ačiū! Susisieksime netrukus.
-            </p>
+            <div className="text-center">
+              <p className="text-white/90 text-lg font-semibold mb-1">
+                Ačiū už registraciją!
+              </p>
+              <p className="text-white/50 text-sm">
+                Susisieksime netrukus
+              </p>
+            </div>
           </motion.div>
         )}
       </motion.div>
