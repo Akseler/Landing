@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { X, Lock, ArrowRight, CheckCircle2 } from "lucide-react";
 import videoGif from "@assets/video-presentation.gif";
+import akselerLogo from "@assets/akseler black_1762845353524.png";
 
 export default function WaitlistPage() {
   const [email, setEmail] = useState("");
@@ -152,9 +153,11 @@ export default function WaitlistPage() {
         transition={{ duration: 0.8, delay: 0.1 }}
         className="text-center mb-8 max-w-lg"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-3 tracking-tight">
-          Akseler
-        </h1>
+        <img 
+          src={akselerLogo} 
+          alt="Akseler" 
+          className="h-8 md:h-10 w-auto mx-auto mb-4 brightness-0 invert"
+        />
         <p className="text-white/50 text-sm md:text-base font-light">
           AI pardavimų sistema paslaugų verslams
         </p>
@@ -259,14 +262,21 @@ export default function WaitlistPage() {
         )}
       </motion.div>
 
-      {/* Footer */}
+      {/* Footer with logo */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.6 }}
-        className="absolute bottom-6 text-white/20 text-[10px] font-mono tracking-wider"
+        className="absolute bottom-6 flex flex-col items-center gap-2"
       >
-        © 2025 AKSELER
+        <img 
+          src={akselerLogo} 
+          alt="Akseler" 
+          className="h-4 w-auto brightness-0 invert opacity-30"
+        />
+        <span className="text-white/20 text-[10px] font-mono tracking-wider">
+          © 2025
+        </span>
       </motion.div>
 
       {/* Hidden iframe for pre-loading */}
