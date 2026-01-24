@@ -244,7 +244,7 @@ export default function WaitlistPage() {
                 )}
               </button>
             </div>
-            <p className="text-white/30 text-[10px] md:text-xs mt-3 text-center font-mono tracking-wide">
+            <p className="text-white/60 text-sm mt-4 text-center font-mono tracking-wide">
               Užsiregistruokite ir gaukite prieigą pirmieji
             </p>
           </form>
@@ -270,14 +270,14 @@ export default function WaitlistPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.6 }}
-        className="mt-auto pt-8 pb-4 flex flex-col items-center gap-3"
+        className="mt-auto pt-12 pb-8 flex flex-col items-center gap-4"
       >
         <img 
           src={akselerLogo} 
           alt="Akseler" 
-          className="h-5 w-auto brightness-0 invert opacity-40"
+          className="h-6 w-auto brightness-0 invert opacity-60"
         />
-        <span className="text-white/30 text-xs font-mono tracking-wider">
+        <span className="text-white/50 text-sm font-mono tracking-wider">
           © 2025
         </span>
       </motion.div>
