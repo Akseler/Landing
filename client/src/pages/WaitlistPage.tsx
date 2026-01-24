@@ -29,7 +29,7 @@ export default function WaitlistPage() {
   };
 
   return (
-    <div className="min-h-screen min-h-[100dvh] bg-[#0a0a0a] flex flex-col items-center justify-center px-6 relative overflow-hidden">
+    <div className="fixed inset-0 w-screen h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-6 overflow-hidden">
       {/* CSS Animations */}
       <style>{`
         @keyframes pulse-glow {
@@ -46,10 +46,10 @@ export default function WaitlistPage() {
         }
       `}</style>
 
-      {/* Grid background - pure CSS */}
-      <div className="absolute inset-0 opacity-[0.06]">
+      {/* Grid background - full screen */}
+      <div className="fixed inset-0 w-full h-full opacity-[0.06]">
         <div 
-          className="absolute inset-0"
+          className="absolute inset-0 w-full h-full"
           style={{
             backgroundImage: `
               linear-gradient(rgba(29, 130, 99, 1) 1px, transparent 1px),
@@ -60,7 +60,7 @@ export default function WaitlistPage() {
         />
         {/* Center fade */}
         <div 
-          className="absolute inset-0"
+          className="absolute inset-0 w-full h-full"
           style={{
             background: 'radial-gradient(ellipse 60% 50% at 50% 50%, #0a0a0a 0%, transparent 70%)'
           }}
@@ -69,17 +69,17 @@ export default function WaitlistPage() {
 
       {/* Animated glowing orbs */}
       <div 
-        className="absolute top-1/2 left-1/2 w-[80vw] h-[60vh] max-w-[700px] max-h-[500px] bg-[#1d8263] rounded-full blur-[100px] md:blur-[120px] pointer-events-none"
+        className="fixed top-1/2 left-1/2 w-[80vw] h-[60vh] max-w-[700px] max-h-[500px] bg-[#1d8263] rounded-full blur-[100px] md:blur-[120px] pointer-events-none"
         style={{ animation: 'pulse-glow 8s ease-in-out infinite' }}
       />
       
       {/* Floating accent orbs */}
       <div 
-        className="absolute top-1/4 right-1/4 w-32 h-32 md:w-48 md:h-48 bg-[#1d8263]/20 rounded-full blur-[60px] pointer-events-none"
+        className="fixed top-1/4 right-1/4 w-32 h-32 md:w-48 md:h-48 bg-[#1d8263]/20 rounded-full blur-[60px] pointer-events-none"
         style={{ animation: 'float-1 12s ease-in-out infinite' }}
       />
       <div 
-        className="absolute bottom-1/4 left-1/4 w-24 h-24 md:w-40 md:h-40 bg-[#1d8263]/15 rounded-full blur-[50px] pointer-events-none"
+        className="fixed bottom-1/4 left-1/4 w-24 h-24 md:w-40 md:h-40 bg-[#1d8263]/15 rounded-full blur-[50px] pointer-events-none"
         style={{ animation: 'float-2 10s ease-in-out infinite' }}
       />
 
