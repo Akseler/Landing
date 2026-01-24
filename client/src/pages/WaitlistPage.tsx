@@ -30,37 +30,42 @@ export default function WaitlistPage() {
 
   return (
     <div 
-      className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center px-4 relative overflow-hidden"
+      className="h-screen w-screen bg-[#0a0a0a] flex flex-col items-center justify-center fixed inset-0 overflow-hidden"
       style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif' }}
     >
-      {/* Grid background - aligned */}
-      <div className="absolute inset-0 opacity-[0.08]">
-        <div 
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(29, 130, 99, 1) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(29, 130, 99, 1) 1px, transparent 1px)
-            `,
-            backgroundSize: '100px 100px',
-            backgroundPosition: 'center center'
-          }}
-        />
-        {/* Center fade - makes grid less visible in the middle */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(10,10,10,1) 0%, rgba(10,10,10,1) 30%, rgba(10,10,10,0.8) 50%, rgba(10,10,10,0) 70%)'
-          }}
-        />
-      </div>
+      {/* Animated grain background */}
+      <div 
+        className="fixed inset-0 pointer-events-none opacity-[0.15]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundRepeat: 'repeat',
+          animation: 'grain 0.3s steps(2) infinite',
+        }}
+      />
 
-      {/* Glowing orbs */}
-      <div className="absolute top-1/3 left-1/3 w-[500px] h-[500px] bg-[#1d8263]/25 rounded-full blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-1/3 right-1/3 w-[400px] h-[400px] bg-[#1d8263]/15 rounded-full blur-[120px] pointer-events-none" />
+      {/* CSS animation for grain movement */}
+      <style>{`
+        @keyframes grain {
+          0%, 100% { transform: translate(0, 0); }
+          25% { transform: translate(-2%, -2%); }
+          50% { transform: translate(2%, 2%); }
+          75% { transform: translate(-2%, 2%); }
+        }
+      `}</style>
 
-      {/* Main content - centered in grid */}
-      <div className="relative flex flex-col items-center" style={{ gap: '50px' }}>
+      {/* Subtle green glow in center */}
+      <div 
+        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+        style={{
+          width: '600px',
+          height: '600px',
+          background: 'radial-gradient(circle, rgba(29,130,99,0.12) 0%, rgba(29,130,99,0.03) 50%, transparent 70%)',
+          filter: 'blur(60px)'
+        }}
+      />
+
+      {/* Main content */}
+      <div className="relative z-10 flex flex-col items-center" style={{ gap: '50px' }}>
         {/* Logo */}
         <motion.img 
           src={akselerLogo} 
@@ -77,14 +82,11 @@ export default function WaitlistPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="relative flex flex-col items-center"
+          className="flex flex-col items-center"
           style={{ gap: '25px' }}
         >
-          {/* Glow */}
-          <div className="absolute inset-0 blur-3xl bg-[#1d8263]/20 scale-150" />
-          
           <h1 
-            className="relative text-white font-semibold tracking-tight"
+            className="text-white font-semibold tracking-tight"
             style={{ fontSize: 'clamp(72px, 15vw, 120px)', lineHeight: 1, letterSpacing: '-0.03em' }}
           >
             02.01
