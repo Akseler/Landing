@@ -30,83 +30,56 @@ export default function WaitlistPage() {
 
   return (
     <div 
-      className="h-screen w-screen bg-[#0a0a0a] flex flex-col items-center justify-center fixed inset-0 overflow-hidden"
+      className="min-h-screen bg-[#000000] flex flex-col items-center justify-center px-6"
       style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif' }}
     >
-      {/* Animated grain background */}
+      {/* Subtle gradient background */}
       <div 
-        className="fixed inset-0 pointer-events-none opacity-[0.15]"
+        className="fixed inset-0 pointer-events-none"
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          backgroundRepeat: 'repeat',
-          animation: 'grain 0.3s steps(2) infinite',
-        }}
-      />
-
-      {/* CSS animation for grain movement */}
-      <style>{`
-        @keyframes grain {
-          0%, 100% { transform: translate(0, 0); }
-          25% { transform: translate(-2%, -2%); }
-          50% { transform: translate(2%, 2%); }
-          75% { transform: translate(-2%, 2%); }
-        }
-      `}</style>
-
-      {/* Subtle green glow in center */}
-      <div 
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none"
-        style={{
-          width: '600px',
-          height: '600px',
-          background: 'radial-gradient(circle, rgba(29,130,99,0.12) 0%, rgba(29,130,99,0.03) 50%, transparent 70%)',
-          filter: 'blur(60px)'
+          background: 'radial-gradient(ellipse 80% 50% at 50% 50%, rgba(29,130,99,0.08) 0%, transparent 60%)'
         }}
       />
 
       {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center" style={{ gap: '50px' }}>
+      <div className="relative z-10 flex flex-col items-center max-w-md w-full">
         {/* Logo */}
         <motion.img 
           src={akselerLogo} 
           alt="Akseler" 
-          className="w-auto brightness-0 invert"
-          style={{ height: '28px' }}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 0.85, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="h-7 md:h-8 w-auto brightness-0 invert mb-16"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.9 }}
+          transition={{ duration: 1 }}
         />
         
         {/* Date */}
-        <motion.div
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="text-white font-semibold tracking-tighter text-center mb-6"
+          style={{ fontSize: 'clamp(64px, 18vw, 140px)', lineHeight: 0.9 }}
+        >
+          02.01
+        </motion.h1>
+        
+        {/* Label */}
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="flex flex-col items-center"
-          style={{ gap: '25px' }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-[#1d8263] text-sm font-medium tracking-widest uppercase mb-16"
         >
-          <h1 
-            className="text-white font-semibold tracking-tight"
-            style={{ fontSize: 'clamp(72px, 15vw, 120px)', lineHeight: 1, letterSpacing: '-0.03em' }}
-          >
-            02.01
-          </h1>
-          
-          {/* Label */}
-          <span 
-            className="text-[#1d8263] font-medium uppercase"
-            style={{ fontSize: '13px', letterSpacing: '0.2em' }}
-          >
-            Jau netrukus
-          </span>
-        </motion.div>
+          Jau netrukus
+        </motion.p>
 
         {/* Email signup */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          style={{ width: '300px' }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          className="w-full max-w-xs"
         >
           {!isSubmitted ? (
             <form onSubmit={handleSubmit}>
@@ -117,14 +90,12 @@ export default function WaitlistPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="El. paštas"
                   required
-                  className="w-full px-4 pr-12 rounded-xl bg-white/[0.03] border border-white/[0.12] text-white placeholder:text-white/25 focus:outline-none focus:border-white/25 focus:bg-white/[0.05] transition-all"
-                  style={{ height: '50px', fontSize: '15px' }}
+                  className="w-full h-12 px-4 pr-12 rounded-xl bg-white/[0.06] border border-white/[0.1] text-white text-[15px] placeholder:text-white/30 focus:outline-none focus:border-white/20 focus:bg-white/[0.08] transition-all"
                 />
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg bg-[#1d8263] hover:bg-[#228f6c] flex items-center justify-center transition-all disabled:opacity-50"
-                  style={{ width: '36px', height: '36px' }}
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-9 h-9 rounded-lg bg-[#1d8263] hover:bg-[#22956f] flex items-center justify-center transition-colors disabled:opacity-50"
                 >
                   {isLoading ? (
                     <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
@@ -135,9 +106,9 @@ export default function WaitlistPage() {
               </div>
             </form>
           ) : (
-            <div className="flex items-center justify-center gap-2" style={{ height: '50px' }}>
+            <div className="flex items-center justify-center gap-2 h-12">
               <CheckCircle2 className="w-5 h-5 text-[#1d8263]" />
-              <span className="text-white/60" style={{ fontSize: '15px' }}>Ačiū!</span>
+              <span className="text-white/60 text-[15px]">Ačiū!</span>
             </div>
           )}
         </motion.div>
