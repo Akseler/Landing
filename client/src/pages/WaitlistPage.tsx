@@ -148,8 +148,8 @@ export default function WaitlistPage() {
             className="h-5 md:h-6 w-auto brightness-0 invert"
           />
           <div className="w-px h-5 bg-white/20" />
-          <span className="text-xs md:text-sm font-medium text-[#1d8263]">
-            Greitai startuojam
+          <span className="text-xs md:text-sm font-medium text-[#1d8263] uppercase tracking-wide">
+            Vol.2 Ankstyva prieiga
           </span>
         </motion.div>
 
