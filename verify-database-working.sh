@@ -29,3 +29,6 @@ echo "The warnings about SUPABASE_DATABASE_URL, GOOGLE_OAUTH, etc. are just for 
 
 
 
+
+
+

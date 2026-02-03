@@ -109,7 +109,7 @@ export default function WaitlistPage() {
               fontFamily: '-apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui, sans-serif'
             }}
           >
-            02.01
+            02.10
           </h1>
           <p className="text-[#1d8263] text-sm md:text-base font-medium tracking-[0.25em] uppercase">
             Jau netrukus
